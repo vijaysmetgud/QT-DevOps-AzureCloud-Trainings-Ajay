@@ -98,7 +98,11 @@
         
         helm repo add <repo_name><url>
 
-        
+* Command to convert charts into package
+
+       helm package nginx
+       helm package <chart_name>
+
 
               
        
