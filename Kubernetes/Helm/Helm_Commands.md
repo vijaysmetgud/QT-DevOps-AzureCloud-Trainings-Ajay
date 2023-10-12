@@ -1,4 +1,4 @@
-# Helm Commands:
+## Helm Commands:
 
 * Command To create helm chart
    
@@ -56,7 +56,7 @@
       helm template hello-world
       helm template <chart_name>
 
-# Helmfile Commands:
+## Helmfile Commands:
 
 * Command to deploy helmfile charts on cluster
    * Note: installed set to true
@@ -75,6 +75,28 @@
             or
         
         helmfile delete
+
+## Helm Repo/hub Command:
+
+* Command to search repo/hub in hub artifact
+
+       helm search hub/repo nginx
+       helm search hub/repo <package_name>
+
+* Command to list the repo add to local
+
+       helm repo list
+
+* Command to remove repo in the call
+
+         helm repo remove stable
+         helm repo remove <repo_name>
+
+* Command to add repo into local
+
+        helm repo add stable  https://charts.helm.sh/stable
+        
+        helm repo add <repo_name><url>
 
         
 

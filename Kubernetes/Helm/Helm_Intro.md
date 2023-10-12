@@ -265,4 +265,34 @@ helmfile list
 
 #### Deploying helm chart from github repository to k8s cluster:
 
+* **Steps:**
 
+```
+git clone git@github.com:codesquareZone/helmchart.git
+helm create helloworld
+vi helmfile.yaml 
+# put the content below into helmfile.yaml
+---
+repositories:
+- name: helmchart
+  url: https://github.com/codesquareZone/helmchart/tree/master/helloworld
+releases:
+- name: mynewrelease:1.0
+  chart: helloworld
+  installed: true 
+# git push 
+git push origin master  
+# execute below command
+helmfile sync
+helm list  
+```
+
+#### Helm Hooks:
+* helm hooks means same like k8s jobs or cronjobs
+so to scheduler or run some jobs before our applications gets deployed in the k8s cluster, same way we will use helm hooks before deploy charts into kubernetes cluster.
+* [Refer Here](https://helm.sh/docs/topics/charts_hooks/) for helm hooks 
+
+#### Basic Helm Refer Below Link:
+ * [Refer Here](https://www.youtube.com/watch?v=DQk8HOVlumI)
+
+ 
