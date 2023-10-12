@@ -1,0 +1,1 @@
+# Quality Thought DevOps And AzureCloud Trainings-Ajay
