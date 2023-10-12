@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inter-pod-affinity-hard
+  labels:
+    app: pod-affinity-hard
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: diskspeed
+            operator: In 
+            values:
+            - high
+            - medium
+        topologyKey: topology.kubernetes.io/zone=v    
+  containers:
+  - name: webserver
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+      name: tcp-80
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-pod-affinity
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: diskspeed
+            operator: In
+            values:
+            - high
+        topologyKey: topology.kubernetes.io/zone
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: disktype
+              operator: In
+              values:
+              - low
+          topologyKey: topology.kubernetes.io/zone
+  containers:
+  - name: with-pod-affinity
+    image: registry.k8s.io/pause:2.0
+
+
+
+

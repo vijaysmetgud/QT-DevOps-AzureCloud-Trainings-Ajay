@@ -1,0 +1,24 @@
+---
+releases:
+- name: myhellorelease
+  chart: ./helloworld
+  installed: true
+
+
+---
+repositories:
+  - name: nginx
+    url: https://hub.docker.com
+
+releases:
+  - name: my-nginx
+    namespace: default
+    labels:
+      app: nginx
+    chart: example-nginx
+    version: latest
+    installed: true 
+
+
+    
+    

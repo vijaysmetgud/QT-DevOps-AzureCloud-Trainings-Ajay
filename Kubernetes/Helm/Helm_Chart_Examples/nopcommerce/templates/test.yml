@@ -1,0 +1,9 @@
+
+
+# Below code is changes in dynamic values by kahaja sir:
+
+---
+Release: {{ .Release }}
+Chart: {{ .Chart.Name }}
+learning:
+  replicaCount: {{ .Values.replicaCount }}

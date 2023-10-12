@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+  labels:
+    app: nginx
+    purpose: svcdemo
+spec:
+  replicas: 3
+  minReadySeconds: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: webserver
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+          - name: env-var-example
+            value: practicing 
+          - name: just-checking
+            value: trying it        
+

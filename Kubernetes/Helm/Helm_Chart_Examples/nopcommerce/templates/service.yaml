@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "nopcommerce.fullname" . }}
+  labels:
+    {{- include "nopcommerce.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "nopcommerce.selectorLabels" . | nindent 4 }}
+
+
+
+# Below code is changes in dynamic values by kahaja sir:
+---
+  labels:
+    app: nop
+spec:
+  type: NodePort
+  type: {{ .Values.service.type | default "LoadBalancer" }}
+  selector:
+    app: nop
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+    - protocol: {{ .Values.service.protocol | default "TCP" }}
+      port: {{ .Values.service.port | default 80 }}
+      targetPort: {{ .Values.service.targetPort | default 80 }}

@@ -1,0 +1,9 @@
+# Below code is changes in dynamic values by kahaja sir:
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nop
+  labels: {{ toYaml .Values.labels | nindent 4 }}
+data: {{ (.Files.Glob "files/configmaps/*").AsConfig | nindent 2 }}

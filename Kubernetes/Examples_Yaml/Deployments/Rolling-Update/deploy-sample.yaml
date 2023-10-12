@@ -1,0 +1,70 @@
+
+# here namespace we can create directley in the commandline nor manifest/yml file like below
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prod
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ds-deploy
+  namespace: prod
+  annotations:
+    kubernetes.io/change-cause: "image updated to v2.0"
+spec:
+  minReadySeconds: 5
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: deploy-sample
+          image: ajaykumarramesh/deploy-sample:v2.0 
+          ports:
+            - name: webport
+              containerPort: 80
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /
+              port: webport
+            initialDelaySeconds: 3 # this is to startup probe to perform the checks after delaying 5 sec
+            periodSeconds: 1 # here default is 1 sec, this is to how often startup probes to perform the checks
+            failureThreshold: 5 # after 3 times continues/consecutive failure of a container then consider this startup probes is failed 
+            successThreshold: 1 # after 1 time container has stated then consider this startup probes has succeeded it after having failure
+            timeoutSeconds: 1 # Number of seconds after which the probe times out means unable to perform checks
+          livenessProbe:
+            httpGet:
+              path: /
+              port: webport
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /
+              port: webport
+            initialDelaySeconds: 8
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1      
+
+
+
+

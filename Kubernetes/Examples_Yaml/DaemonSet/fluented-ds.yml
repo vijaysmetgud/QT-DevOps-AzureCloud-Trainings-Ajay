@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd-elasticsearch
+  annotations:
+    kubernetes.io/change-cause: "update to latest"
+  labels:
+    app: fluentd-logging
+spec:
+  selector:
+    matchLabels:
+      name: fluentd-logging
+  template:
+    metadata:
+      labels:
+        name: fluentd-logging
+    spec:
+      containers:
+      - name: fluentd-elasticsearch
+        image: fluentd:latest
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+
+

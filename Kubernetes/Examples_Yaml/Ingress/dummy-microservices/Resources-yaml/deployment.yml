@@ -1,0 +1,116 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-deploy
+spec:
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchLabels:
+      app: identity
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: identity-pod
+      labels:
+        app: identity
+        version: "1.0"
+    spec:
+      containers:
+        - name: identity
+          image: ajaykumarramesh/identity-service:1.0
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basket-deploy
+spec:
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchLabels:
+      app: basket
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: basket-pod
+      labels:
+        app: basket
+        version: "1.0"
+    spec:
+      containers:
+        - name: basket
+          image: ajaykumarramesh/basket-service:1.0
+          ports:
+            - containerPort: 80
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-deploy
+spec:
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchLabels:
+      app: catalog
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: catalog-pod
+      labels:
+        app: catalog
+        version: "1.0"
+    spec:
+      containers:
+        - name: catalog
+          image: ajaykumarramesh/catalog-service:1.0
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deploy
+spec:
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchLabels:
+      app: order
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: order-pod
+      labels:
+        app: order
+        version: "1.0"
+    spec:
+      containers:
+        - name: order
+          image: ajaykumarramesh/order-service:1.0
+          ports:
+            - containerPort: 80

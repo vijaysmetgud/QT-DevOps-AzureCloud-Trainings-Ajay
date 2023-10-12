@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-demo
+  labels:
+    purpose: job-batch-demo
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: batch
+    spec:
+      containers:
+      - name: batch-demo
+        image: alpine
+        args: 
+        - sleep
+        - 10s
+      restartPolicy: OnFailure        

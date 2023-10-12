@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels: 
+    app: nginx-cm
+spec:
+  containers:
+  - name: webserver
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    # this is the volumemounts from below created volume into the container     
+    volumeMounts:
+    - mountPath: /etc/config
+      name: config-vol  
+# this below volume is created for and from where this volume/data is getting from configmap 
+# so given reference as configmap and name as configmap name
+  volumes:
+  - name: config-vol
+    configMap: 
+      name: vol-cm        

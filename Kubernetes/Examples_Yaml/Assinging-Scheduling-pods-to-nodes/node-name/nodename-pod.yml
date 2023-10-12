@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nodename
+spec:
+  nodeName: ip-192-168-95-46.us-west-2.compute.internal
+  containers:
+  - name: webserver
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+      name: tcp-80

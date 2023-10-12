@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nonsense
+  labels:
+    app: nothing
+spec:
+  containers:
+  - name: nonsense
+    image: alpine
+
+
+---
+restartPolicy: always/nerver/onfailure

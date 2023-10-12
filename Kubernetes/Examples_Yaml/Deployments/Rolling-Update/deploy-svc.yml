@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+  namespace: prod
+spec:
+  type: LoadBalancer
+  selector:
+    app: web
+  ports:
+    - name: websvcport
+      targetPort: webport # here instead of writing port no we can even write name since in deployment we have given port name
+      port: 80
+

@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stateful-svc
+spec:
+  selector:
+    app: nginx-pod
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: tcp-80
+    port: 80
+    targetPort: 80  
+    protocol: TCP

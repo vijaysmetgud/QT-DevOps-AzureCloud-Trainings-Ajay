@@ -1,0 +1,13 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: my-sample-cluster
+  region: us-west-2
+nodeGroups:
+- name: ng-1
+  labels: {role: workers} # this will assing labels for two nodes also since we created only 1 group if want two different labels then create another group and give different labels
+  instanceType: t2.medium
+  desiredCapacity: 2
+
+
