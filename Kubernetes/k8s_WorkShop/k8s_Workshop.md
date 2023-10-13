@@ -29,7 +29,8 @@ docker tag petclinic:v1.0 ajaykumarramesh/spring-petclinic:v1.0
 docker push ajaykumarramesh/spring-petclinic:v1.0
 ```
 #### Write k8s manifests for spring-petclinic
-  * [Refer Here](https://github.com/k8sWorkShop/spring-petclinic-/tree/develop/k8s)
+
+[Refer Here](https://github.com/k8sWorkShop/spring-petclinic-/tree/develop/k8s)
 
 #### Create a Docker image for nopcommerce:
 
