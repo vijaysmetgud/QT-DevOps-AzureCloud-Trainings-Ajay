@@ -920,7 +920,7 @@ docker pull ajaykumar.azurecr.io/acr:1.0
 #### JFROG
 
 * Steps to create account:
-   * Loign using ur google account
+   * Login using ur google account
    * create project
    * create repository 
       * select prebuilt repository
