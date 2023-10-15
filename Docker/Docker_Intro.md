@@ -171,6 +171,7 @@ sudo docker version
 
 ```
 sudo usermod -aG docker <user-name>
+sudo usermod -aG docker <ubuntu> => in my case ubuntu
 exit
 # relogin
 ```

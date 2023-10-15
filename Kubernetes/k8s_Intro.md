@@ -1888,6 +1888,7 @@ docker push ajaykumarramesh/basket-service:1.0
  * identity-service
 
 * Lets install nginx-ingress controller using helm:
+   * * Please Note should install nginx-ingress controller on local terminal where i used to created k8s cluster and got kubectl get nodes
    * in this demonstration we are using nginx-ingress controller
    * without ingress controller we cannot satisfy or work with ingress
    * [Refer Here](https://www.nginx.com/products/nginx-ingress-controller/) 
@@ -1903,6 +1904,15 @@ helm upgrade --install ingress-nginx ingress-nginx \
 ![Preview](./Images/k8s215.png)
 ![Preview](./Images/k8s216.png)
 ![Preview](./Images/k8s217.png)
+
+* To delete hel items execute below commands
+
+```
+kubectl delete namespace ingress-nginx
+helm repo list
+helm repo remove nginx-stable
+```
+
 
 * **Steps:2**
 * After last command we see output which better copy to some notepad
