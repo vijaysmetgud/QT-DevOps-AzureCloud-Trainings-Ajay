@@ -56,6 +56,7 @@ CI/CD Pipeline:
 ![Preview](./Images/k8s2.png)
 * We will have 3 different environments
 * These 3 environments for us are three namespaces in the same k8s cluster
+* this just flow written but not implemented for three environment, just implemented for one environment
 
 ### Implementation CI/CD Pipeline:
 * This implementation is for above CI/CD Pipeline
@@ -235,37 +236,12 @@ helm repo remove nginx-stable
 * build success in deletion also
 ![PReview](./Images/k8s44.png)
 
-
-
-
-
-
-
-
-
 ### Jfrog Image Vulnerability:
 * we can observe the docker image vulnerability which we pushed in the jfrog repository 
 ![Preview](./Images/k8s37.png)
 ![Preview](./Images/k8s38.png)
 ![Preview](./Images/k8s39.png)
 ![Preview](./Images/k8s40.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---
@@ -336,11 +312,36 @@ helm repo remove nginx-stable
 * OWASP is a community which speaks top 10 risk in applications
 * For example in 2023 these are the top risk in applications [Refer Here](https://owasp.org/www-project-api-security/) For OWASP
 * So ensure that your applications doesn't have these risks.
+
+### Veracode Scan Procedure:
+* [Refer Here](https://kavindra-lunuwilage.medium.com/integrating-veracode-for-static-security-scanning-with-jenkins-e9a2958c9abe) integrate with jenkins pipeline
+* [Refer Here](https://docs.veracode.com/r/request_main) official docs
+* veracode will scan the code when ever developer writes the code and push to git hub, jenkins trigger will start and work on it. 
+
+### Black Duck scan image and procedure:
+* [Refer](https://colab.research.google.com/drive/1ZngGaKRHPD_D6x1NzSxX_E1qgUJzn96N) for scan report images
+* black duck will scan the code when ever developer writes the code and push to git hub, jenkins trigger will start and work on it. 
+
+
+### Kube Bench Scanning k8s cluster:
+* This is to scan the k8s cluster, kubeadm,AKS and EKS
+* **Please note:** It is impossible to inspect the master nodes of managed clusters, e.g. EKS, and AKS 
+because kube bench doesent have access to master node/control plane, but it can still work on worker nodes configurations.
+#### we can run kube-bench checks against a cluster in two ways.
+  * From the command line using kube-bench CLI:
+    * kube-bench cli will not work on EKS and AKS because it will not have access to control plane
+  * Run inside a pod:
+    * if we are using managed Kubernetes service like AKS and EKS then we can run kube-bench as a pod.
+* Refer Below Official docs for installing kube-bench on kubeadm, AKS and EKS
+  * [Refer Here](https://github.com/aquasecurity/kube-bench) official docs [Refer Here](https://aquasecurity.github.io/kube-bench/dev/running/)
+  * [Refer Here](https://devopscube.com/kube-bench-guide/) third party docs 
+* All steps to perform k8 cluster scan is on above link so follow the steps to do the scan the k8s cluster.
+
+
+
+### kubesploit another tool scan k8s cluster and docker container:
+
+* [Refer](https://github.com/cyberark/kubesploit) official docs
+
 ---
-
-
-
-
-
-
 

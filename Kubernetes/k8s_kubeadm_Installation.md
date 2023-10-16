@@ -199,3 +199,4 @@ kubeadm join 172.31.26.1:6443 --token hp8s0f.xjfhvex4aszd3io2 \
 ### installing a highly available k8s cluster using kubeadm:
 * [Refer Here](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)
 
+
