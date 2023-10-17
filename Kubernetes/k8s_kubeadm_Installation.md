@@ -111,6 +111,16 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
+* This above command will install latest version in `v1.28` for kubectl,kubeadm and kubelet
+* To install specific version of kubernetes kubectl,kubeadm and kubelet follow below command
+
+```
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+  echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
+  sudo apt-get update -q && \
+  sudo apt-get install -qy kubelet=1.27.0-00 kubectl=1.27.0-00 kubeadm=1.27.0-00
+```
+
 ![Preview](./Images/k8s11.png)
 
 * Now we came to above image state .
