@@ -381,6 +381,10 @@ Server Version: v1.28.1
 
 ## Context or Switching to cluster or namespaces Commands:
 
+* kubectl config get-contexts --help 
+   
+   More details
+   
 * Command to display list of contexts
 
        kubectl config get-contexts

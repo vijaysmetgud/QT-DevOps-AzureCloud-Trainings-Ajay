@@ -25,6 +25,8 @@ Managed Kubernetes or Kubernetes as a Service:
 
 Setting up basic k8s cluster in Azure (AKS):
 --------------------------------------------
+* Refer this below document there full commands to create AKS cluster in cli
+  * [Refer Here](https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_upgrade)
 
 ![Preview](./Images/k8s81.png)
 

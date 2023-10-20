@@ -4,7 +4,7 @@
   * Needs to know few things before AKS cluster upgrade:
 * Read Kubernetes version upgrades, there some important
 * [Refer Here](https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster?tabs=azure-cli) for official docs
-
+* we can upgrade AKS cluster in three ways `azure cli`, `azure powershell` `azure portal`
 
 ### Steps:
 * First we needs to have AKS cluster avaiable or we can create new cluster.
@@ -13,7 +13,7 @@
   `kubectl get nodes`
 ![Preview](./Images/k8s21.png)
 
-* verify kubectl version ensure client and server should be same version, but in my it is difference but thats ok its just for demonstration purpose.
+* verify kubectl version ensure client and server should be same version, but in my case it is difference but thats ok its just for demonstration purpose.
 
    `kubectl version`
 ![Preview](./Images/k8s22.png)
@@ -331,4 +331,11 @@ LAST SEEN   TYPE      REASON                    OBJECT                          
 14m         Normal    NodeNotSchedulable        node/aks-nodepool1-35652913-vmss000002   Node aks-nodepool1-35652913-vmss000002 status is now: NodeNotSchedulable
 13m         Normal    RemovingNode              node/aks-nodepool1-35652913-vmss000002   Node aks-nodepool1-35652913-vmss000002 event: Removing Node aks-nodepool1-35652913-vmss000002 from Controller
 ```
+
+* verify the AKS cluster has upgraded
+
+    `kubectl get nodes`
+
+![Preview](./Images/k8s25.png)
+
 
