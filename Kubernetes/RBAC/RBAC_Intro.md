@@ -463,19 +463,807 @@ kubectl get clusterrolebinding muthu-ClusterRoleBinding
   *  ["*"] => all permissions on API Resources
   * ['\*'] represents all verbs operations
 
+---
 
 ## Service Accounts:
+* [Refer Here](https://kubernetes.io/docs/concepts/security/service-accounts/) youtube
+* [Refer Here](https://www.youtube.com/watch?v=ECTxTONWgw8) youtube
 * Service Account is an user account for non human (like AWS roles,kubernetes dashboard and monitoring etc:)
-* 
+* service accounts are used by pods to access kubernetes api server
+* Service Account represents some application/Pod/whatever running inside k8s cluster and needs to access k8s api’s
+* kubernetes cluster comes with a service account called as `default` which lives in `default` name space.
+* Any pod which we create where we don’t explicitly assign a service account to created pod, it uses the default service account.
+* A service account is a type of non-human account 
+* When you create a cluster, Kubernetes automatically creates a ServiceAccount object named `default` for every namespace in your cluster. The `default` service accounts in each namespace get no permissions by default other than the `default API discovery permissions` 
+* If you delete the `default` ServiceAccount object in a namespace, the `control plane` replaces it with a `new one`.
+* If you deploy a Pod in a namespace, and you don't `manually assign a ServiceAccount to the Pod`, Kubernetes assigns the `default` ServiceAccount for that namespace to the Pod
+* **Please Note Below Important:**
+  * when we create kubernetes cluster a default namespace is created with that a default service account also created, so when we create a pod, which our application is running inside the pod, so the pod uses the default service account to authenticate them
+self with kube api server, in case if we dont explicitly assign a custom service account to a pod
+
+
+### Experiment on Service Account:
+
+#### Activity:1
+* Whenever we create a namespace a service account called as `default` is created
+
+![Preview](./Images/rbac48.png)
+
+* For every pod create in `/var/run/secrets/kubernetes.io/serviceaccount` a certificate and token are mounted to access to API Server
+
+#### Example:1
+* Lets create nginx pod and see pod uses default service account:
+* The credentials donot have permission to access kube apiserver below examples
+* this below script uses to interact with Api server.
+
+```
+APISERVER=https://kubernetes.default.svc
+SERVICEACCOUNT_DIR=/var/run/secrets/kubernetes.io/serviceaccount
+TOKEN=$(cat ${SERVICEACCOUNT_DIR}/token)
+CACERT=${SERVICEACCOUNT_DIR}/ca.crt
+curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/default/pods
+```
+* create nginx pod in imperative way:
+
+` kubectl run nginx --image=nginx:latest`
+* observe here below when create a pod with out explicitly assigning a custom service account. so in this case a pod uses its default service account which a pod cannot access a api server resources below examples.
+![Preview](./Images/rbac49.png)
+
+#### Observe below example of create our own service account with assigning to pod.
+* Lets create our own service account
+  * imperative way of creating service account
+`kubectl create serviceaccount custom-sa`  
+![Preview](./Images/rbac51.png)
+
+* Lets assign permissions to service account `custom-sa`
+
+```
+ kubectl create rolebinding custom-sa-readonly \
+    --clusterrole view \
+    --serviceaccount=default:custom-sa \
+    --namespace=default
+```
+![Preview](./Images/rbac52.png)
+
+* Lets assign custom created service account to a pod
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-sa-demo
+spec:
+  serviceAccountName: custom-sa
+  containers:
+    - name: nginx
+      image: nginx
+```
+![Preview](./Images/rbac53.png)
+* Now lets interact with kube-apiserver using the below script
+
+```
+APISERVER=https://kubernetes.default.svc
+SERVICEACCOUNT_DIR=/var/run/secrets/kubernetes.io/serviceaccount
+TOKEN=$(cat ${SERVICEACCOUNT_DIR}/token)
+CACERT=${SERVICEACCOUNT_DIR}/ca.crt
+curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/default/pods
+```
+* Now oberve below screen shot that we have assinged our custom service account to a pod, so that pod uses our sa and communicate to api server.
+
+![Preview](./Images/rbac54.png)
+
+```
+ubuntu@ip-172-31-21-80:~$ kubectl exec -it nginx-sa-demo -- /bin/bash
+root@nginx-sa-demo:/# APISERVER=https://kubernetes.default.svc
+SERVICEACCOUNT_DIR=/var/run/secrets/kubernetes.io/serviceaccount
+TOKEN=$(cat ${SERVICEACCOUNT_DIR}/token)
+CACERT=${SERVICEACCOUNT_DIR}/ca.crt
+curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/default/pods
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "resourceVersion": "11053"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "kubectl-pod",
+        "namespace": "default",
+        "uid": "c1467a09-f5a4-470a-a970-e4e755cb929b",
+        "resourceVersion": "9112",
+        "creationTimestamp": "2023-10-22T09:24:46Z",
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"annotations\":{},\"name\":\"kubectl-pod\",\"namespace\":\"default\"},\"spec\":{\"containers\":[{\"command\":[\"sleep\",\"20000\"],\"image\":\"bitnami/kubectl\",\"name\":\"kubectl\"}]}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "kubectl-client-side-apply",
+            "operation": "Update",
+            "apiVersion": "v1",
+            "time": "2023-10-22T09:24:46Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {
+              "f:metadata": {
+                "f:annotations": {
+                  ".": {},
+                  "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                }
+              },
+              "f:spec": {
+                "f:containers": {
+                  "k:{\"name\":\"kubectl\"}": {
+                    ".": {},
+                    "f:command": {},
+                    "f:image": {},
+                    "f:imagePullPolicy": {},
+                    "f:name": {},
+                    "f:resources": {},
+                    "f:terminationMessagePath": {},
+                    "f:terminationMessagePolicy": {}
+                  }
+                },
+                "f:dnsPolicy": {},
+                "f:enableServiceLinks": {},
+                "f:restartPolicy": {},
+                "f:schedulerName": {},
+                "f:securityContext": {},
+                "f:terminationGracePeriodSeconds": {}
+              }
+            }
+          },
+          {
+            "manager": "kubelet",
+            "operation": "Update",
+            "apiVersion": "v1",
+            "time": "2023-10-22T09:24:57Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {
+              "f:status": {
+                "f:conditions": {
+                  "k:{\"type\":\"ContainersReady\"}": {
+                    ".": {},
+                    "f:lastProbeTime": {},
+                    "f:lastTransitionTime": {},
+                    "f:status": {},
+                    "f:type": {}
+                  },
+                  "k:{\"type\":\"Initialized\"}": {
+                    ".": {},
+                    "f:lastProbeTime": {},
+                    "f:lastTransitionTime": {},
+                    "f:status": {},
+                    "f:type": {}
+                  },
+                  "k:{\"type\":\"Ready\"}": {
+                    ".": {},
+                    "f:lastProbeTime": {},
+                    "f:lastTransitionTime": {},
+                    "f:status": {},
+                    "f:type": {}
+                  }
+                },
+                "f:containerStatuses": {},
+                "f:hostIP": {},
+                "f:phase": {},
+                "f:podIP": {},
+                "f:podIPs": {
+                  ".": {},
+                  "k:{\"ip\":\"10.244.1.5\"}": {
+                    ".": {},
+                    "f:ip": {}
+                  }
+                },
+                "f:startTime": {}
+              }
+            },
+            "subresource": "status"
+          }
+        ]
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "kube-api-access-qf8j6",
+            "projected": {
+              "sources": [
+                {
+                  "serviceAccountToken": {
+                    "expirationSeconds": 3607,
+                    "path": "token"
+                  }
+                },
+                {
+                  "configMap": {
+                    "name": "kube-root-ca.crt",
+                    "items": [
+                      {
+                        "key": "ca.crt",
+                        "path": "ca.crt"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "downwardAPI": {
+                    "items": [
+                      {
+                        "path": "namespace",
+                        "fieldRef": {
+                          "apiVersion": "v1",
+                          "fieldPath": "metadata.namespace"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "defaultMode": 420
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "kubectl",
+            "image": "bitnami/kubectl",
+            "command": [
+              "sleep",
+              "20000"
+            ],
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "kube-api-access-qf8j6",
+                "readOnly": true,
+                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "Always"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "default",
+        "serviceAccount": "default",
+        "nodeName": "ip-172-31-16-15",
+        "securityContext": {},
+        "schedulerName": "default-scheduler",
+        "tolerations": [
+          {
+            "key": "node.kubernetes.io/not-ready",
+            "operator": "Exists",
+            "effect": "NoExecute",
+            "tolerationSeconds": 300
+          },
+          {
+            "key": "node.kubernetes.io/unreachable",
+            "operator": "Exists",
+            "effect": "NoExecute",
+            "tolerationSeconds": 300
+          }
+        ],
+        "priority": 0,
+        "enableServiceLinks": true,
+        "preemptionPolicy": "PreemptLowerPriority"
+      },
+      "status": {
+        "phase": "Running",
+        "conditions": [
+          {
+            "type": "Initialized",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:24:46Z"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:24:57Z"
+          },
+          {
+            "type": "ContainersReady",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:24:57Z"
+          },
+          {
+            "type": "PodScheduled",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:24:46Z"
+          }
+        ],
+        "hostIP": "172.31.16.15",
+        "podIP": "10.244.1.5",
+        "podIPs": [
+          {
+            "ip": "10.244.1.5"
+          }
+        ],
+        "startTime": "2023-10-22T09:24:46Z",
+        "containerStatuses": [
+          {
+            "name": "kubectl",
+            "state": {
+              "running": {
+                "startedAt": "2023-10-22T09:24:56Z"
+              }
+            },
+            "lastState": {},
+            "ready": true,
+            "restartCount": 0,
+            "image": "bitnami/kubectl:latest",
+            "imageID": "docker-pullable://bitnami/kubectl@sha256:1364cda0798b2c44f327265397fbd34a32e66d80328d6e50a2d10377d7e2ff6d",
+            "containerID": "docker://4a4cc85567c737d4a71dcafe40ef5a4b3563cdc9528afcf7ae4b74899226f631",
+            "started": true
+          }
+        ],
+        "qosClass": "BestEffort"
+      }
+    },
+    {
+      "metadata": {
+        "name": "nginx-sa-demo",
+        "namespace": "default",
+        "uid": "4aa73c03-b4ec-4594-b5dc-4cdd9af8c626",
+        "resourceVersion": "10737",
+        "creationTimestamp": "2023-10-22T09:44:02Z",
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"annotations\":{},\"name\":\"nginx-sa-demo\",\"namespace\":\"default\"},\"spec\":{\"containers\":[{\"image\":\"nginx\",\"name\":\"nginx\"}],\"serviceAccountName\":\"custom-sa\"}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "kubectl-client-side-apply",
+            "operation": "Update",
+            "apiVersion": "v1",
+            "time": "2023-10-22T09:44:02Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {
+              "f:metadata": {
+                "f:annotations": {
+                  ".": {},
+                  "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                }
+              },
+              "f:spec": {
+                "f:containers": {
+                  "k:{\"name\":\"nginx\"}": {
+                    ".": {},
+                    "f:image": {},
+                    "f:imagePullPolicy": {},
+                    "f:name": {},
+                    "f:resources": {},
+                    "f:terminationMessagePath": {},
+                    "f:terminationMessagePolicy": {}
+                  }
+                },
+                "f:dnsPolicy": {},
+                "f:enableServiceLinks": {},
+                "f:restartPolicy": {},
+                "f:schedulerName": {},
+                "f:securityContext": {},
+                "f:serviceAccount": {},
+                "f:serviceAccountName": {},
+                "f:terminationGracePeriodSeconds": {}
+              }
+            }
+          },
+          {
+            "manager": "kubelet",
+            "operation": "Update",
+            "apiVersion": "v1",
+            "time": "2023-10-22T09:44:04Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {
+              "f:status": {
+                "f:conditions": {
+                  "k:{\"type\":\"ContainersReady\"}": {
+                    ".": {},
+                    "f:lastProbeTime": {},
+                    "f:lastTransitionTime": {},
+                    "f:status": {},
+                    "f:type": {}
+                  },
+                  "k:{\"type\":\"Initialized\"}": {
+                    ".": {},
+                    "f:lastProbeTime": {},
+                    "f:lastTransitionTime": {},
+                    "f:status": {},
+                    "f:type": {}
+                  },
+                  "k:{\"type\":\"Ready\"}": {
+                    ".": {},
+                    "f:lastProbeTime": {},
+                    "f:lastTransitionTime": {},
+                    "f:status": {},
+                    "f:type": {}
+                  }
+                },
+                "f:containerStatuses": {},
+                "f:hostIP": {},
+                "f:phase": {},
+                "f:podIP": {},
+                "f:podIPs": {
+                  ".": {},
+                  "k:{\"ip\":\"10.244.1.6\"}": {
+                    ".": {},
+                    "f:ip": {}
+                  }
+                },
+                "f:startTime": {}
+              }
+            },
+            "subresource": "status"
+          }
+        ]
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "kube-api-access-7k2c2",
+            "projected": {
+              "sources": [
+                {
+                  "serviceAccountToken": {
+                    "expirationSeconds": 3607,
+                    "path": "token"
+                  }
+                },
+                {
+                  "configMap": {
+                    "name": "kube-root-ca.crt",
+                    "items": [
+                      {
+                        "key": "ca.crt",
+                        "path": "ca.crt"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "downwardAPI": {
+                    "items": [
+                      {
+                        "path": "namespace",
+                        "fieldRef": {
+                          "apiVersion": "v1",
+                          "fieldPath": "metadata.namespace"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "defaultMode": 420
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "nginx",
+            "image": "nginx",
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "kube-api-access-7k2c2",
+                "readOnly": true,
+                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "Always"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "custom-sa",
+        "serviceAccount": "custom-sa",
+        "nodeName": "ip-172-31-16-15",
+        "securityContext": {},
+        "schedulerName": "default-scheduler",
+        "tolerations": [
+          {
+            "key": "node.kubernetes.io/not-ready",
+            "operator": "Exists",
+            "effect": "NoExecute",
+            "tolerationSeconds": 300
+          },
+          {
+            "key": "node.kubernetes.io/unreachable",
+            "operator": "Exists",
+            "effect": "NoExecute",
+            "tolerationSeconds": 300
+          }
+        ],
+        "priority": 0,
+        "enableServiceLinks": true,
+        "preemptionPolicy": "PreemptLowerPriority"
+      },
+      "status": {
+        "phase": "Running",
+        "conditions": [
+          {
+            "type": "Initialized",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:44:02Z"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:44:04Z"
+          },
+          {
+            "type": "ContainersReady",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:44:04Z"
+          },
+          {
+            "type": "PodScheduled",
+            "status": "True",
+            "lastProbeTime": null,
+            "lastTransitionTime": "2023-10-22T09:44:02Z"
+          }
+        ],
+        "hostIP": "172.31.16.15",
+        "podIP": "10.244.1.6",
+        "podIPs": [
+          {
+            "ip": "10.244.1.6"
+          }
+        ],
+        "startTime": "2023-10-22T09:44:02Z",
+        "containerStatuses": [
+          {
+            "name": "nginx",
+            "state": {
+              "running": {
+                "startedAt": "2023-10-22T09:44:03Z"
+              }
+            },
+            "lastState": {},
+            "ready": true,
+            "restartCount": 0,
+            "image": "nginx:latest",
+            "imageID": "docker-pullable://nginx@sha256:b4af4f8b6470febf45dc10f564551af682a802eda1743055a7dfc8332dffa595",
+            "containerID": "docker://de8c3f19772b4a07128af75d1f6f6577094883b538751f70f0ff2a14747188af",
+            "started": true
+          }
+        ],
+        "qosClass": "BestEffort"
+      }
+    }
+  ]
+}root@nginx-sa-demo:/#
+```
+
+* Security Risk: It is generally recommended to disable automount feature [Refer Here](https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/container%20service%20account/) To mitigate [Refer Here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting)
+
+
+### To view permissions of service account `kubectl auth can-i`
+
+* This below command to view the permissions on default service account which is created on default namespace
+
+` kubectl auth can-i --list --as="system:serviceaccount:default:default"`
+![PReview](./Images/rbac55.png)
+
+* This below command to view the permission on custom created service account on default namespace
+
+` kubectl auth can-i --list --as="system:serviceaccount:default:custom-sa"`
+![Preview](./Images/rbac56.png)
+
+
+#### Example:2 
+* a example that pod uses default service account and unable to access the api server 
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubectl-pod
+spec:
+  containers:
+  - name: kubectl
+    image: bitnami/kubectl
+    command: ["sleep", "20000"]
+```
+```
+vi kubectl-pod.yaml
+kubectl apply -f kubectl-pod.yaml
+kubectl exec -it kubectl-pod -- bash
+kubectl get pods
+```
+![Preview](./Images/rbac50.png)
+
+* Lets create a service account and assign to above pod and check the status of access to api server
+
+```
+kubectl create sa test-sa
+kubectl get sa
+kubectl get sa  test-sa -o yaml
+```
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2023-10-22T10:56:57Z"
+  name: test-sa
+  namespace: default
+  resourceVersion: "16864"
+  uid: 1ef17527-16d4-448b-b96e-9e007ed217ac
+```
+* Lets assign pod to newly created sa
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubectl-pod
+spec:
+  serviceAccount: test-sa
+  containers:
+  - name: kubectl
+    image: bitnami/kubectl
+    command: ["sleep", "20000"]
+```
+
+```
+vi kubectl-pod.yaml
+kubectl apply -f kubectl-pod.yaml
+kubectl get pods
+```
+![PReview](./Images/rbac57.png)
+
+`kubectl exec -it kubectl-pod -- /bin/bash`
+
+* observe this below screen shot now pod is using the custom service account which we created it. but still its unable to access api server because we have not attached any role/permission to this service account
+![Preview](./Images/rbac58.png)
+
+* Now Lets add the role and bond with rolebinding this with adding  service account to get permission for this service account to access api server
+
+* **Please Note:**
+  * we can give permission or attach to service account any role or cluster role bond with rolebinding nor clusterrolebinding
+
+#### Role:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  verbs: ["get", "watch", "list"]
+  resources: ["pods", "pods/log"]
+  # resourceNames: ["nginx"]
+```
+![Preview](./Images/rbac59.png)
+
+#### RoleBinding:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+# This role binding allows user "muthu" to read pods in the "default" namespace.
+# You need to already have a Role named "pod-reader" in that namespace.
+kind: RoleBinding
+metadata:
+  name: read-pods
+subjects:
+# You can specify more than one "subject"
+- kind: User
+  name: muthu # "name" is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: test-sa
+roleRef:
+  # "roleRef" specifies the binding to a Role / ClusterRole
+  kind: Role #this must be Role or ClusterRole
+  name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
+# roleRef:
+#   kind: ClusterRole
+#   name: secret-reader
+#   apiGroup: rbac.authorization.k8s.io
+```
+![Preview](./Images/rbac60.png)
+
+* pods uses service account to access the api server resources
+* observe below screen shot after attaching service account to pods with rolebinding with role, pods now able to communicate with api server 
+
+![Preview](./Images/rbac61.png)
+
+* To check permission service account:
+![Preview](./Images/rbac62.png)
 
 
 
 
 
 
+---
 ## Aggregating RBAC Rules:
+* youtube video for aggregate rules [Refer Here](https://www.youtube.com/watch?v=gqhbnulGza4)
+* Aggregation Rules means instead of having multiple clusterrole, we can have only one aggregated cluterrole.
+* what this means, assume some scenario we have multiple cluterrole so we needs to rolebind or clusterrolebind with multiple clusterrole, this is unnecessarily waste of doing things, so in this case we can have multiple clusterrole created for these multiple clusterrole we have only one aggregated clusterrole and this will inherit the all other multiple clusterole by matching its label and so we can rolebind or clusterrolebind with only one aggregated clusterrole, instead of many.
+* Existing multiple ClusterRoles can be aggregated to avoid having to define a multiple new set of clusterrole Rules 
 
+### Experiment:
+* Lets create two set of cluster role and one aggregated cluster role and will see how it will combine the other cluster role with matching label and allow us the operate on the rules mentioned on the multiple cluster role. 
 
+#### Lets create a Cluster Role for listing pods:
+
+```
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: list-pods
+  labels:
+    rbac-list-pods: "true"
+rules:
+  - apiGroups: [""]
+    resources: [pods]  
+    verbs: [list]
+```
+![Preview](./Images/rbac40.png)
+
+#### Lets create a ClusterRole for deleting service:
+
+```
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: delete-service
+  labels:
+    rbac-delete-service: "true"
+rules:
+  - apiGroups: [""]
+    resources: [service]  
+    verbs: [delete] 
+```
+![Preview](./Images/rbac41.png)
+
+#### Now we can aggregate i.e combine the both above cluster role rules while composing a new aggregate cluster Role by name `aggr-sample`
+
+```
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: aggr-sample
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        rbac-list-pods: "true"
+    - matchLabels:
+        rbac-delete-service: "true"
+rules: []
+```
+* Observe this above aggregated cluster role will inherit the aboves said cluster role rules, since in aggregate cluster role i have ot mentioned any rules.
+![Preview](./Images/rbac42.png)
+![Preview](./Images/rbac43.png)
+![Preview](./Images/rbac44.png)
+![Preview](./Images/rbac45.png)
+* have we observed the other two cluster role rules have been inherited in the aggregation cluster role rules column.
+
+#### Now we can rolebind or clusterrolebind with aggregated cluster role to see the functions or operations working 
+
+* in this examples i am bonding aggregated cluster role with rolebinding 
+
+![Preview](./Images/rbac46.png)
+![Preview](./Images/rbac47.png)
+
+* as per the aggregated cluster role rules, we can get the pods and delete the services from develop namespace.
+---
 
 ## Experiment:
 * create a kubeadm cluster single-master
@@ -497,6 +1285,9 @@ kubectl get clusterrolebinding muthu-ClusterRoleBinding
 
 * this also same like above 
 * just copy .kube/config file to your laptop and for changes to be done follow above steps.
+
+#### Multiple lines to make in single line refer below
+* [Refer Here](https://community.notepad-plus-plus.org/topic/14791/how-to-make-all-data-in-one-line)
 
 ---
 
