@@ -618,3 +618,28 @@ roleRef:
 #   kind: ClusterRole
 #   name: secret-reader
 #   apiGroup: rbac.authorization.k8s.io
+
+
+metadata:
+  name: secret-pod-reader
+rules:
+  - apiGroups: [""]
+    resources:
+      - secrets
+    verbs:
+      - get
+      - watch
+      - list
+  - apiGroups: [""]
+    resources:
+      - pod
+    verbs:
+
+
+metadata:
+  name: secret-reader
+rules:
+  - apiGroups: [""]
+    resources:
+      - secrets
+    verbs:    
