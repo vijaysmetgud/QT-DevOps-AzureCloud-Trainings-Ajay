@@ -70,6 +70,19 @@
 
     kubectl top pods 
 
+* command to debug or get logs of pod
+     
+     kubectl log nginx
+     kubectl logs <pod-name>
+
+* command to list the pods in all the namespaces
+
+      kubectl get pods –all-namespaces
+
+* command to Get all running pods in the namespace
+     
+     kubectl get pods --field-selector=status.phase=Running -n airflow
+     
 ## Nodes Commands:
 
 *  Command to list nodes 
