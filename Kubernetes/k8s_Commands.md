@@ -199,10 +199,6 @@
 
          kubectl scale deployment/deploy-nginx --replicas=6
 
-* Command to enable horizontal Pod autoscaling for cluster based on cpu matrics
-
-             kubectl autoscale deployment/deploy-nginx --min=4 --max=10 --cpu-percent=40
-
 * Command to pause the rollout/rollback of deployment
 
            kubectl rollout pause deployment/deploy-nginx 
@@ -239,6 +235,14 @@
       kubectl delete -f nginx.yaml
 
       kubectl delete -f <filename.yaml>
+
+* Command to particular resource/object      
+      
+      kubectl delete pods nginx
+
+      kubectl delete pods <pod_name>
+
+* if namespace is created then mention -n <namespace_name>      
 
 ## Namespace Commands:
 
@@ -583,63 +587,3 @@ Server Version: v1.28.1
 
       
    
-
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: pod-reader
-rules:
-- apiGroups: [""] # "" indicates the core API group
-  verbs: ["get", "watch", "list"]
-  resources: ["pods", "pods/log"]
-  # resourceNames: ["nginx"]
-
-
-apiVersion: rbac.authorization.k8s.io/v1
-# This role binding allows user "muthu" to read pods in the "default" namespace.
-# You need to already have a Role named "pod-reader" in that namespace.
-kind: RoleBinding
-metadata:
-  name: read-pods
-subjects:
-# You can specify more than one "subject"
-- kind: User
-  name: muthu # "name" is case sensitive
-  apiGroup: rbac.authorization.k8s.io
-- kind: ServiceAccount
-  name: test-sa
-roleRef:
-  # "roleRef" specifies the binding to a Role / ClusterRole
-  kind: Role #this must be Role or ClusterRole
-  name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
-  apiGroup: rbac.authorization.k8s.io
-# roleRef:
-#   kind: ClusterRole
-#   name: secret-reader
-#   apiGroup: rbac.authorization.k8s.io
-
-
-metadata:
-  name: secret-pod-reader
-rules:
-  - apiGroups: [""]
-    resources:
-      - secrets
-    verbs:
-      - get
-      - watch
-      - list
-  - apiGroups: [""]
-    resources:
-      - pod
-    verbs:
-
-
-metadata:
-  name: secret-reader
-rules:
-  - apiGroups: [""]
-    resources:
-      - secrets
-    verbs:    

@@ -517,41 +517,59 @@ status:
   startTime: "2023-09-10T18:59:22Z"
 ```
 
-### Scaling:
-   * Scaling in k8s means increasing number of Pods not containers inside Pod.
-   * For Scaling pods we would learn Replica set/Replication Controller etcs.. 
-
-### Autoscaling:
-  * Containers don’t scale on their own.
-  * **Scaling is of two types:**
-    * Vertical Scaling
-       * means to modify the attributed resources (like CPU or RAM) of each node in the cluster. In most cases, this means creating an entirely new node pool using machines that have different hardware configurations. Vertical scaling on pods means dynamically adjusting the resource requests and limits based on the current application requirements 
-
-    * Horizontal Scaling
-       * means modifying the compute resources of an existing cluster, for example, by adding new nodes to it or by adding new pods by increasing the replica count of pods
-
-### Horizontal Pod AutoScaler: 
-* Allows us to auto-scale pods based on some metrics like cpu, network,memory etc.
-
-### Vertical Pod AutoScaler:
-* can allocate more (or less) CPU and memory resources to existing pods to modify the available compute resources for an application. 
-* This feature can be useful to monitor and adjust the allocated resources of each pod over its lifetime
-* The Vertical Pod Autoscaler does not update resource configurations for existing pods.
-* It checks which pods have the correct resource configuration and kills the ones that are not having the recommended configuration so that their controllers can recreate them with the updated configuration.
-
-### Node/Cluster Autoscaler:
-
-#### About the cluster autoscaler:
-* AKS clusters can scale in one of two ways:
-   * The **cluster autoscaler** watches for pods that can't be scheduled on nodes because of resource constraints. The cluster then automatically increases the number of nodes
-   * The **horizontal pod autoscaler** uses the Metrics Server in a Kubernetes cluster to monitor the resource demand of pods. If an application needs more resources, the number of pods is automatically increased to meet the demand
+## Autoscaling:
+* Scaling:
+  * Scaling in k8s means increasing number of Pods not containers inside Pod.
+  * For Scaling pods we have learnt Replica set/Replication Controller etcs..
+* Here HPA and VPA work at a pod level or application level, where CA is work at the Infrastructure level.  
 
 ![Preview](./Images/k8s127.png)
 
-* [Refer Here](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler) for aks cluster autoscaler
+### Autoscaling:
+* There are three types of K8s autoscalers,each serving a different purpose. They are: 
+  * Horizontal Pod Autoscaler (HPA)
+  * Cluster Autoscaler (CA)
+  * Vertical Pod Autoscaler (VPA)
 
-* [Refer Here](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html) for eks cluster autoscaler
+#### Horizontal Pod Autoscaler (HPA):
+* The Horizontal Pod Autoscaler scales the number of pod replicas as needed
+* If an application needs more resources, the number of pods is automatically increased to meet the demand.
+* HPA scales the number of pods in a replication controller, deployment, replica set, or stateful set based on CPU utilization. 
+* HPA uses the Metrics Server in a Kubernetes cluster to monitor the resource demand of pods.
+* HPA scales by adding or removing pods
 
+**Examples for HPA:**
+ * [Refer Here](https://docs.aws.amazon.com/eks/latest/userguide/horizontal-pod-autoscaler.html) for AWS
+ * [Refer Here](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler) for Azure
+ * [Refer Here](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) for official docs 
+
+* Manual command:
+
+`kubectl autoscale deployment/deploy-nginx --min=4 --max=10 --cpu-percent=40`
+
+#### Vertical Pod Autoscaler (VPA):
+* adjusts the resource requests and limits
+* automatically sets resource requests and limits on containers per workload based on past usage to ensure pods are scheduled onto nodes that have the required CPU and memory resources.
+* VPA scales by increasing or decreasing CPU and memory resources within the existing pod containers
+* VPA It increases and decreases container CPU and memory resource configuration to align cluster resource allotment with actual usage. 
+
+**Examples for VPA:**
+ * [Refer Here](https://learn.microsoft.com/en-us/azure/aks/vertical-pod-autoscaler) for Azure
+ * [Refer](https://www.kubecost.com/kubernetes-autoscaling/kubernetes-vpa/) for others\
+ * [Refer Here](https://docs.aws.amazon.com/eks/latest/userguide/vertical-pod-autoscaler.html) for AWS  
+
+#### Cluster Autoscaler (CA):
+* The cluster autoscaler periodically checks for pods that can't be scheduled on nodes because of resource constraints. The cluster then automatically increases the number of nodes.
+* adjusts the number of nodes in a cluster.
+* The Cluster Autoscaler automatically adds or removes nodes in a cluster when nodes have insufficient resources to run a pod (adds a node) or when a node remains underutilized, and its pods can be assigned to another node (removes a node). 
+* cluster autoscaler scales the number of nodes in a node pool as needed. 
+* The cluster autoscaler decreases the number of nodes when there has been unused capacity after a period of time. 
+* Any pods on a node removed by the cluster autoscaler are safely scheduled elsewhere in the cluster.
+* the cluster autoscaler runs the number of nodes required to support the scheduled pods.
+
+**Examples for CA:**
+* [Refer Here](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler) for azure
+* [Refer Here](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html) for AWS
 
 
 ### To check all the api-server resource in k8s
@@ -2182,32 +2200,82 @@ the Pod continues to run."
 * kubernetes IDE
 * [Refer Here](https://k8slens.dev/)
 
+## Kubernetes Patching:
 
+#### Activity 1:
+* Create a Replica Set for nopCommerce `ajaykumarramesh/nocommerce:v1.0` and a service with cluster ip and some external accessibility like nodeport
+![Preview](./Images/k8s244.png)
+* [Refer Here](https://github.com/codesquareZone/KubernetesZone/commit/6e70a71a0eaef4316b0bd1442a1e8ee5c8b51546) for nopcommerce yaml files
+* Now apply the changes by using following commands
 
+```bash
+kubectl apply -f activity1/
+kubectl config set-context --current --namespace=activity1
+kubectl get svc
+kubectl get rs
+```
+![Preview](./Images/k8s245.png)
 
+* Now we need to patch a node in k8s cluster.
+* As an admin you are expected to cordon and drain the selected node
+*  Safely brining down a node
+* Lets mark the node cordon for k8s cluster to stop scheduling workloads on node
 
+`kubectl cordon node-2`
+![Preview](./Images/k8s246.png)
 
-    
+* Now drain the selected node by ignoring daemonsets
 
+` kubectl drain --ignore-daemonsets node-2`
+![Preview](./Images/k8s247.png)
 
+* Do your patching
+* Uncordon the node
 
+`kubectl uncordon node-2`
 
+![Preview](./Images/k8s248.png)
 
+#### Lets say we have 10 pods in replicaset running and we always need atleast 80% to be running for better customer experience. Now in these situations how to handle maintenenance.
+* In this scenario the below term came in to action.
 
+### Pod Disruption Budget:
 
+* [Refer Here](https://github.com/codesquareZone/KubernetesZone/commit/6d26ddf06fa59ecd79ae592d1fe109c1a8b907ca?diff=split) to configure 80% minimum availability for replicas in the case of disruptions(PDB)
+![PReview](./Images/k8s249.png)
 
+### Scenario:
 
+* We need to put restriction on namespace to restrict how many pvc claims, loadbalancers, nodeports etc:
+* How we can restrict something called resource quota
+  * We have ResourceQuota Object
+    * [Refer Here](https://kubernetes.io/docs/concepts/policy/resource-quotas/) for ResourceQuota
+* Lets apply/restrict a resource quota on namespace to number of services < 2, nodeports < 2 and pods < 10      
+* [Refer Here](https://github.com/codesquareZone/KubernetesZone/commit/ce65aee4895fa1e328f5054f4d9e9cc4281678dc) for resource quota yaml files
 
+#### Apply all the manifests and check for status of quotas:
+![Preview](./Images/k8s250.png)
 
+* In this the number of pods cannot exceed 10 due to quota and also service,nodeport and loadbalancer more then 1.
+![Preview](./Images/k8251.png)
+---
 
+## Common kuberentes Errors:
 
+* **CreateContainerConfigError:**
+  * This is result of a missing secret or config map
 
+* **CrashLoopBackoff:**
+   * This issued is due to pod not scheduled on node which can happen due to
+     * insufficient resources
+     * pod did not succeed in mounting volumes
+     * hostPort
 
+* **ErrImagePull or ImagePullBackOff:**
+   * This is result of failure occured as the image couldnot be pulled from registry
+   * Node not Ready
 
-
-
-
-
- 
-
+## Kubernetes Dashboard:
+* [Refer Here](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) for steps official docs
+* [Refer Here](https://upcloud.com/resources/tutorials/deploy-kubernetes-dashboard) for steps other docs
 

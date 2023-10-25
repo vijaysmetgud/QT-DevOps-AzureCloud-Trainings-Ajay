@@ -204,4 +204,110 @@ sudo systemctl restart kubelet
 
 ---
 
+# Kubernetes Upgrade Using Kubeadm:
+### Kahaja Sir Method:
+
+#### kubeadm Cluster Installation process:
+![Preview](./Images/k8s38.png)
+
+* Lets try installing older version of kubernetes cluster using kubeadm
+* We have installed docker and cri-dockerd version 0.34 by downloading deb from [Refer Here](https://github.com/Mirantis/cri-dockerd/releases/tag/v0.3.4)
+
+```bash
+# These steps are executed on ubuntu 22.04
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.4/cri-dockerd_0.3.4.3-0.ubuntu-jammy_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.4.3-0.ubuntu-jammy_amd64.deb
+```
+* We have installed kubeadm with version 1.26
+
+```bash
+sudo apt-get update
+# apt-transport-https may be a dummy package; if so, you can skip that package
+sudo apt-get install -y apt-transport-https ca-certificates curl
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.26/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.26/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+```
+* Now bring up the cluster with 1.26
+
+* Now lets try to create a deployment
+
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+* create a deployment
+![Preview](./Images/k8s39.png)
+
+* Current version information
+![Preview](./Images/k8s40.png)
+
+* Now we need to upgrade k8s cluster to the next version 1.27
+
+* upgrade process
+![Preview](./Images/k8s41.png)
+
+* Commands to upgrade control plane
+```bash
+sudo apt-mark unhold kubelet kubeadm kubectl
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-cache madison kubeadm
+sudo apt-get install kubeadm=1.27.4-1.1 && sudo apt-mark hold kubeadm
+kubeadm version
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.27.4
+kubectl drain ip-172-31-33-86 --ignore-daemonsets
+sudo apt-mark unhold kubelet kubectl && sudo apt-get install -y kubelet=1.27.4-1.1 kubectl=1.27.4-1.1 && sudo apt-mark hold kubelet kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet.service
+kubectl uncordon ip-172-31-33-86
+kubectl get nodes
+```
+* Commands to upgrade worker node
+
+```bash
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-mark unhold kubelet kubeadm kubectl
+sudo apt-cache madison kubeadm
+sudo apt-get install kubeadm=1.27.4-1.1 && sudo apt-mark hold kubeadm
+sudo kubeadm upgrade node
+kubectl get nodes
+kubectl drain ip-172-31-40-43 --ignore-daemonsets
+sudo apt-mark unhold kubelet kubectl && sudo apt-get install -y kubelet=1.27.4-1.1 kubectl=1.27.4-1.1 && sudo apt-mark hold kubelet kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet.service
+kubectl uncordon ip-172-31-40-43
+```
+![Preview](./Images/k8s42.png)
+
+---
 
