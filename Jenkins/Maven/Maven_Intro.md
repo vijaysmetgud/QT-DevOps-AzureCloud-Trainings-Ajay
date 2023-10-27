@@ -95,3 +95,65 @@ mvn --version
 
 * When we execute the maven goals then it downloads all its dependencies and stores in maven home directory called `M2_HOME` where ever this environment variable points to.and if not found it does in `<home-dir>/.m2` in our operating system
 * if we want to change this default storing dependencies then needs to define in environmental variable.  
+
+
+Building and Packaging Java Projects using a Maven:
+---------------------------------------------------
+* Compilation: Process of
+   * checks for errors in code
+   * converts to desired language (Byte code/machine code)
+
+* Packaging:
+   * Combining compiled code into some packaging format
+   * java: jar/war/ear
+   * dotnet: dll/exe
+
+* Dependencies: will be downloaded
+   * java: maven/gradle
+   * dotnet: nuget
+   * python: pip
+   * nodejs: npm   
+
+* Maven: combines dependency resolution, compilation, unit test executions, packaging
+* Maven expects a file called as pom.xml
+* Steps:
+   * Get the latest code
+   * Pre-requisites:
+      * jdk version
+      * maven
+
+* Execute `mvn <goal>`
+    * compile
+    * test
+    * package
+
+* In our case we will be using `mvn package`
+
+### Setup a linux vm for building and packaging spring-petclinic:
+* pre-req’s
+   * git
+   * maven
+   * jdk 17
+
+* SSH into the vm & execute the following
+
+```bash
+sudo apt update
+sudo apt install openjdk-17-jdk -y
+sudo apt install maven -y
+git --version
+java -version
+mvn --version
+```
+![Preview](./Images/maven1.png)
+* Build steps
+
+```bash
+cd ~
+git clone https://github.com/spring-projects/spring-petclinic.git
+cd spring-petclinic
+mvn package
+```
+![Preview](./Images/maven2.png)
+
+
