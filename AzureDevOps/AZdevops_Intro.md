@@ -577,4 +577,192 @@ dotnet publish src/Presentation/Nop.Web/Nop.Web.csproj -c Release -o published/
 * **test:** [Refer Here](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test)
 * **publish:** [Refer Here](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish)
 
-## Azure DevOps Pipeline
+## Azure DevOps Pipeline:
+* azure devops pipeline for Build a dotnet application for above manual steps:
+* Our agent is still default  
+* make sure agent is online
+
+### Build Steps:
+
+```
+dotnet build src/NopCommerce.sln -c Release
+dotnet test -c Release src/Tests/Nop.Tests/Nop.Tests.csproj -o TestResults/
+dotnet publish src/Presentation/Nop.Web/Nop.Web.csproj -c Release -o published/
+```
+
+* clone the repo in your local system to write azure-pipelines.yaml 
+```bash
+mkdir azure devops
+cd azure devops
+git clone https://ajaybillafz16@dev.azure.com/ajaybillafz16/Learning_AzureDevOps/_git/nopCommerce.git
+cd nopCommerce/
+code .
+# create file 
+azure-pipelines.yaml
+# Add the below content in the `azure-pipelines.yaml`
+pool: default
+steps:
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce 
+  inputs:
+    command: build
+    projects: src/NopCommerce.sln
+    configuration: Release 
+# add, commit and push to azure repo
+git add .
+git commit -m "added azure-pipelines.yaml"
+git push origin master 
+```
+* create new pipeline in azure devops
+   * navigate to pipelines
+   * click on new pipelines
+   * select the azure repo, where is your code is contain
+   * select the repository
+   * Select existing an Azure Pipelines YAML file
+   * select branch and provide path for your pipeline
+   * click save and run pipeline 
+* Build success:
+![Preview](./Images/azdevops64.png)
+
+### When should the project be built/trigger:
+   * option 1: Whenever code is pushed/commit/changed to some branch
+   * option 2: At schedule time
+   * option 3: On Pull Request
+
+### Sections in Azure DevOps pipeline yaml:
+* trigger (option 1)[Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines) Continuous integration triggers, commit/push/change
+
+```bash
+git add .
+git commit -m "added trigger"
+git push origin master
+```   
+* when we execute above command adding trigger section in `azure-pipelines.yaml` build starts automatically mean it triggers the build
+
+```yaml
+pool: default
+trigger:
+- master
+steps:
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce 
+  inputs:
+    command: build
+    projects: src/NopCommerce.sln
+    configuration: Release 
+``` 
+![Preview](./Images/azdevops66.png)  
+![Preview](./Images/azdevops65.png)
+
+* schedules (option 2) [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/schedules?view=azure-pipelines) and [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines#examples)
+
+```bash
+git add .
+git commit -m "added schedules cron"
+git push origin master
+``` 
+* when we execute above command adding schedule cron section in `azure-pipelines.yaml` build starts automatically at `every 5 minutes means` it triggers the build at `every 5 minutes`
+* check below screen shot for proofs
+
+```yaml
+pool: default
+
+schedules:
+- cron: '*/5 * * * *'
+  displayName: myfirst cron schedules
+  always: true
+  branches:
+    include:
+      - master 
+steps:
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce 
+  inputs:
+    command: build
+    projects: src/NopCommerce.sln
+    configuration: Release 
+```
+* check this below screen shot one build started at scheduled cron time, and another build is already in queue for next run at scheduled cron time, cron duration is `every 5 minute`
+![Preview](./Images/azdevops67.png)
+![Preview](./Images/azdevops68.png)
+![PReview](./Images/azdevops69.png)
+* check this below screen after first build started at `12:50` so now at `12:55` again second build started so that means the schedule cron is working
+![Preview](./Images/azdevops70.png)
+![preview](./Images/azdevops71.png)
+![PReview](./Images/azdevops72.png)
+
+* pr (option 3) => this one sir has not done the experiment.
+
+#### As per above build steps, try with testing the project with test result:
+
+```yaml
+pool: default
+
+trigger:
+- master
+steps:
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce 
+  inputs:
+    command: build
+    projects: src/NopCommerce.sln
+    configuration: Release 
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce-Test
+  inputs:
+    command: test
+    projects: '**/*.Tests.csproj'
+    publishTestResults: true  
+```
+
+```bash
+git add .
+git commit -m "added test result for project"
+git push origin master
+```
+* when executed above command build started and this time it will show or execute test result for the project since we have added another task called test.
+![Preview](./Images/azdevops73.png)
+![Preview](./Images/azdevops74.png)
+
+#### As per above build steps, try with publish the project with zip the files after publish:
+* changing the names displayed during build for below
+   * build the code
+   * test the code
+   * publish the code
+
+```yaml
+pool: default
+
+trigger:
+- master
+steps:
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce-build 
+  inputs:
+    command: build
+    projects: src/NopCommerce.sln
+    configuration: Release 
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce-Test
+  inputs:
+    command: test
+    projects: '**/*.Tests.csproj'
+    publishTestResults: true 
+- task: DotNetCoreCLI@2
+  displayName: NopCommerce-publish
+  inputs:
+    command: publish
+    projects: '**/*.Web.csproj'
+    zipAfterPublish: true
+```
+```bash
+git add .
+git commit -m "added publish and zip publish"
+git push origin master
+```
+* when executed above command build started and it build and test and publish the project for deployment since in this build we havea added the publish task also.
+![Preview](./Images/azdevops76.png)
+
+* check below screen shot changed name for build,test and publish
+![Preview](./Images/azdevops75.png)
+
