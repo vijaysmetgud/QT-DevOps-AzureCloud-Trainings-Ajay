@@ -1,19 +1,30 @@
 # Continuous Integration and Continuous Delivery/Deployment
 
 * Jenkins is like crontab because jenkins will integrate with other tools or what ever we say jenkins it will do and it will call the other tool.
-* it is just like crontab, jenkins will not do any work nor it dosent know anything, just it will call other tools to do the work thats it. 
+* it is just like crontab, jenkins will not do any work nor it doesn't know anything, just it will call other tools to do the work thats it. 
 * jenkins can do anything and everything, that we can do in commandline 
 * jenkins never does the work
 * jenkins will calls the command which does the work
 
 ---
 
-## Continuous Integration Means
+## Continuous Integration:
 
 * when ever developer will commit the code to any remote/centralize repository it wil start testing and checking quality of the code and deploy to lower environment
+* the moment developer submit the code we will build the package and do some small  testcase/run performance test
+is known as continues integration 
+* chain => VCS submit the code => build package => unittest.
 
-## Continuous Delivery/Deployment
-where ever developer will commit the code to any remote/centralize repository it will start testing with lower environment and deploy to production 
+## Continuous Delivery:
+* the moment developer submit the code and we will build the package and do unittesting, security testing and performance testing, and deploy to the up to pre-prod/UAT environment is known as continues delivery   
+* chain => VCS submit the code => build package => unittesting => ST env => PT env => pre-prod/UAT env
+* where ever developer will commit the code to any remote/centralize repository it will start testing with lower environment is known as continues delivery   
+
+## Continuous Deployment:
+* where ever developer will commit the code to any remote/centralize repository it will start testing with lower environment and deploy to production 
+* the moment developer submit the code and we will build the package and do some unittesting, security testing and performance testing, and deploy to the up to prod/live environment is known as continues deployment
+* chain => VCS submit the code => build package => ST env => PT env => UAT env => prod/Live environment
+
 
 ## Jenkins Default Home Directory
 * /var/lib/Jenkins
