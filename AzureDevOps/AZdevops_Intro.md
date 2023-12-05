@@ -2585,4 +2585,20 @@ git push origin main
 ### Deployment groups in AzureDevops:
 * [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/release/deployment-groups/?view=azure-devops)
 
+#### Deployment Groups Settings:
+* if we needs to find the option of deployment groups in the pipeline tab means, needs to follow the below steps
+
+* **Steps:**
+ * **In organization Settings:** 
+    * As per below screen shot should look
+![Preview](./Images/azdevops213.png)
+![Preview](./Images/azdevops214.png) 
+![Preview](./Images/azdevops215.png)
+![Preview](./Images/azdevops216.png)
+
+ * In Project Settings:
+   * As per below screen shot should look
+![Preview](./Images/azdevops217.png)
+![Preview](./Images/azdevops218.png)
+![Preview](./Images/azdevops219.png)
 
