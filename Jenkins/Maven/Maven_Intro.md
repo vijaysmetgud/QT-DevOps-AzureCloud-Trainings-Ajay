@@ -27,7 +27,7 @@
 
 # Maven Installation On Ubuntu/Centos/RedHat Linux:
 
-* Default version available in the apt/yum packages:
+Default version available in the apt/yum packages:
   ----------------------------------------------
 * sudo apt update
 * sudo apt-cache search maven
