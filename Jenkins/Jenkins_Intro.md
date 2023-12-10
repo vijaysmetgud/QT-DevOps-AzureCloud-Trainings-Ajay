@@ -259,8 +259,260 @@ mvn --version
      ![Preview](./Images/jenkins14.png)
 
 
+Managing different versions of the tools using jenkins
+------------------------------------------------------
+* incase if we have two version of same software then we follow this procedure in the jenkins UI
+* Lets go to manage jenkins and navigate to tools => Maven installations
+![Preview](./Images/jenkins33.png)
+![Preview](./Images/jenkins34.png)
+* Now lets configure the spring petclinic to use `top level maven targets`
+![Preview](./Images/jenkins35.png)
+* Now build the project manually
+![Preview](./Images/jenkins36.png)
 
-        
+
+Distributed Builds
+--------------------
+
+* **Setup:**
+  * Fork Spring petclinic [Refer Here](https://github.com/dummyreposito/spring-petclinic)
+    * requirements to build
+      * java jdk 17
+      * maven 3.9
+
+  * Fork game of life [Refer Here](https://github.com/dummyreposito/game-of-life-july23) 
+      * requirements to build
+         * java 8
+         * maven(any version it will work)
+
+  * Fork nopcommerce [Refer Here](https://github.com/dummyreposito/nopCommerce-july23)
+      * requirements to build
+          * dotnet 7
+* To handle different builds with different software needs, we tend to use different servers.
+* Jenkins has distributed builds where we can distribute the builds on differnt nodes by matching labels
+![Preview](./Images/jenkins37.png)
+* While creating a project we can set labels and expect them to be executed on the node matching labels
+
+### How to add multiple nodes to jenkins
+* Lets create 2 ubuntu vms 
+  * out of which one we makes a jenkins master and another as jenkins node
+* **Install required software on jenkins master node:**
+   * java jdk 17
+   * jenkins 
+```bash
+sudo apt update 
+sudo apt install openjdk-17-jdk -y 
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+```
+* Add jenkins master node to sudoers permission without password
+```bash
+sudo visudo
+jenkins ALL=(ALL:ALL) NOPASSWD:ALL
+CTRL O
+CTRL X
+```
+* **Install required software on jenkins node-1:**
+   * java jdk 17
+   * maven 3.9
+```bash
+sudo apt update && sudo apt install openjdk-17-jdk -y
+# maven installation
+cd /tmp/
+wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+sudo mkdir /usr/share/maven
+sudo tar -xvzf apache-maven-3.9.6-bin.tar.gz -C /usr/share/maven
+# Adding to Path Variable:
+sudo vi /etc/environment
+# add /usr/share/maven/apache-maven-3.9.6/bin to the PATH variable
+source /etc/environment
+mvn --version
+```   
+* Like below screen shot should save in the environment variable
+![Preview](./Images/jenkins38.png)
+* Now lets configure `node` to the `jenkins master` with label `JDK-17`
+  * On Jenkins UI Navigate to `Manage Jenkins` => `Nodes and Clouds`
+  ![Preview](./Images/jenkins39.png)
+  ![Preview](./Images/jenkins40.png)
+  ![Preview](./Images/jenkins41.png)
+  ![Preview](./Images/jenkins42.png)
+  ![Preview](./Images/jenkins43.png)
+  ![Preview](./Images/jenkins44.png)
+  ![Preview](./Images/jenkins45.png)
+  ![Preview](./Images/jenkins46.png)
+  ![Preview](./Images/jenkins47.png)
+  ![Preview](./Images/jenkins48.png)
+
+### Lets setup spring petclinic to execute node-1
+* Configure spc-day build same as last session/above free style project setting procedure with one restriction in General section, that where should this project should run with `node-1`
+![Preview](./Images/jenkins49.png)
+![Preview](./Images/jenkins50.png)
+![Preview](./Images/jenkins51.png)
+![Preview](./Images/jenkins52.png)
+![Preview](./Images/jenkins53.png)
+![Preview](./Images/jenkins54.png)
+* Now build and verify the console output
+![Preview](./Images/jenkins55.png)
+![Preview](./Images/jenkins56.png)
+
+### Jenkins Node-2 Configuration
+* **Required Software:**  
+  * on the jenkins node-2 we required ` Java JDK-17` to jenkins master connect the node-2 and execute our application
+  * To run project game of life on node-2 we would require `java jdk-8` and `maven`
+* Lets create new VM called as `node-2`
+* On the node2 lets create a new user called as `devops` and give sudo no password access
+
+```
+# addding user and setting password
+sudo adduser devops
+# adding user to sudoers and setting with no passwd
+sudo visudo
+devops ALL=(ALL:ALL) NOPASSWD:ALL
+CTRL O 
+CTRL X
+```
+* enable password based authentication
+
+```bash
+sudo vi /etc/ssh/sshd_config
+# Change password Authentication to yes
+sudo systemctl restart sshd
+exit
+# Login as devops user
+ssh -i .\id_rsa_AjaykumarRamesh devops@34.125.216.77
+sudo apt update
+```
+* Install jdk 8 and jdk 17
+
+```
+sudo apt update 
+sudo apt install openjdk-17-jdk openjdk-8-jdk -y 
+sudo apt install maven -y 
+```
+* Now execute `java -version`
+![Preview](./Images/jenkins57.png)
+* Lets configure JDK 17 and JDK 8 paths in tools section of jenkins UI
+![Preview](./Images/jenkins58.png)
+* Now needs to configure node-2 to jenkins master
+  * Note: Here we connect node-2 with usernname and password not with ssh
+  * see the below screen shot
+![Preview](./Images/jenkins59.png)
+![Preview](./Images/jenkins60.png)
+![Preview](./Images/jenkins61.png)
+![Preview](./Images/jenkins62.png)
+![Preview](./Images/jenkins63.png)
+* Now lets try building game of life project
+![Preview](./Images/jenkins64.png)
+![Preview](./Images/jenkins65.png)
+![Preview](./Images/jenkins66.png)
+![Preview](./Images/jenkins67.png)
+![Preview](./Images/jenkins69.png)
+* Now lets add processing the test results `**/surefire-reports/TEST-*.xml`
+![Preview](./Images/jenkins70.png)
+![Preview](./Images/jenkins71.png)
+* As a result of this project build i will get `gameoflife.war` which is called as `artifact`.
+  *  lets configure jenkins to archive the artifacts
+      which is `gameoflife.war`
+  ![Preview](./Images/jenkins72.png)
+  ![Preview](./Images/jenkins73.png)
+  * as per above screen shot should click the gameoflife.war file download since it is achieved   
+
+* Note: The health of the builds is represented as weather in jenkins
+  * cloudy means builds are failing
+  * sunny means the builds are successful
+  ![Preview](./Images/jenkins74.png)
+
+### Jenkins Node-3 Configuration
+* **Required Software:** 
+  * on the jenkins node-2 we required ` Java JDK-17` to jenkins master connect the node-2 and execute our application
+  * install `dotnet 7 sdk` for running nop comerce
+     * To install dotnet 7 sdk [Refer Here](https://learn.microsoft.com/en-us/dotnet/core/install/
+     linux-ubuntu-2204)
+    ```
+    sudo apt-get update && \
+    sudo apt-get install -y dotnet-sdk-7.0
+    dotnet --version
+    dotnet --help
+    sudo apt install openjdk-17-jdk -y
+    ```
+  * Lets create new VM called as `node-3`
+* Lets configure node-3 agent in jenins master UI
+![Preview](./Images/jenkins75.png)
+![Preview](./Images/jenkins76.png)
+![Preview](./Images/jenkins77.png)
+![Preview](./Images/jenkins78.png)
+
+* to build the dotnet project we need to restore nuget packages
+* Manual steps below are to build the dotnet projects
+```
+dotnet restore src/NopCommerce.sln
+# For night builds
+dotnet build  -c "Release" src/NopCommerce.sln
+# For day builds
+dotnet build  -c "Debug" src/NopCommerce.sln
+```
+* Now lets try building NopCommerce project
+![Preview](./Images/jenkins79.png)
+![Preview](./Images/jenkins80.png)
+![Preview](./Images/jenkins81.png)
+![Preview](./Images/jenkins82.png)
+![Preview](./Images/jenkins83.png)
+![Preview](./Images/jenkins84.png)
+
+Upstream and Downstream projects
+--------------------------------
+* If the project A triggers the Project B then
+   * Project B is downstream of Project A
+   * Project A is upstream of Project B
+    ![Preview](./Images/jenkins85.png)
+* Lets create New View `Experimental` and also create `Project A,B and C` 
+![Preview](./Images/jenkins86.png)
+![Preview](./Images/jenkins87.png)
+![Preview](./Images/jenkins88.png)
+![Preview](./Images/jenkins89.png)
+![Preview](./Images/jenkins90.png)
+![Preview](./Images/jenkins91.png)
+![Preview](./Images/jenkins92.png)
+![Preview](./Images/jenkins93.png)
+![Preview](./Images/jenkins94.png)
+![Preview](./Images/jenkins95.png)
+![Preview](./Images/jenkins96.png)
+![Preview](./Images/jenkins97.png)
+![Preview](./Images/jenkins98.png)
+![Preview](./Images/jenkins99.png)
+![Preview](./Images/jenkins100.png)
+* Now Lets Configure Upstream and Downstream of projects A and B
+![Preview](./Images/jenkins101.png)
+![Preview](./Images/jenkins102.png)
+![Preview](./Images/jenkins103.png)
+* Now Lets Configure Upstream and Downstream of projects C and B
+![Preview](./Images/jenkins104.png)
+![Preview](./Images/jenkins105.png)
+![Preview](./Images/jenkins106.png)
+![Preview](./Images/jenkins107.png)
+* Now Lets Run Project A, so it has dependencies for calling Project B and Project B will Call Project C
+* so if i run Project A and other projects will run because it is dependencies 
+* observe the below screen shot for proof
+![Preview](./Images/jenkins108.png)
+![Preview](./Images/jenkins109.png)
+![Preview](./Images/jenkins110.png)
+
+
+
+
+
+
+
+
+
+
+      
+
 
 
    

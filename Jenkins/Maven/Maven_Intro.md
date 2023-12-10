@@ -45,7 +45,8 @@ Same folder extract then below follow:
 ---------------------------------------
 tar -xvzf apache-maven-3.9.3-bin.tar.gz
 cd /apache-maven-3.9.3/bin
-./mvn --version    
+./mvn --version   
+ 
 Different folder extract follow below:
 --------------------------------------    
 tar -xvzf apache-maven-3.9.3-bin.tar.gz -C /usr/share/maven
