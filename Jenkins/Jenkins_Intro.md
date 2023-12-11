@@ -502,6 +502,90 @@ Upstream and Downstream projects
 ![Preview](./Images/jenkins109.png)
 ![Preview](./Images/jenkins110.png)
 
+Parametrized Builds
+-------------------
+* While building the jobs, sometimes we would like users to pass some information. of selecting some choices.This is called as parameters.
+* Lets enable parameters for some jenkins project/job
+![Preview](./Images/jenkins111.png)
+![Preview](./Images/jenkins112.png)
+![Preview](./Images/jenkins113.png)
+![Preview](./Images/jenkins114.png)
+![Preview](./Images/jenkins115.png)
+* observe below screen shot after we set parameters the `build` option is change to `Build with Parameters`
+![Preview](./Images/jenkins116.png)
+* When click on `Build with Parameters` below options we will get it so needs to choose one out of it
+![Preview](./Images/jenkins117.png)
+![Preview](./Images/jenkins118.png)  
+* Build got success as per choice which we choose it
+![Preview](./Images/jenkins119.png)  
+
+Jenkins Environmental variables
+--------------------------------
+* Jenkins injects environmental variables into every job in addition to environmental variables present on node
+* Lets create environment demo
+* These are the server node-2 environmental variables
+![Preview](./Images/jenkins120.png)
+* Now executing environmental variable through jenkins on node-2
+![Preview](./Images/jenkins121.png)
+![Preview](./Images/jenkins122.png)
+![Preview](./Images/jenkins123.png)
+![Preview](./Images/jenkins124.png)
+* Now build the printenv project
+![Preview](./Images/jenkins125.png)
+* observe here when used same command which is used on node-2 in jenkins UI to execute `printenv` we can see some more other environmental variables which was not there in the node-2, so this means jenkins has some kind of environmental variables
+![Preview](./Images/jenkins126.png)
+* To view environmental variables Naviage to build steps => execute shell => click on ` the list of available environment variables`
+![Preview](./Images/jenkins127.png)
+![Preview](./Images/jenkins128.png)
+* [Refer Here](https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#using-environment-variables) for docs on environmental variables in jenkins
+* **Building the project Sample using environmetal variables:**
+![Preview](./Images/jenkins129.png)
+![Preview](./Images/jenkins130.png)
+* Result
+![Preview](./Images/jenkins131.png)
+
+How to take backup of jenkins
+-----------------------------
+* 1st Option is take backup of in jenkins master `var/lib/jenkins` folder location 
+* 2nd option is for backup of configuration files
+  * Go To Manage Jenkins => Plugins => Click on => Available Plugin 
+  * In List we can select anything, but i have select out of one
+  ![Preview](./Images/jenkins132.png)
+  ![Preview](./Images/jenkins133.png)
+  ![Preview](./Images/jenkins134.png)
+  ![Preview](./Images/jenkins135.png)
+  ![Preview](./Images/jenkins136.png)
+  ![Preview](./Images/jenkins137.png)
+  ![Preview](./Images/jenkins138.png)
+  ![Preview](./Images/jenkins139.png)
+  ![Preview](./Images/jenkins140.png)
+  ![Preview](./Images/jenkins141.png)
+  ![Preview](./Images/jenkins142.png)
+  * In the jenkins server check on the location backup has created observe below screen shot
+  ![Preview](./Images/jenkins143.png)
+
+Which plugin should be installed to monitor jenkins
+---------------------------------------------------
+* [Refer Here](https://plugins.jenkins.io/monitoring/) for monitoring jenkins docs
+* Under => `Manage Jenkins` => `Plugins` install `monitoring plugin`
+![Preview](./Images/jenkins144.png)
+![Preview](./Images/jenkins145.png)
+* Click on below screen shot marked for monitoring observation
+![Preview](./Images/jenkins146.png)
+![Preview](./Images/jenkins147.png)
+![Preview](./Images/jenkins148.png)
+
+### Jenkins Plugins can be installed from:
+   * Market place
+     * searching plugins in available plugin
+   * Uploading the plugin
+      * Under => `Manage Jenkins` `Plugins` => `Advanced Settings` 
+      * we can browse and upload the plugin
+      ![Preview](./Images/jenkins149.png)
+### Jenkins plugin has two extensions while uploading
+   * jpi (Jenkins plugin interface)
+   * hpi (hudson plugin interface)
+
 
 
 
