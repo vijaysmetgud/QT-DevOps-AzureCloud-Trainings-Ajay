@@ -586,6 +586,196 @@ Which plugin should be installed to monitor jenkins
    * jpi (Jenkins plugin interface)
    * hpi (hudson plugin interface)
 
+Pipeline as Code
+----------------
+* This is expressing CI/CD pipeline in terms of some code/expressions/statements
+* This is part of version control i.e. each change done to the steps will have history
+* [Refer Here](https://www.jenkins.io/doc/book/pipeline/pipeline-as-code/) for official docs Pipeline as Code 
+* Example of Jenkins pipeline
+```
+node("JDK-11-MVN") {
+  stage("get-code") {
+    sh " git clone https://github.com/spring-projects/spring-petclinic.git && cd spring-petclinic"
+  }
+  stage("build") {
+    sh "mvn package"
+    junit '**/surefire-reports/TEST-*.xml'
+  }
+}
+```
+* The only manual work would be to go to jenkins UI and create a pipeline project and configure where your pipeline is or jenkinsfile location.
+
+### Pipeline as Code in Jenkins
+  
+  * **_Jenkins has two flavours_:**
+     * **Scripted Pipeline**
+       * Heavily dependent on programming language called groovy 
+       * groovy is a java based language
+       * in scripted pipeline we can call groovy code, we can write what ever we want in groovy.
+       * if our project/application has lots logic to write then we can go with scripted pipeline
+       * This was developed where you can execute groovy language directly
+
+     * **Declarative Pipeline**  
+        * if our project/application is straight forward then we go with declarative pipeline
+        * Jenkins has created a DSL (Domain specific Language) which is mostly inspired from traditional jenkins
+
+#### Create a Scripted Pipeline
+* Create a game of life project
+![Preview](./Images/jenkins150.png)
+![Preview](./Images/jenkins151.png) 
+* Pipeline can be written directly in jenkins UI or can be chosen from source code management(Git)
+![Preview](./Images/jenkins152.png)
+### pipeline syntax: 
+* To take help to create pipeline syntax in jenkins UI 
+  * Open pipeline syntax in jenkins UI
+  ![Preview](./Images/jenkins153.png)
+  ![Preview](./Images/jenkins154.png)
+  ![Preview](./Images/jenkins155.png)
+  ![Preview](./Images/jenkins156.png)
+  ![Preview](./Images/jenkins157.png)
+  ![Preview](./Images/jenkins158.png)
+  ![Preview](./Images/jenkins159.png)
+* Created the scripted pipeline following structure with help of `pipeline syntax`
+![Preview](./Images/jenkins160.png)
+* Build now manually 
+![Preview](./Images/jenkins161.png)
+* Build got success
+![Preview](./Images/jenkins162.png)
+![Preview](./Images/jenkins163.png)  
+* Sample scripted pipeline
+
+```
+node('JDK_8') {
+    
+   
+   stage('git checkout') {
+       git branch: 'master ', url: 'https://github.com/dummyreposito/game-of-life-july23.git'
+   }
+   
+   stage('defining java tool'){
+       jdk = tool name: 'JAVA_8', type: 'jdk'
+       env.JAVA_HOME = "${jdk}"  
+       sh "${jdk}/bin/java -version"
+   }
+  
+   stage('build'){
+   sh 'mvn package'
+   }
+   
+   stage('Archive the artifacts'){
+       archiveArtifacts artifacts: 'gameoflife-web/target/gameoflife.war', followSymlinks: false
+   }
+   stage(' Publish JUnit test result report'){
+       junit '**/surefire-reports/TEST-*.xml'
+   }
+} 
+```
+
+### Scripted Pipelines
+ * Generally we create a file called as `Jenkinsfile`
+ * Basic structure: [Refer Here](https://www.jenkins.io/doc/book/pipeline/syntax/#scripted-pipeline) for Scripted Pipeline information
+![Preview](./Images/jenkins170.png)
+* [Refer Here](https://www.jenkins.io/doc/pipeline/steps/#pipeline-steps-reference) for all Pipeline Steps Reference  
+* In scripted and declartive pipelines when we install plugins we get extra steps.
+
+Create a Declarative Pipeline
+-----------------------------
+* This has different structure in pipeline not for creating the project
+![Preview](./Images/jenkins164.png)
+![Preview](./Images/jenkins165.png)
+![Preview](./Images/jenkins166.png)
+* **Declarative Pipeline structure:**
+
+```
+pipeline{
+    agent { label 'JDK-17'}
+    stages{
+        stage('git'){
+            steps{
+             git branch: 'main', url: 'https://github.com/dummyreposito/spring-petclinic.git'   
+            }//steps
+        }//stage
+        stage('build'){
+            steps{
+                sh 'mvn package'
+            }//steps
+        }//stage
+    }//stages
+}//pipeline
+```
+* Build now
+![Preview](./Images/jenkins167.png)
+![Preview](./Images/jenkins168.png)
+![Preview](./Images/jenkins169.png)
+
+### Declarative Pipelines
+* Here also we create a file called as `Jenkinsfile`
+* Basic structure: [Refer Here](https://www.jenkins.io/doc/book/pipeline/syntax/#declarative-pipeline) for Declarative Pipeline information
+![Preview](./Images/jenkins171.png)
+### Lets create a declarative pipeline by exploring most options in Declarative pipeline
+* [Refer Here](https://github.com/dummyreposito/spring-petclinic) for the spring petclinic repo
+
+* **Steps:**
+
+```bash
+ git clone git@github.com:dummyreposito/spring-petclinic.git
+cd spring-petclinic/
+git branch
+git checkout -b develop
+git push -u origin develop
+git branch
+code . 
+```
+* So now we have cloned the repo and create a develop branch and also in spring petclicnic code create `Jenkinsfile`
+* We have developed the basic skeleton of declarative pipeline
+
+```
+
+pipeline{
+    agent {label 'JDK-17'}
+    options{
+        timeout(time:30, unit: 'MINUTES')
+    }
+    triggers{
+        poolSCM('* * * * *')
+    }
+    tools{
+        jdk 'JDK-17'
+    }
+    stages{
+        stage('git checkout'){
+            steps{
+            
+            }
+        }
+        stage('build and deploy'){
+            steps{
+               
+            }
+        }
+        stage('reporting'){
+            steps{
+
+            }
+        }
+    }
+}
+
+```
+#### pipeline steps reference:
+* Now using pipeline steps reference we will write all the steps in pipeline and build the project
+* observe some screen shots for pipeline steps reference
+![Preview](./Images/jenkins175.png)
+![Preview](./Images/jenkins172.png)
+![Preview](./Images/jenkins173.png)
+![Preview](./Images/jenkins174.png)
+
+* [Refer Here](https://github.com/dummyreposito/spring-petclinic/commit/8dbd2df0a75baf4683150f6935cc57750c38c98d) for declarative pipeline jenkinsfile with steps for building project 
+* Create a project and build now
+![Preview](./Images/jenkins176.png)
+![Preview](./Images/jenkins177.png)
+![Preview](./Images/jenkins178.png)
+
 
 
 
