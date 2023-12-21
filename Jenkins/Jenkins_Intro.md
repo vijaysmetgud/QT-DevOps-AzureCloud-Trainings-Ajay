@@ -718,7 +718,7 @@ pipeline{
 * **Steps:**
 
 ```bash
- git clone git@github.com:dummyreposito/spring-petclinic.git
+git clone https://github.com/dummyreposito/spring-petclinic.git
 cd spring-petclinic/
 git branch
 git checkout -b develop
@@ -726,6 +726,8 @@ git push -u origin develop
 git branch
 code . 
 ```
+* in the above code if we are unable to create develop branch and push to remote repo then [Refer Here](https://www.a2hosting.com/kb/developer-corner/version-control-systems1/403-forbidden-error-message-when-you-try-to-push-to-a-github-repository/
+) for trouble shot
 * So now we have cloned the repo and create a develop branch and also in spring petclicnic code create `Jenkinsfile`
 * We have developed the basic skeleton of declarative pipeline
 
@@ -770,11 +772,451 @@ pipeline{
 ![Preview](./Images/jenkins173.png)
 ![Preview](./Images/jenkins174.png)
 
-* [Refer Here](https://github.com/dummyreposito/spring-petclinic/commit/8dbd2df0a75baf4683150f6935cc57750c38c98d) for declarative pipeline jenkinsfile with steps for building project 
+* [Refer Here](https://github.com/dummyreposito/spring-petclinic/commit/1d86dc01f5c3888aaef674125ffb9afed521c03a) for declarative pipeline jenkinsfile with steps for building project 
 * Create a project and build now
 ![Preview](./Images/jenkins176.png)
 ![Preview](./Images/jenkins177.png)
 ![Preview](./Images/jenkins178.png)
+![Preview](./Images/jenkins179.png)
+* Build result
+![Preview](./Images/jenkins180.png)
+![Preview](./Images/jenkins181.png)
+![Preview](./Images/jenkins182.png)
+
+### Note:
+#### Creating mailtrap and sending post notification to E-mails
+* needs to create account
+* [Refer Here](https://mailtrap.io/inboxes/2526172/messages) for mailtrap account
+* Mailtrap using to send fake emails notifications
+![Preview](./Images/jenkins183.png)
+![Preview](./Images/jenkins184.png)
+![Preview](./Images/jenkins190.png)
+![Preview](./Images/jenkins191.png)
+![Preview](./Images/jenkins192.png)
+![Preview](./Images/jenkins193.png)
+
+#### Lets create declarative pipeline for game of life project
+* [Refer Here](https://github.com/dummyreposito/game-of-life-july23.git) for game of life repo
+* **Steps:**
+```bash
+git clone https://github.com/dummyreposito/game-of-life-july23.git
+cd game-of-life-july23/
+code .
+# create Jenkinsfile and add pipeline steps to execute the game of life project
+```
+* [Refer Here](https://github.com/dummyreposito/game-of-life-july23/commit/b3551222a20eee05408f64963936c85e2a2aab85) for declarative pipeline for game of life
+* Now Lets create and build the project game of life
+![Preview](./Images/jenkins185.png)
+![Preview](./Images/jenkins186.png)
+![Preview](./Images/jenkins187.png)
+![Preview](./Images/jenkins188.png)
+* Build result
+![Preview](./Images/jenkins189.png)
+
+
+Email Notifications in Jenkins:
+---------------------------------
+* email notifications configurations in jenkins 
+* **Steps:**
+![Preview](./Images/jenkins194.png)
+![Preview](./Images/jenkins195.png)
+![Preview](./Images/jenkins196.png)
+![Preview](./Images/jenkins197.png) 
+* Lets send an email notifications when the
+    * project failed :  `your build is success`
+    * project success : `your build is failed`
+* [Refer Here](https://github.com/dummyreposito/game-of-life-july23/commit/7584f3442148e5d75e564869e52291f73fdfca48) for declarative pipeline steps for sending email notifications
+![Preview](./Images/jenkins198.png)
+* In Mailtrap received email notification
+![Preview](./Images/jenkins199.png)
+* To Send Email Notification with Environmental variable
+  * [Refer Here](https://github.com/dummyreposito/game-of-life-july23/commit/85bd5d462c7419c898c297dc9142109fa5eb41b6) for email notifications steps with Environmental variable
+  * successfully received Email in mailtrap
+  ![Preview](./Images/jenkins200.png)
+  ![Preview](./Images/jenkins201.png)
+
+#### To send microsoft teams/slack notification  
+  * we can check in the google and configure 
+
+Parameters from Jenkinsfile
+---------------------------
+* [Refer Here](https://github.com/dummyreposito/game-of-life-july23/commit/81a6b89d8edaea019f61668faf3a13bdca4fecc8) for declarative pipeline steps build with parameters 
+* Now Build with Parameters
+![Preview](./Images/jenkins202.png)
+![Preview](./Images/jenkins203.png)
+![Preview](./Images/jenkins204.png)
+![Preview](./Images/jenkins205.png)
+![Preview](./Images/jenkins206.png)
+
+User Administration in Jenkins
+-------------------------------
+* In User administration in jenkins there are two types
+### Authentication:
+* **Jenkins own user database**
+    * get user information or details from jenkins database 
+       * means all the user information will be stored in var/lib/jenkins location
+* **LDAP**
+    * LDAP is a active directory which stores all the user information, if we choose LDAP as Authentication all the user details we can get from active directory
+       * active directory is a implementation for LDAP
+       * for this LDAP details or information watch sreeharsha video 
+* **Unix User/Group database**
+   * we can configure users from unix/user groups database means we can get the details for jenkins user administration purpose 
+* **Delegate to servlet container** 
+    * forward the user to some java program so the program will handle the user information for jenkins 
+### Authorization:
+* **Matrix-based-security**
+#### Steps:
+* Create Users
+![Preview](./Images/jenkins207.png)
+![Preview](./Images/jenkins208.png)
+![Preview](./Images/jenkins209.png)
+![Preview](./Images/jenkins210.png)
+* Now give Authorization to user `dummy` using Matrix-based-security
+![Preview](./Images/jenkins211.png)
+![Preview](./Images/jenkins212.png)
+* Now Add the User
+![Preview](./Images/jenkins213.png)
+![Preview](./Images/jenkins214.png)
+![Preview](./Images/jenkins215.png)
+* Now Login as user `dummy` and check the access to jenkins UI
+![Preview](./Images/jenkins216.png)
+* Now observe the below screen shot there is any extra permission apart from `read` for an example there is no `manage jenkins`,`build` etc
+![Preview](./Images/jenkins217.png)
+
+* **Role-based-strategy**
+   * for role based strategy we needs to install the plugins called `Rose-based-strategy`
+   ![Preview](./Images/jenkins218.png)
+#### Steps:
+* Now We have created three users 
+![Preivew](./Images/jenkins221.png)
+* Under `manage jenkins` => `security`=> select `Role-based-strategy` in Authorization
+![Preview](./Images/jenkins219.png)
+* Under `manage jenkins` Navigate to `Manage and Assing Roles`
+![Preivew](./Images/jenkins220.png)
+* Now Add the Role/Group and give the permissions
+![Preivew](./Images/jenkins222.png)
+* Now Assign Roles to the users which we have created earlier above
+![Preview](./Images/jenkins223.png)
+![Preview](./Images/jenkins224.png)
+![Preview](./Images/jenkins225.png)
+* Now Login in the private window and check the access for user `suresh`
+![Preview](./Images/jenkins226.png)
+![Preview](./Images/jenkins227.png)
+* User suresh has assign the role to `developer` so he can `build` and `view` and cannot `delete the project` also cannot see `manage jenkins` and `some more options`
+* Now Login in the private window and check the access for user `harish`
+![Preview](./Images/jenkins228.png)
+* User `Harish` is assing to `devops engineer` with `admin access` so he as the all the rights including `manage jenkins` and `deleting the project` 
+![Preview](./Images/jenkins229.png)
+![Preview](./Images/jenkins230.png)
+* Now Login in the private window and check the access for user `chitra`
+![Preview](./Images/jenkins231.png)
+* User `chitra` is assign to role called `testing` with only `read access` so she will not have any access even she dont have `build`, `delete` and `manage jenkins` only she has   `view` access
+![Preview](./Images/jenkins232.png)
+![Preview](./Images/jenkins233.png)
+
+* **Project based strategy**
+#### Steps:
+* Created two users
+![Preview](./Images/jenkins234.png)
+* Create New Java Project
+![Preview](./Images/jenkins235.png)
+![Preview](./Images/jenkins236.png)
+![Preview](./Images/jenkins237.png)
+![Preview](./Images/jenkins238.png)
+* create python project
+![Preview](./Images/jenkins239.png)
+![Preview](./Images/jenkins240.png)
+* Navigate => `Manage Jenkins`=>`Manage and Assign Roles`=> `Manage Roles`
+* create Roles and pattern for project to access
+![Preview](./Images/jenkins241.png)
+![Preview](./Images/jenkins242.png)
+![Preview](./Images/jenkins243.png)
+* Now add users to permision of Roles
+![Preview](./Images/jenkins248.png)
+![Preview](./Images/jenkins249.png)
+![Preview](./Images/jenkins250.png)
+![Preview](./Images/jenkins251.png)
+* Now Assign Roles for users which is created for projects
+* Navigate => `Manage Jenkins`=> `Manage and Assign Roles`=>`Assign Roles`
+![Preview](./Images/jenkins244.png)
+![Preview](./Images/jenkins245.png)
+![Preview](./Images/jenkins246.png)
+![Preview](./Images/jenkins247.png)
+* Now Login as user `anand` and check the access and project visibility, we have assigned for `anand` `Java-Roles-Project`
+  * we have given user `anand` only read permission
+![Preview](./Images/jenkins252.png)  
+![Preview](./Images/jenkins253.png)
+![Preview](./Images/jenkins254.png)
+* Now Login as user `vijay` and check the access and project visibility, we have assigned for `vijay` `python-Roles-Project`
+ * we have given user `vijay` more  permission compare to anand
+![Preview](./Images/jenkins255.png)
+![Preview](./Images/jenkins256.png) 
+
+Maven – Remote Repo
+--------------------
+* Maven has 3 repositories
+   * local repo (~/.m2)
+   * Remote Repo: This exists in organization controlled environment
+   * Central repo: This is public maven repository.  means like in screen shot shown from internet
+   ![Preview](./Images/jenkins257.png)
+* Workflows:
+  * After every night build push the artifacts and pom.xml file to remote repo   
+  * when resolving dependencies use remote repository.   
+    * what above line specify means downloading dependencies from remote repo to local repo 
+
+Artifact Repository
+-------------------
+* There are two popular options for java
+   * jfrog/artifactory
+   * Nexus
+* Azure DevOps has Azure Artifacts
+* In this series we will be using jfrog/artifactory for its multi language repository support.
+### To Create Jfrog Free Account
+* [Refer Here](https://jfrog.com/start-free/) only for 14 day free trail account later it will expire and we needs to create new account 
+#### Steps:
+* select google account to create jfrog account
+![Preview](./Images/jenkins258.png)
+* select the gmail account for jfrog account creation
+![Preview](./Images/jenkins259.png)
+![Preview](./Images/jenkins260.png)
+![Preview](./Images/jenkins261.png)
+![Preview](./Images/jenkins262.png)
+![Preview](./Images/jenkins263.png)
+![Preview](./Images/jenkins264.png)
+* Create a repository
+![Preview](./Images/jenkins265.png)
+* select the repository which project we are working on, now ill select maven since i am working on java project 
+![Preview](./Images/jenkins266.png)
+![Preview](./Images/jenkins267.png)
+![Preview](./Images/jenkins268.png)
+
+
+
+Artifactory Jenkins integration with Jfrog
+-------------------------------------------
+#### For configuring jenkins with artifactory [Refer Here](https://directdevops.blog/2019/10/17/artifactory-configuration/)
+
+* Login into jfrog
+* create new group called `devops` and add the user into `devops` group 
+![Preview](./Images/jenkins269.png)
+![Preview](./Images/jenkins270.png)
+* groups `devops` successfully created
+![Preview](./Images/jenkins271.png)
+* Generate the Access Token
+![Preview](./Images/jenkins272.png)
+![Preview](./Images/jenkins273.png)
+![Preview](./Images/jenkins274.png)
+* copy the token and paste into notpad
+![Preview](./Images/jenkins275.png)
+* Now Login into Jenkins
+   * Install artifactory plugin in jenkins
+   * Navigate to `Manage Jenkins` > `Plugins`
+   ![Preview](./Images/jenkins276.png)
+   ![Preview](./Images/jenkins277.png)
+   * Now Navigate to `Manage Jenkins`=> `Credentials` 
+   ![Preview](./Images/jenkins278.png)
+   * create a credential with secret text, 
+     * that is while creating group in user management we have created access token rite, that one we needs to paste into secret text column 
+    ![Preview](./Images/jenkins279.png)
+    ![Preview](./Images/jenkins280.png)
+    ![Preview](./Images/jenkins281.png)
+
+* Now Navigate to `Manage Jenkins` => `System` => `Jfrog`
+![Preview](./Images/jenkins282.png)
+![Preview](./Images/jenkins283.png)
+
+### Now Lets Build FreeStyle spring-petclinic project and deploy artifact to artifactory repository (jfrog)
+* These below links are just for reference
+* [Refer Here](https://jfrog.com/help/r/jfrog-integrations-documentation/jenkins-artifactory-plug-in) for official docs of jfrog artifactory pipeline
+* [Refer Here](https://github.com/jfrog/project-examples/tree/master/jenkins-examples/pipeline-examples/declarative-examples) for samples of jfrog jenkins pipelines
+* [Refer Here](https://github.com/jfrog/project-examples/blob/master/jenkins-examples/pipeline-examples/declarative-examples/maven-example/Jenkinsfile) for specific jenkins pipeline using maven build the project and pushing to jfrog 
+#### Steps FreeStyle spring-petclinic project:
+* [Refer Here](https://github.com/dummyreposito/spring-petclinic) for spring-petclinic repo
+![Preview](./Images/jenkins284.png)
+![Preview](./Images/jenkins285.png)
+![Preview](./Images/jenkins286.png)
+![Preview](./Images/jenkins287.png)
+![Preview](./Images/jenkins288.png)
+![Preview](./Images/jenkins289.png)
+* Build is result success
+![Preview](./Images/jenkins290.png)
+
+### Lets Build pipeline spring-petclinic project
+* after build the artifact deploy to jfrog artifact repository 
+* same project above we have builded as freestyle way but now we are doing in pipeline way
+
+
+#### Steps:
+![Preview](./Images/jenkins291.png)
+![Preview](./Images/jenkins292.png)
+![Preview](./Images/jenkins293.png)
+* Build result got success and select build info to see artifact in jfrog
+![Preview](./Images/jenkins294.png)
+* check jenkins has deployed artifact of spring petclinic project into jfrog artifactory repository 
+![Preview](./Images/jenkins295.png)
+* The pipeline example of jenkinsfile
+
+```Jenkinsfile
+
+pipeline{
+    agent any
+    options{
+        timeout(time:30, unit: 'MINUTES')
+    }
+    triggers{
+        pollSCM('* * * * *')
+    }
+    tools{
+        jdk 'JDK_17'
+    }
+    stages{
+        stage('git checkout'){
+            steps{
+            git branch: 'develop', url: 'https://github.com/dummyreposito/spring-petclinic.git'
+            }
+        }
+        stage ('Artifactory configuration') {
+            steps {
+                 rtMavenDeployer (
+                    id: "spc_DEPLOYER",
+                    serverId: "jrog",
+                    releaseRepo: 'spc-app-libs-release-local',
+                    snapshotRepo: 'spc-app-libs-snapshot-local'
+                )
+
+        }
+        }
+          stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: 'Maven 3.9.6',  // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "spc_DEPLOYER"
+                   // buildName: "${JOB_NAME}",
+                    // buildNumber: "${BUILD_ID}"
+                )
+            }
+        }
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "jrog"
+                )
+            }
+        }
+        stage('Junit Results'){
+            steps{
+            junit testResults: '**/target/surefire-reports/TEST-*.xml' 
+            }
+        }
+    }
+    }
+
+```
+
+Static code Analysis
+--------------------
+#### Sonar Qube: means we will install sonar qube on our local system like ubuntu/linx and start using it
+* for in this scenario we will use For static code analysis lets use sonar cloud.
+* [Refer Here](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/jenkins-extension-for-sonarcloud/#:~:text=Configure%20SonarCloud%3A,created%20as%20a%20) for sonar cloud configuration docs
+* [Refer Here](https://www.sonarsource.com/products/sonarcloud/signup/) to create sonar cloud free account
+* [Refer Here](https://directdevops.blog/2019/01/05/sonarqube/) for configuring and installing sonar qube
+
+#### Now lets create a sonarqube static code analysis project and build it:
+* Jenkins integration with sonar cloud
+#### Steps:
+* **Create Sonar cloud account:**
+![Preview](./Images/jenkins296.png)
+![Preview](./Images/jenkins297.png)
+![Preview](./Images/jenkins298.png)
+![Preview](./Images/jenkins299.png)
+![Preview](./Images/jenkins300.png)
+![Preview](./Images/jenkins301.png)
+![Preview](./Images/jenkins302.png)
+![Preview](./Images/jenkins303.png)
+![Preview](./Images/jenkins304.png)
+* we are done with creating sonar cloud account as well as project in sonar cloud
+* Generate the token in the sonar cloud to configure in the jenkins credentials
+![Preview](./Images/jenkins305.png)
+![Preview](./Images/jenkins306.png)
+![Preview](./Images/jenkins307.png)
+* Make sure you the token copy it now, you won't be able to see it again!
+* **Login into jenkins and configure sonar cloud token for credentials:**
+* Navigate => `Manage Jenkins`=> `Credentials`
+![Preview](./Images/jenkins308.png)
+![Preview](./Images/jenkins309.png)
+![Preview](./Images/jenkins310.png)
+* Login into jenkins and go to `Manage Jenkins`=> `Plugins` install `SonarQube Scanner`
+![Preview](./Images/jenkins311.png)
+![Preview](./Images/jenkins312.png)
+* **Log into Jenkins and configure SonarQube Scanner:**
+* Navigate to `Manage Jenkins` => `Configure System`
+![Preview](./Images/jenkins313.png)
+
+* Lets create pipeline for spring petclininc project and build with static code analysis
+![Preview](./Images/jenkins314.png)
+![Preview](./Images/jenkins315.png)
+![Preview](./Images/jenkins316.png)
+* Now Build is success and observe extra icon has deducted of sonar qube, if we click on that icon it will take us to sonar cloud seen our project with code quality 
+![Preview](./Images/jenkins317.png)
+![Preview](./Images/jenkins318.png)
+* check in sonar cloud dashboard about code quality 
+![Preview](./Images/jenkins319.png)
+![Preview](./Images/jenkins320.png)
+![Preview](./Images/jenkins321.png)
+
+* The pipeline code 
+```Jenkinsfile
+pipeline{
+    agent any
+    options{
+        timeout(time:30, unit: 'MINUTES')
+    }
+    triggers{
+        pollSCM('* * * * *')
+    }
+    tools{
+        jdk 'JDK_17'
+        maven 'Maven 3.9.6'
+    }
+    stages{
+        stage('git checkout'){
+            steps{
+            git branch: 'develop', url: 'https://github.com/dummyreposito/spring-petclinic.git'
+            }
+        }
+      
+       
+         stage('SonarQube analysis') {
+            steps {
+
+                // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
+                withSonarQubeEnv('SONAR_Cloud') {
+                // requires SonarQube Scanner for Maven 3.2+
+                    sh 'mvn clean package sonar:sonar -Dsonar.organization=jenkins-projects -Dsonar.token=ceed9f04368e4216d7ca900c2cb65a08e708e70f -Dsonar.projectKey=jenkins-projects'
+                }
+            }
+        }
+        stage('Junit Results'){
+            steps{
+            junit testResults: '**/target/surefire-reports/TEST-*.xml' 
+            }
+        }
+    }
+    }
+```
+
+### Note:
+* for different ecosystem means for different projects to do practice we can refer this link for azure devops projects 
+* [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/ecosystems?view=azure-devops)
+
+
+
+
+
+
+
 
 
 

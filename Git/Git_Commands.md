@@ -526,7 +526,16 @@ git push rel_1 origin
 
      To exit type “q” or “z”. Or type “h”
 
-     
+### Git Alias Commands
+
+```bash
+alias.pushsub=push origin HEAD:master
+alias.rspush=push --recurse-submodules=check
+alias.history=log --graph --decorate --pretty=oneline --abbrev-commit
+alias.pushmain=push origin HEAD:main
+alias.s=status
+alias.pr=pull
+```
 
 
 

@@ -426,4 +426,108 @@ git reset --hard 834f1d7
 git log --oneline
 ```
 
+Git Alias
+----------
+* [Refer Here](https://www.atlassian.com/git/tutorials/git-alias) For Git Alias
+* Git allows to create alias for existing commands
+* Alias are stored in config files
+* Samples Git Alias below
+```bash
+alias.pushsub=push origin HEAD:master
+alias.rspush=push --recurse-submodules=check
+alias.history=log --graph --decorate --pretty=oneline --abbrev-commit
+alias.pushmain=push origin HEAD:main
+alias.s=status
+alias.pr=pull
+```
+![Preview](./Images/git47.png)
+
+
+Branching Strategy
+------------------
+* Git Flow we follow as branching strategy
+### What is Git Flow??
+Git Flow is the successful branching suggested by [Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/) 
+![Preview](./Images/git48.png)
+This model can be acheived by using git commands any way, but to simplify git-flow toolset has been introduced which is extension to git installation
+
+#### Installing git-flow
+For installation [Refer Here](https://github.com/nvie/gitflow/wiki/Installation)
+
+#### Cheat Sheet of git-flow toolset
+[This](https://danielkummer.github.io/git-flow-cheatsheet/) cheatsheet seems to be very useful
+#### My take on this
+The git flow branching strategy is very effective branching strategy for the projects. If the project under development needs to support the older releases made then the git flow cab be extended with support branches For the support branches i have found useful resource over [Here](https://github.com/petervanderdoes/gitflow-avh/wiki/Reference:-git-flow-support)
+
+#### Also refer the following branching strategy:
+ * **Gitlab:**
+   * every environment as each branch as shown in the image below
+   
+   ![Preview](./Images/git49.png) 
+
+ * **GitHub:**
+    * github is also known or same as git flow branching strategy 
+
+GitHub Pull Request/Pull-request
+--------------------------------
+* Pull-Request is repository feature so it is present in all source code management 
+* To make contributions to the repositories where we dont have direct permissions
+* We fork the repository
+* We make changes
+* To get our changes published We create pull requests to the original repo
+* The author/owner of original repo reviews the changes and merges the pull request if he wants or reject the pull request
+* [Refer Here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) for official docs pull request 
+![Preview](./Images/git50.png)
+this above image scenario we want to do add some changes/features in the linux but we will not have access to linux os so what we will do is, we will fork the linux repo into our github and we will add the changes/features then we will do pull request to the owner of original linux repo in this case if he likes the changes/features add he will accept the pull request if not he will reject the pull request
+
+#### Example of pull request:
+* **Steps:**
+* create repository in different organization 
+  * Consider this original repository [Refer Here](https://github.com/GitPracticeRepositroy/pullrequest-demo-july23)
+ ![Preview](./Images/git51.png)
+
+* Now go to private window and login into github as different organization with same github account
+![Preview](./Images/git52.png)
+* Now Fork the original owner repo into ur repo
+![Preview](./Images/git53.png)
+![Preview](./Images/git54.png)
+![Preview](./Images/git55.png)
+* Now execute below commands
+```bash
+git clone https://github.com/AjayKumarRamesh/pullrequest-demo-july23.git
+cd pullrequest-demo-july23/
+vi main.py
+# add below itmes into main.py
+def main():
+    pass
+# :wq save the file    
+git status
+git add .
+git commit -m "added as this is requirements"
+git push origin main
+```
+* Now check the repo new file and message as arrived
+![Preview](./Images/git56.png)
+* Now we have to send changes that i had made into my repo to original owner by creating pull request
+![Preview](./Images/git57.png)
+![Preview](./Images/git58.png)
+* now creating pull to original owner 
+![Preview](./Images/git59.png)
+![Preview](./Images/git60.png)
+![Preview](./Images/git61.png)
+* Now original owner will refresh his repo then he will be able to see one pull request
+![Preview](./Images/git62.png)
+![Preview](./Images/git63.png)
+![Preview](./Images/git64.png)
+![Preview](./Images/git65.png)
+* selected rebase and merge
+![Preview](./Images/git66.png)
+* Add a comment
+![Preview](./Images/git67.png)
+* Confirm the rebase and merge
+![PReview](./Images/git68.png)
+* now pull request has been accepted and it has merged to original owner repo
+![PReview](./Images/git69.png)
+![PReview](./Images/git70.png)
+
 
