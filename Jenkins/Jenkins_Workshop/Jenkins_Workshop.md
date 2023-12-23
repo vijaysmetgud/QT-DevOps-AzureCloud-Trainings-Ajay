@@ -30,6 +30,8 @@ Workshop – Project - Assumption
 
 Actual Workshop Steps:
 ----------------------
+* CI/CD Pipeline Based on Jenkins
+
 ### Virtual Machine or Cloud Based Deployment
  * We will be building a CI/CD Pipeline of a .net platform based application
 
@@ -47,7 +49,7 @@ Actual Workshop Steps:
             * zip 
    2. Build steps: Manual
    ```bash
-   git clone https://github.com/CICDProjects/nopCommerceJuly23.git
+   git clone https://github.com/dummyreposito/nopCommerceJuly23.git
    dotnet restore src/NopCommerce.sln
    dotnet build -c Release src/NopCommerce.sln
    dotnet publish -c Release src/Presentation/Nop.Web/Nop.Web.csproj -o publish
@@ -55,7 +57,7 @@ Actual Workshop Steps:
    zip -r nopCommerce.zip publish
    ```            
 ### Jenkins file
-* To build the NopCommerce and zip the file
+* To build the NopCommerce and zip the file created jenkinsfile
 
 ```Jenkinsfile
 pipeline {
@@ -81,6 +83,20 @@ pipeline {
     }
 }
 ``` 
+
+```
+git add .
+git commit -m .
+git push origin develop
+```
+* Lets Build NOPCommerce for above steps:
+![Preview](./Images/jenkins1.png)
+![Preview](./Images/jenkins2.png)
+![Preview](./Images/jenkins3.png)
+![Preview](./Images/jenkins4.png)
+* Build Result Success
+
+
 
 ### Container Based Deployment:
 #### Steps:
