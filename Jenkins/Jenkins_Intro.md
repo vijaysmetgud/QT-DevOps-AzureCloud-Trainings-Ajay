@@ -289,7 +289,7 @@ Distributed Builds
       * requirements to build
           * dotnet 7
 * To handle different builds with different software needs, we tend to use different servers.
-* Jenkins has distributed builds where we can distribute the builds on differnt nodes by matching labels
+* Jenkins has distributed builds where we can distribute the builds on different nodes by matching labels
 ![Preview](./Images/jenkins37.png)
 * While creating a project we can set labels and expect them to be executed on the node matching labels
 

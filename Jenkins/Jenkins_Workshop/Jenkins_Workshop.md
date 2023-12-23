@@ -61,14 +61,15 @@ Actual Workshop Steps:
 
 ```Jenkinsfile
 pipeline {
-    agent any
+   agent any
+  
     stages {
         stage('vcs') {
             steps {
                 git branch: 'develop', 
-                    url: 'https://github.com/dummyreposito/nopCommerce-july23.git'    
-            } 
-
+                    url: ' https://github.com/dummyreposito/nopCommerceJuly23.git'    
+            }
+            
         }
         stage('package') {
             steps {
@@ -78,7 +79,7 @@ pipeline {
                 sh 'mkdir publish/bin publish/logs && zip -r nopCommerce.zip publish'
                 archive '**/nopCommerce.zip'
             }
-
+            
         }
     }
 }
@@ -95,8 +96,10 @@ git push origin develop
 ![Preview](./Images/jenkins3.png)
 ![Preview](./Images/jenkins4.png)
 * Build Result Success
-
-
+![Preview](./Images/jenkins5.png)
+* build is success and created archieve the nopcommerce.zip click to download it.
+![Preview](./Images/jenkins6.png)
+![Preview](./Images/jenkins7.png) 
 
 ### Container Based Deployment:
 #### Steps:
@@ -111,17 +114,113 @@ git push origin develop
             * git
             * zip 
             * Docker
+            * Terraform
+            * azure cli
+            * kubectl 
+* Needs to authenticate azure-cli with az login and docker with docker login
+
+```
+# For Azure
+az login
+# Docker 
+docker login
+```
 
    2. build steps: Manual
    ```
-   git clone https://github.com/CICDProjects/nopCommerceJuly23.git
+   git clone https://github.com/dummyreposito/nopCommerceJuly23.git
+   # create a new branch 
+   git checkout -b dev-container
+   code .
    # replace latest with Git Commit id or build id
-   docker image build -t nopCommerce:latest .
-   docker image tag nopCommmerce:latest ajaykumarramesh/nopCommerce:latest
-   docker image push ajaykumarramesh/nopCommerce:latest
+   docker image build -t nopcommerce:latest .
+   docker container run -d --name noptest -P nopcommerce:latest
+   docker image tag nopcommerce:latest ajaykumarramesh/nopcommerce:latest
+   docker image push ajaykumarramesh/nopcommerce:latest
    ```
-   1. Write Jenkinsfile for the above steps
-   
+
+### Creating kubernetes cluster from terraform:
+#### Workflow:   
+![Preview](./Images/jenkins8.png)
+
+* Create manually Resources for backend in azure cloud UI.
+```
+backend "azurerm" {
+    resource_group_name  = "terraform"
+    storage_account_name = "qttfstate"
+    container_name       = "tfstates"
+    key                  = "nopcommerce.tfstate"
+  }
+```
+* [Refer Here](https://github.com/dummyreposito/nopCommerceJuly23/tree/dev-container/deploy_Infrastructure) for terraform code to create infrastructure
+
+* [Refer Here](https://github.com/dummyreposito/nopCommerceJuly23/tree/dev-container/k8s) for for the k8s manifest
+
+#### Manual deployment steps for terraform and k8s 
+```
+cd deploy_Infrastructure
+terraform init
+terraform fmt 
+terraform apply -auto-approve
+az aks get-credentials --resource-group rg-mutual-hare --name cluster-logical-heron
+kubectl get nodes
+kubectl apply -f ./k8s/nop-deploy.yaml
+```
+### Jenkinsfile:
+* for above steps
+```Jenkinsfile
+pipeline {
+    agent {label 'Node_Docker'}
+    stages {
+        stage('vcs') {
+            steps {
+                git branch: 'dev-container', 
+                    url: 'https://github.com/dummyreposito/nopCommerceJuly23.git'    
+            }
+            
+        }
+        stage('package') {
+            steps {
+                sh 'docker image build -t nopcommerce:latest .'
+                sh 'docker image tag nopcommerce:latest ajaykumarramesh/nopcommerce:latest'
+                sh 'docker image push ajaykumarramesh/nopcommerce:latest'
+                
+            }            
+        }
+        stage('terraform') {
+            steps {
+                sh 'cd deploy_Infrastructure && terraform init && terraform apply -auto-approve' 
+                //sh 'echo "$(terraform output kube_config)" > ./azurek8s && export KUBECONFIG=./azurek8s && kubectl apply -f ../k8s/nop-deploy.yaml'
+            }
+        }
+        stage('k8s_deploy'){
+            steps{
+            sh 'az aks get-credentials --resource-group rg-mutual-sheepdog --name cluster-adjusted-glowworm && kubectl apply -f ./k8s/nop-deploy.yaml' 
+            }
+
+        }
+
+    }
+}
+```
+* Lets Build NopCommerce pipeline projects
+![Preview](./Images/jenkins9.png)
+![Preview](./Images/jenkins10.png)
+![Preview](./Images/jenkins11.png)
+* Build now
+![Preview](./Images/jenkins11.png)
+![Preview](./Images/jenkins12.png)
+* now acces the application 
+
+`http://20.253.20.251:3000`
+
+`http://external ip:svc-portn-o`
+
+---
+
+
+
+
      
     
 
