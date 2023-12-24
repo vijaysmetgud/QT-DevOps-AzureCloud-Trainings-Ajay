@@ -308,6 +308,33 @@ pipeline {
 
 ```
 
+### Scripted Pipeline in Jenkinsfile:
+
+node('JDK_8') {
+    
+   
+   stage('git checkout') {
+       git branch: 'master ', url: 'https://github.com/dummyreposito/game-of-life-july23.git'
+   }
+   
+   stage('defining java tool'){
+       jdk = tool name: 'JAVA_8', type: 'jdk'
+       env.JAVA_HOME = "${jdk}"  
+       sh "${jdk}/bin/java -version"
+   }
+  
+   stage('build'){
+   sh 'mvn package'
+   }
+   
+   stage('Archive the artifacts'){
+       archiveArtifacts artifacts: 'gameoflife-web/target/gameoflife.war', followSymlinks: false
+   }
+   stage(' Publish JUnit test result report'){
+       junit '**/surefire-reports/TEST-*.xml'
+   }
+} 
+
 -------------------------------------------------------
 
 Flow of CI/CD Pipeline Brief Descriptions
