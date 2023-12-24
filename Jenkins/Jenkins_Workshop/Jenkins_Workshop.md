@@ -218,7 +218,34 @@ pipeline {
 
 ---
 
+Flow of CI/CD Pipeline
+------------------------
 
+* Developer completes Code and pushes to git
+           or 
+   * When ever Developer commits the code to git
+      * build the code
+      * run unit tests
+      * Perform Static Code Analysis 
+      * Perform Scans
+        * SAST (Static Application Security Test)
+           * SonarQube
+           * Checkmarx
+           * Jfrog
+           * Veracode(here we will use)
+           * Fortify
+        * SCA (Software Composition Analysis) 
+           * Black Duck
+           * Jfrog
+           * checkmarx
+           * SonarQube(here we will use)
+        * Then push the artifact to 
+           * Jfrog
+        * Incase container based then
+           * docker image push to (jfrog)(ACR)(ECR)
+              * scan the image for vulnerability
+                * Deploy to k8s cluster
+-------------------------------------------------------                    
 
 
      

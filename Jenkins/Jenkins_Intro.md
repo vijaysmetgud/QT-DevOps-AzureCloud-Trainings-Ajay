@@ -1211,6 +1211,30 @@ pipeline{
 * for different ecosystem means for different projects to do practice we can refer this link for azure devops projects 
 * [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/ecosystems?view=azure-devops)
 
+Git Hooks
+------------
+* Hooks help us in adding custom behavior to Git
+* and also helps in predefined messages while adding, commit with local repo and remote repo.
+* To handle local events git has client side hooks and to handle remote events git has server side hooks.
+* [Refer Here](https://www.atlassian.com/git/tutorials/git-hooks) for git hooks docs 
+![Preview](./Images/jenkins322)
+* In .git folder you have hooks folder
+![Preview](./Images/jenkins323.png)
+* [Refer Here](https://github.com/aitemr/awesome-git-hooks) for sample hooks repo
+* For Remote repositories which are self hosted, we can change the hooks
+* For remote repo which is cloud hosted there we have to deal with access control for stopping users from pushing changes etc.
+
+
+Webhooks in Jenkins:
+--------------------
+* [Refer Here](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
+* Webhooks means integrating jenkins with github repository, any code is committed to github repository jenkins job will trigger automatically known as webhooks. 
+![Preview](./Images/jenkins324.png)
+
+
+
+
+
 
 
 

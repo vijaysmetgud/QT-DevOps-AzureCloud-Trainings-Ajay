@@ -272,7 +272,7 @@ helm repo remove nginx-stable
 
 #### SAST:
 * SAST is stands for Static application security testing, 
-* SAST scans security test without running the applications or do not reed a running system to perform a scan or in a nonrunning state.
+* SAST scans security test without running the applications or do not read a running system to perform a scan or in a nonrunning state.
 * That means for an example: 
   * code scans and container scan is known as SAST testing because without running the code we are scanning.
 * SAST [Refer Here](https://www.microfocus.com/en-us/what-is/sast)
