@@ -1,6 +1,7 @@
 Software Development & Design Concept
 ---------------------------------------
 ### SDLC Process:
+* **Water Fall Model:**
   * Analysis/Requirements: Requirements Document
   * Design:
      * HLD (High Level Design)
@@ -16,6 +17,7 @@ Software Development & Design Concept
 
 
 ### Scrum:
+* **Agile Methodologist:**
 * Requirements Document `=>` Product Backlog
 * Product Backlogs `=>` sprint backlog
 * Sprint formalities
@@ -48,4 +50,31 @@ Software Development & Design Concept
         * it will help us in restricting the website
      * **reverse proxy server:**
        * it will act as loadbalancing and it is useful for loadbalancing   
+
+* [Refer Here](https://directdevops.blog/2023/09/30/devops-classroomnotes-30-sep-2023/) for SDLC docs
+
+### What is API ?
+ * Refer class room video or google it.
+
+### Messaging Queue/Middleware 
+ * Reliable Communication using Message Queue(MQ) (Rabbit mq, active mq, sqs)
+ * Publisher and Subscriber
+   * publisher is to send message to MQ 
+   * subscriber to get all alert of message from MQ
+   * Apache Kafka
+      * kafka is used to get immediate alert message or call immediate response 
+
+### Databases
+  * Relational: mysql, oracle, postgres, microsoft sql server, ibm db2 etc:- 
+ * NOSQL: mongo, cassandra, neo4j etc:-
+
+### Technical Stacks
+ * Java:
+    * Spring (Spring MVC, Spring boot, Spring restful)
+* .net: 
+    * asp.net core, classic asp.net (MVC, Web apis)
+* node js: 
+   * Express Js
+* Python: 
+   * Django, Django resful, Flask, FastAPI
 
