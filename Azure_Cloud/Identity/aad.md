@@ -33,10 +33,6 @@
 ### Azure cloud offers RBAC (Role Based Access Control)    
    * to provide granular access over necessary resources and services.
 
-
-
-
-
 Azure Free Account Opening Link:
 ---------------------------------
 * [Refer Here](https://azure.microsoft.com/en-us/free/)
