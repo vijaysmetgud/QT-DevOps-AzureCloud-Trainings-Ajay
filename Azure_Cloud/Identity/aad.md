@@ -203,10 +203,6 @@ Login in as owner account
 ![Preview](./Images/Azure38.png)  
 
 
-
-
-
-
 ### Subscription giving permission through `Resource Providers` and `Resource Types`
 * [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types) for Azure resource providers and types
 
@@ -262,4 +258,218 @@ Find operations to create, view, delete and update virtual networks:
  ![Preview](./Images/Azure19.png)
 
 
+Azure custom roles(RBAC) using the Azure portal
+-------------------------------------------------
+
+### Scenario:
+* I have to create 3 types of users
+   * Developers
+   * QA
+   * admin 
+* The permission is scoped at subscription level for these above users
+* **Developers:** 
+    * should be able to create, modify but not delete of below resources
+      * network
+      * storage
+      * virtual machines
+* **QA:** 
+   * should be able to view all, but not update of below resources
+      * network
+      * storage
+      * virtual machine
+* **Admin:** 
+    * should be able to do any thing, means all the permissions 
+
+### Solution:
+* Lets Create 3 groups
+   * Developer
+   * Admin
+   * QA    
+* Steps:
+![Preview](./Images/Azure54.png)
+![Preview](./Images/Azure55.png)
+![Preview](./Images/Azure56.png)
+![Preview](./Images/Azure57.png)
+
+* Lets Create a user called `test` to check the access for Developer
+![Preview](./Images/Azure58.png)
+
+* **Lets create a custom RBAC (Role Based Access Control) from azure portal:**
+* There are three ways that you can start to create a custom role (RBAC) from azure portal
+  * clone an existing role
+  * start from scratch
+  * start with a JSON file
+* [Refer Here](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles#custom-role-example) for Azure custom roles Examples
+* [Refer Here](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles?source=recommendations) for Azure built-in roles
+* [Refer Here](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles-portal?source=recommendations) for Create or update Azure custom roles using the Azure portal
+### Steps: `start from scratch` Way/Option: 
+* to create custom role for  `developer` and to access `test` user for testing the access
+![Preview](./Images/Azure59.png)
+![Preview](./Images/Azure60.png)
+![Preview](./Images/Azure61.png)
+![Preview](./Images/Azure62.png)
+* Now add permission to `virtual machines`
+![Preview](./Images/Azure63.png)
+![Preview](./Images/Azure64.png)
+* Now exclude permission to `virtual machines`
+![Preview](./Images/Azure65.png)
+* Now add permission is known as `Action` and exclude permission is known as `NotAction` both looks like this below screen shot
+![Preview](./Images/Azure66.png)
+* Now adding permission and exclude permission done via portal selected option `start from scratch`,,,, `Json file looks like this` below screen shot.
+![Preview](./Images/Azure67.png)
+* by adding permission and excluding permission choosing the `start from scratch` way/option is little bit painful because we needs to add/exlcude via azure portal.
+* So ill be using another way/option called `start with Json file` which is little easy method.
+
+### Steps: `start with a JSON file` Way/Option: 
+* add permission and exclude permission on 
+   * virtual machine
+   * network
+   * resource group
+   * storage
+* How it looks Json file with permissions
+![Preview](./Images/Azure68.png)
+![Preview](./Images/Azure69.png)
+* How it looks permissions on azure portal UI
+![Preview](./Images/Azure70.png)
+* Now review and Create a custom role
+![Preview](./Images/Azure71.png)
+![Preview](./Images/Azure72.png)
+![Preview](./Images/Azure73.png)
+* Now search custom role which is created
+![Preview](./Images/Azure74.png)
+![Preview](./Images/Azure75.png)
+![Preview](./Images/Azure76.png)
+* Now add custom role `dev` to user `test`
+![Preview](./Images/Azure77.png)
+![Preview](./Images/Azure78.png)
+![Preview](./Images/Azure79.png)
+![Preview](./Images/Azure80.png)
+![Preview](./Images/Azure81.png)
+* Now check the access for user `test` and group `Developer`
+  * Open new private windows and login with `test` user credentials
+  ![Preview](./Images/Azure82.png)
+  * Now check resources access for user test
+    * Storage
+    * Virtual machine
+    * Network
+  ![Preview](./Images/Azure83.png)  
+  ![Preview](./Images/Azure84.png) 
+  ![Preview](./Images/Azure85.png)
+  * So Now we have given user `test` all the access except deletion permission, now we will try to delete and check 
+  ![Preview](./Images/Azure87.png)
+  * it unable to delete the resources so as we expect custom role is working 
+
+### Lets create custom role(RBAC) for admin group
+* Admin can do anything, means create, view, update and delete
+* so `NotAction` should not write anything.
+* user is already there `test` user so for this same user we will add the role assignments of admin and will check the access for `test` user for `admin` role.  
+#### Steps:
+* clone an existing role from azure portal way/option
+* we will use clone an existing role because, role for admin is same as developer which we wrote above, only thing needs to remove `NotAction` from the Json file, since admin can do anything. 
+* Lets create the custom role for admin with option of clone an existing role of `dev`
+![Preview](./Images/Azure88.png)
+![Preview](./Images/Azure89.png)
+* Should remove `NotAction`
+![Preview](./Images/Azure90.png)
+![Preview](./Images/Azure91.png)
+* After remove the `NotActions` that becomes admin role and looks like this below
+![Preview](./Images/Azure92.png)
+![Preview](./Images/Azure93.png)
+* Now review and create custom role for admin
+![Preview](./Images/Azure94.png)
+* Remove the role assignments for user `test` with `developer`
+![Preview](./Images/Azure95.png)
+![Preview](./Images/Azure96.png)
+* Now Add role assignments for user `test` with `admin`
+![Preview](./Images/Azure97.png)
+![Preview](./Images/Azure98.png)
+![Preview](./Images/Azure99.png)
+![Preview](./Images/Azure100.png)
+* Open new private windows and login with `test` user credentials
+* check the access for user `test` and group `admin` role
+* now user `test` able to delete the resource so as we expected `admin` role is working
+![Preview](./Images/Azure101.png)
+
+### Lets create custom role(RBAC) for QA group
+* QA should have only read permission 
+* user is already there `test` user so for this same user we will add the role assignments of QA and will check the access for `test` user for `QA` role.
+#### Steps:
+* clone an existing role from azure portal way/option
+* we will use clone an existing role because, role for admin is little bit same as QA and also we will modify once clone is done
+* Lets create the custom role for QA with option of clone an existing role of `admin`
+* here i am not providing any screen shots becuase already i have given screen shots for dev and admin so only ill add the steps what should be done
+* clone the admin role in azure portal
+* modify the QA role which is cloned from admin role as per QA permissions
+![Preview](./Images/Azure102.png)
+![Preview](./Images/Azure103.png)
+![Preview](./Images/Azure104.png)
+* Now remove the role assignments for test user with admin
+* Now add the role assignments for test user with QA
+![Preview](./Images/Azure105.png)
+* Open new private windows and login with `test` user credentials
+* check the access for user `test` and group `QA` role
+* now user `test` is unable to delete the any  resource because has only read permission so as we expected `QA` role is working
+![Preview](./Images/Azure106.png)
+
+### Activity:1
+* Create a custom role called as `storageadmin` who can
+  * read anything (compute, network and storage)
+  * on storage write,update,delete permissions
+
+**Steps:**
+* Lets create custom role called  `storageadmin` with start with Json file way/option
+![Preview](./Images/Azure107.png)
+![Preview](./Images/Azure108.png)   
+![Preview](./Images/Azure109.png)
+* Now add role assignments for user `test` with `storageadmin` role
+![Preview](./Images/Azure110.png)
+![Preview](./Images/Azure111.png)
+* Login in private window for user `test` crendentials and check the access
+* user `test` able to view or read on `compute` and `network` but not delete
+![Preview](./Images/Azure112.png)
+![Preview](./Images/Azure113.png)
+* user `test` able create and read on `storage`
+![Preview](./Images/Azure114.png)
+![Preview](./Images/Azure115.png)
+* user `test` able delete the  `storage`
+![Preview](./Images/Azure116.png)
+
+### Activity:2
+* Lets create custom role for kubernetes cluster
+* terms and conditions on custom role for azure kubernetes cluster
+  * user can do anything on Azure Kubernetes Service but not delete cluster 
+  * user can have read permission of everything else, means on all other services in azure user can have read permissions.
+* **Steps:**
+![Preview](./Images/Azure117.png)
+![Preview](./Images/Azure118.png)
+![Preview](./Images/Azure119.png)
+```Json
+{
+    "properties": {
+        "roleName": "experiment on k8s",
+        "description": "this role is for experimenting on kubernetes services",
+        "assignableScopes": [
+            "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e"
+        ],
+        "permissions": [
+            {
+                "actions": [
+                    "Microsoft.ContainerService/*",
+                    "*/read",
+                    "Microsoft.Resources/*"
+                ],
+                "notActions": [
+                    "Microsoft.ContainerService/managedClusters/delete"
+                ],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}
+```
+
+Azure Management Groups/Azure Policy
+------------------------------------
+![Preview](./Images/Azure120.png)
 
