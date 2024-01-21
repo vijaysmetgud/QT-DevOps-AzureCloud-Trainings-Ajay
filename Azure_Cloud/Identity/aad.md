@@ -472,4 +472,67 @@ Azure custom roles(RBAC) using the Azure portal
 Azure Management Groups/Azure Policy
 ------------------------------------
 ![Preview](./Images/Azure120.png)
+* This helps in setting organizational standards and to access compliance at scale/resources
+* It is largely used for resource consistency
+* Azure policy is something which apply on all resources to maintain the azure policy compliance to all the resources
+* Azure policy means to ensure all resources meet as per azure policy compliance
+* [Refer Here](https://learn.microsoft.com/en-us/azure/governance/policy/overview) for official docs on Azure Policy
+* Lets Create a Azure policy
+![Preview](./Images/Azure121.png)
+![Preview](./Images/Azure123.png)
+![Preview](./Images/Azure122.png)
+![Preview](./Images/Azure124.png)
+![Preview](./Images/Azure125.png)
+![Preview](./Images/Azure126.png)
+![Preview](./Images/Azure127.png)
+![Preview](./Images/Azure128.png)
+![Preview](./Images/Azure129.png)
+![Preview](./Images/Azure130.png)
+![Preview](./Images/Azure131.png)
+* After Creating the policy we can view the what policy we have assigned
+![Preview](./Images/Azure132.png)
+* Now if i want to create any resources, as per policy assigned is `Require a tag and its value on resources` i should give tags value/details if not i cannot create any resource.
+* Example below screen shot, i am trying to create storage account with out giving tag details so it is not allowing me to create, observe below screenshot for error.
+![Preview](./Images/Azure133.png)
+* So basically azure policy means what ever the terms/conditions apply on in built azure policy we have to meet that policy condition, then only we can create any resources or activities if not not allowed. 
+* incase we dont want to restrict means we delete the assignment policy then we can create any resources without any condition or restrict 
+* To remove the assigned policy
+  * Navigate to Policy => Assignments
+  * Select the policy
+  ![Preview](./Images/Azure134.png)
+  * click on Delete Assignment
+  ![Preview](./Images/Azure135.png)
+  ![Preview](./Images/Azure136.png)
+* Even we can create our own custom policy also but generally it is not required since azure as lots of builtin policy which we can utilize it.
 
+####  Apply policy of the initiative of Microsoft Cloud Security Benchmark
+![Preview](./Images/Azure136.png)
+* There are lots of policy under `Microsoft Cloud Security Benchmark`
+![Preview](./Images/Azure137.png)
+![Preview](./Images/Azure138.png)
+![Preview](./Images/Azure139.png)
+![Preview](./Images/Azure140.png)
+![Preview](./Images/Azure141.png)
+* To remove the policy 
+![Preview](./Images/Azure142.png)
+
+Azure Active Directory -  B2B (Business to Business)
+-----------------------------------------------------
+* Azure AD B2B (Business to Business)[Refer Here](https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b) 
+* B2B collaboration represents providing access to external identity user for using your subscription/managment group, or your company's applications and services and resources of azure cloud 
+* A simple invitation and redemption process lets partners use their own credentials to access your company's resources.
+* This is used for consulting and auditing scenarios most of the time
+* **Invite External User to Access Your companies resources:**
+* **Steps:**
+![Preview](./Images/Azure143.png)
+![Preview](./Images/Azure144.png)
+![Preview](./Images/Azure145.png)
+![Preview](./Images/Azure146.png)
+* After creating external user invite will send to his/her mail id 
+![Preview](./Images/Azure147.png)
+* Add the role assignements for external user to access the resources of your company's 
+![Preview](./Images/Azure148.png)
+* Now External user can login with their crendentails and access the resources for audit purpose 
+![Preview](./Images/Azure149.png)
+* successfully able to access
+![Preview](./Images/Azure150.png)
