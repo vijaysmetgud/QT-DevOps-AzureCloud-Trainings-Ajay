@@ -519,7 +519,7 @@ Azure Management Groups/Azure Policy
 Azure Active Directory -  B2B (Business to Business)
 -----------------------------------------------------
 * Azure AD B2B (Business to Business)[Refer Here](https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b) 
-* B2B collaboration represents providing access to external identity user for using your subscription/managment group, or your company's applications and services and resources of azure cloud 
+* B2B collaboration represents providing access to external identity user for using your subscription/management group, or your company's applications and services and resources of azure cloud 
 * A simple invitation and redemption process lets partners use their own credentials to access your company's resources.
 * This is used for consulting and auditing scenarios most of the time
 * **Invite External User to Access Your companies resources:**
@@ -534,5 +534,165 @@ Azure Active Directory -  B2B (Business to Business)
 ![Preview](./Images/Azure148.png)
 * Now External user can login with their crendentails and access the resources for audit purpose 
 ![Preview](./Images/Azure149.png)
-* successfully able to access
+* External user successfully able to access resources our companies 
 ![Preview](./Images/Azure150.png)
+
+Azure AD B2C (Business to customer)
+------------------------------------
+
+* Azure Active Directory B2C provides business-to-customer identity as a service. 
+* Azure Active Directory B2C means in simple word we can say any customer can login into our apps or API resources with their authentication method and it is authorization process for our customer to use our apps which is running in the azure cloud 
+* [Refer Here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/overview) for Azure Active Directory B2C?
+* [Refer Here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/quickstart-web-app-dotnet) for the Azure ad B2c implementation in asp.net
+
+
+Azure Active Directory and Microsoft Active Directory Sync/Federation
+---------------------------------------------------------------------
+* Azure AD uses following authentications
+  * **Cloud Authentication:** Azure AD handles the authentication process for user signin. We have two options
+     * **Password Hash syncronization:**
+       * means our on premise AD will be synchronized with Azure AD through user and password hashes sync
+       * when ever users login to azure AD in any way it will authenticate with user password hashes sync by installation Azure AD Connect 
+       ![Preview](./Images/Azure151.png)
+    * **Pass through authentication:**
+       * means our on premise AD will be synchronized with Azure AD, so when users login to azure AD in any way, then our on premise AD will authenticate the users
+       ![Preview](./Images/Azure152.png)
+    * **Federated Authentication:**
+       * means there will windows AD which will act as azure AD federations means by using web application proxy through windows AD, when ever users login into azure AD it will connect to windows AD and authenticate to our on premise AD for users. 
+       ![Preview](./Images/Azure153)
+* **Lab Setup:** 
+   * I will be creating Active directory domain controller: means it will store all user information like user name and password hashes
+     * A Windows Server with AD Domain Services enabled
+     * Install Azure AD Connect to sync users with Azure AD
+     * Login Windows Server user into Azure Portal
+* This experiment for **Password Hash synchronization**     
+* **Steps:**
+  * create windows server 2019
+  * Login into windows server
+  * by default server manager will launch
+  * Navigate to local server and turn off IE enhanced security configuration
+  ![Preview](./Images/Azure153.png)
+  * Go to => Dashboard => click on Add roles and features
+  ![Preview](./Images/Azure154.png)     
+  * Go to server roles => click on Active directory domain services
+  ![Preview](./Images/Azure155.png)
+  ![Preview](./Images/Azure156.png)
+  * Click on next until you see install button
+  ![Preview](./Images/Azure157.png)
+  * Click on promote this server to a domain controller
+  ![Preview](./Images/Azure158.png)
+  * Click on add a new forest => specify root domain name, in my case `qtlt.com`
+  ![Preview](./Images/Azure159.png)
+  * Enter recovery password
+  ![Preview](./Images/Azure160.png)
+  * click next
+  * under additional options enter the NetBIOS domain name `QTLT`
+  ![Preview](./Images/Azure161.png)
+  * Click next until you reaches to install button
+  * Click on install
+  ![Preview](./Images/Azure162.png)
+  * after installation is completed it will retart by default the login again
+  * Now workgroup or domain is created
+  ![Preview](./Images/Azure163.png)
+  * Navigate tools=> active directory users and computers
+  ![Preview](./Images/Azure164.png)
+  ![Preview](./Images/Azure165.png)
+  ![Preview](./Images/Azure166.png)
+  ![Preview](./Images/Azure167.png)
+* Lets create two groups
+  * Go to tools click ad users and computers
+  ![Preview](./Images/Azure168.png)
+  * create group Avengers
+  ![Preview](./Images/Azure169.png)
+    * create user called ironman and thor 
+    ![Preview](./Images/Azure170.png)
+    ![Preview](./Images/Azure171.png)
+    ![Preview](./Images/Azure172.png)
+    ![Preview](./Images/Azure173.png)
+    ![Preview](./Images/Azure174.png)
+    ![Preview](./Images/Azure175.png)
+  * add the following users ironman and thor to group Avengers and give some permission as per screen shot
+    * ironman:
+      * we created domain name
+         * AD: ironman@qtlt.com
+      * azure active directory will get   
+         * AAD: ironman@<primarydomainname>
+
+    * thor
+      * we created domain name
+         * AD: thor@qtlt.com
+      * azure active directory will get    
+         * AAD: thor@<primarydomainname>
+    * click on group
+    ![Preview](./Images/Azure176.png)
+    ![Preview](./Images/Azure177.png)
+    ![Preview](./Images/Azure178.png)
+    ![Preview](./Images/Azure179.png)
+    ![Preview](./Images/Azure180.png)
+    ![Preview](./Images/Azure181.png)
+    ![Preview](./Images/Azure182.png)
+  
+  * create group JusticeLeague
+  ![Preview](./Images/Azure182.png) 
+    * create user called batman and wonderwomen
+    ![Preview](./Images/Azure182.png)
+    ![Preview](./Images/Azure183.png)
+    ![Preview](./Images/Azure184.png)
+    ![Preview](./Images/Azure185.png) 
+    ![Preview](./Images/Azure186.png)
+    ![Preview](./Images/Azure187.png)
+    ![Preview](./Images/Azure188.png)
+  * add the following users batman and wonderwomen to group Avengers and give some permission as per screen shot
+    * batman
+      * we created domain name
+         * AD: batman@qtlt.com
+      * azure active directory will get    
+         * AAD: batman@<primarydomainname>
+    * wonderwomen
+      * we created domain name
+         * AD: wonderwomen@qtlt.com
+      * azure active directory will get     
+         * AAD: wonderwomen@<primarydomainname>        
+    * click on group
+    ![Preview](./Images/Azure189.png)
+    ![Preview](./Images/Azure190.png)
+    ![Preview](./Images/Azure191.png)
+    ![Preview](./Images/Azure192.png)
+    ![Preview](./Images/Azure193.png)
+* Now finally we can login as created users
+  * For example:
+  * username `QTLT\ironman` and password `*****`
+  ![Preview](./Images/Azure194.png)
+  * we can see the different user login to windows server
+
+* **Note:** Adding custom domain name to AAD [Refer Here](https://learn.microsoft.com/en-us/entra/identity/users/domains-manage)
+* Now lets install Azure AD Connect [Refer Here](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect)
+![Preview](./Images/Azure199.png)
+* provide the user created in azure cloud portal credentials
+![Preview](./Images/Azure200.png)
+* provide the on premise server created credentials, means windows server credentials
+![Preview](./Images/Azure202.png) 
+![Preview](./Images/Azure203.png)
+![Preview](./Images/Azure204.png)
+![Preview](./Images/Azure205.png)
+* Now successfully azure ad connect installation configuration and sync has done 
+* Lets create a user who has global administrator permission on Azure cloud AD
+![Preview](./Images/Azure195.png)
+![Preview](./Images/Azure196.png)
+![Preview](./Images/Azure197.png)
+![Preview](./Images/Azure198.png)
+* Now login into private windows with user credentials which is created above, if we dint login means then unable to connect to azure ad while doing the azure ad connect installation, it will show error message 
+![Preview](./Images/Azure201.png) 
+* incase we need to change any configuration in synchronization, we can do it 
+![Preview](./Images/Azure206.png)
+* Now login into company azure cloud account
+   * check on premise active directory is synchronized with azure cloud active directory 
+   * so successfully we have brought on premise active directory into azure cloud active directory 
+   * we can able to user all the users and groups
+   ![Preview](./Images/Azure207.png)
+   ![Preview](./Images/Azure208.png)
+   * once after getting on prem ad into azure cloud ad, now we can give permission to them on subscription level, resources group level or resources level as per our requirements
+   * Now we can login into azure cloud by using the same on premise ad account credentials 
+   ![Preview](./Images/Azure209.png)
+
+   
