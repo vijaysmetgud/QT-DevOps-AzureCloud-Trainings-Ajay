@@ -163,3 +163,75 @@ ARM Template – Ways of Working
 ![Preview](./Images/arm30.png)
 
 
+Experiment
+----------
+
+### Change 1: I want to make a change which will create this network in the resource group’s location rather than this network is creating in the east us always which is mentioned in the location field
+
+* So for this option to use, we will use the ARM Templates Functions [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions)
+* In ARM Templates Functions, there is a function called as resourceGroup which we will use the option [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions-scope#resourcegroup)
+
+* Lets us deploy arm template to see change:1
+  * [Refer Here](https://github.com/codesquareZone/ARMZone/commit/5549a8fc6e0d48a85e4a883e572d854f28a8d7a5) for json file adding resource location
+  ![Preview](./Images/arm31.png)
+  ![Preview](./Images/arm32.png)
+  * Now it has not done anything since resource group is in east us, so the first change has evident.
+  ![Preview](./Images/arm33.png)
+  
+
+### Change 2: I want to give an option to the user to set address space for network and also for 3 subnets address space
+* To acheive this i should be using parameters [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameters)
+* ARM Templates support the following Data types [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/data-types)
+  * array
+  * bool
+  * int
+  * object
+  * secureObject
+  * securestring
+  * string
+
+* Lets us deploy arm template to see change:2
+  * Note: here we can use type string or array, both examples are in one json file 
+  * [Refer Here](https://github.com/codesquareZone/ARMZone/commit/5f5245eef056c53ccf3c88817be1d7e99ac0db6a) for parameters for subents json file
+  ![Preview](./Images/arm34.png)
+  * Now observe here address space we got is default so now user has option to change it
+  ![Preview](./Images/arm35.png)
+  * now we have changed to custom address space
+  ![Preview](./Images/arm36.png)
+  * now check the network range and also subnet range which is created
+  ![Preview](./Images/arm37.png)
+  ![Preview](./Images/arm38.png)
+
+### Change 3: Create subnets depending on the variable passed
+* and also v-net is a parent and subnets are creating with in a parent, like a child, so we needs to write subnets into different block 
+* The following example shows the child resource outside of the parent resource. You might use this approach if the parent resource isn't deployed in the same template, or if want to use copy to create more than one child resource.
+   * [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/child-resource-name-type) for better understanding of parent child
+* [Refer Here](https://github.com/codesquareZone/ARMZone/commit/d0fdbab8d616c0c88a2f2a7f46904fe9b5f4372d) for the subnets as outside the parent resources rather than with in network resource and within in the parent resources json file
+![Preview](./Images/arm39.png)
+![Preview](./Images/arm40.png)
+* observe the below screen shot benefits of parent and child creating arm template is order of creation resources
+![Preview](./Images/arm41.png)
+
+* **Resource iteration in ARM templates:**
+* Now lets implement resource iteration using copy loop
+  * by using this copy loop we can create multiple subnets or can make our subnet creation dynamic
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions-string#format) format function 
+* Lets deploy dynamic subnet creation
+* [Refer Here](https://github.com/codesquareZone/ARMZone/commit/6cf0baf7fa6b741123383f7c27ce4b811ad8545f) for subnet creation depending on the subnet cidr ranges passed as dynamic values 
+![Preview](./Images/arm42.png)
+* observe here we have added 6 subnets and 6 subnets names as dynamic 
+![Preview](./Images/arm43.png)
+* check this below screen shot, order of creation since it is parent and child block and also we have added copy loop and formate function so as per our dynamic value we have passed based on that subnet and names created
+![Preview](./Images/arm44.png)
+
+
+
+
+
+
+
+
+
+
+
+
