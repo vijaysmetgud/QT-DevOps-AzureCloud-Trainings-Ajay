@@ -312,6 +312,18 @@ Experiment
 ![preview](./Images/arm64.png)
 
 
+Azure Bicep
+-----------
+
+* Bicep is a Domain specific language that uses declarative syntax to deploy Azure resources
+* Bicep [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview?tabs=bicep) for official docs
+* Install bicep extension into visual studio code [Refer Here](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep)
+* [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/parameters) Parameters and variables in Bicep
+
+### Sample network Bicep template
+* two bicep template has been written with two different sytle of parametes 
+* [Refer Here](https://github.com/codesquareZone/BicepZone/commit/5397a8ac483022f5c1a68ded1523dd5d5c47cd94) for bicep sample network template with object style of parameters
+* [Refer Here](https://github.com/codesquareZone/BicepZone/commit/b09ce5d925e61f8dbc6cf2486272da989bf5104b) for bicep sample network template with object and string style of parameters 
 
 
 
