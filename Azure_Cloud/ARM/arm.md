@@ -224,6 +224,96 @@ Experiment
 * check this below screen shot, order of creation since it is parent and child block and also we have added copy loop and formate function so as per our dynamic value we have passed based on that subnet and names created
 ![Preview](./Images/arm44.png)
 
+* **Resource Id:**
+   * every resource has been created will have the unique resource id, so it identify even using this resource id. [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions-resource#resourceid) 
+
+* **Depends On:**
+    * This defines order of creation resources
+
+
+### Change – 4: Add network security group with static rules
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/networksecuritygroups?pivots=deployment-language-arm-template) for networkSecurityGroups static rules
+* Create a network security group for web,
+  * open all outgoing connections
+  * incoming:
+     * Allow 443 tcp port => https
+     * Allow 80 tcp port => http
+     * Allow 22 tcp => ssh
+* **Manual steps:**
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-network/manage-network-security-group?tabs=network-security-group-portal) 
+* Lets Deploy arm template for static security rules
+   * [Refer Here](https://github.com/codesquareZone/ARMZone/commit/568b24a83edd2913563419080bc1ad080a957fd9) for nsg inbound security rules json file
+   * static network security groups created for web
+   ![Preview](./Images/arm45.png)
+   ![Preview](./Images/arm46.png)
+
+### Change -5: Try to make changes in network security group with dynamic rules
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/networksecuritygroups/securityrules?pivots=deployment-language-arm-template#resource-format-1) for networkSecurityGroups/securityRules dynamic 
+* Lets try to create dynamic network security group for app
+  * open all outgoing connections
+  * incoming
+     * Allow 22 tcp => ssh
+     * Allow 443 tcp port => https
+* Lets Deploy arm template for dynamic security rules
+* [Refer Here](https://github.com/codesquareZone/ARMZone/commit/ac76e6bf774aacf49e7d7c3de1b560ada7f2adc0) for dynamic security rules json files 
+* dynamic network security groups created for app
+![Preview](./Images/arm47.png)
+
+### change-6: Create a nic with public ip, 
+* Overview
+![Preview](./Images/arm49.png)
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/publicipaddresses?pivots=deployment-language-arm-template#resource-format-1) for public ip address
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/networkinterfaces?pivots=deployment-language-arm-template) for network interface
+* Lets deploy arm template for nic with public ip 
+* [Refer Here](https://github.com/codesquareZone/ARMZone/commit/9ae07e2dbd7d862987b9db6c13fa92197d8f14c6) for nic with public ip dynamic way json file
+* created nic and web public ip
+![Preview](./Images/arm50.png)
+* Lets use variables, to avoid using multiple times of same name/value or if we use same name multiple times we can create variables
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax#variables)
+* [Refer Here](https://github.com/codesquareZone/ARMZone/commit/3f4cc311c5a15142a2837f61c17b48c81bc1d457) for variables to create above nic and public json file
+
+
+### Change-7: Create a parameters files with values
+* to keep our parameters in different files and easily we can change the values 
+* like how we do in terraform keeps our tf.vars files separate to change the value similar way 
+* [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameter-files) official for docs on paramters file
+* to create parameters files we have option in the json template file follow that.
+* Lets deploy arm template with parameters file
+![Preview](./Images/arm51.png)
+![Preview](./Images/arm52.png)
+![Preview](./Images/arm53.png)
+![Preview](./Images/arm54.png)
+![Preview](./Images/arm55.png)
+![Preview](./Images/arm56.png)
+* we have uploaded two files one is resource and another is parameters file, now resources has created
+![Preview](./Images/arm57.png)
+
+### Change – 8: Add web vm
+* vmimage: ubuntu 22.04
+* subnet: web
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.compute/virtualmachines?pivots=deployment-language-arm-template) for virtual machine resource
+* Lets deploy arm template for web vm with parameters file
+* [Refer](https://github.com/codesquareZone/ARMZone/commit/61c4d577a0459371ceb77989af8bd0338b464ed7) for parameters and vm json file
+![Preview](./Images/arm59.png)
+* vm has created successfully
+![Preview](./Images/arm60.png) 
+* lets login into created vm
+![Preview](./Images/arm60.png) 
+
+### Change – 9: Add database
+* [Refer Here](https://learn.microsoft.com/en-us/azure/azure-sql/database/single-database-create-arm-template-quickstart?view=azuresql) for sql database manual creation
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.sql/servers?pivots=deployment-language-arm-template) for sql server resource
+* [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.sql/servers/databases?pivots=deployment-language-arm-template) for sql server database resource
+* Lets deploy arm template for sql server and sql db creation
+* [Refer Here](https://github.com/codesquareZone/ARMZone/commit/c61a40724bf105ab5d25df1f0d72fefa9cf830ee) for sql server and sql db json file
+![Preview](./Images/arm62.png)
+![Preview](./Images/arm63.png)
+* created sql server and sql db 
+![preview](./Images/arm64.png)
+
+
+
+
 
 
 
