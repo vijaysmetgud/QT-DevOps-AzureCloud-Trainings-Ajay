@@ -246,5 +246,75 @@ Storage Account
 ![Preview](./Images/azstorage42.png)
 ![Preview](./Images/azstorage43.png)
 
+Azure BackBone/Global Network
+------------------------------
+* [Refer Here](https://azure.microsoft.com/en-in/explore/global-infrastructure/global-network) 
+* Microsoft has a backbone network which connects every region, edge location with a network cable carrying only azure related data.
 
+Connecting to Azure Storage Account privately
+---------------------------------------------
+* Azure storage account will not be part of virtual networks, to access data in the storage account the basic option is internet. If the vm in azure wants to access data in storage account, we can take the help of global network via private endpoints and private links
+* **Global network:** means a network cable which connects betweens regions of edge points 
+* Overview: 
+![Preview](./Images/azstorage44.png)
+
+#### Lets establish private connectivity between virtual machine and storage account
+* **Steps:**
+* Create a virtual machine
+![Preview](./Images/azstorage45.png)
+* Now create a storage account with the following selections in network tab
+![Preview](./Images/azstorage46.png)
+![Preview](./Images/azstorage47.png)
+* Create private endpoint
+![Preview](./Images/azstorage48.png)
+![Preview](./Images/azstorage49.png)
+* Now change the settings in Firewalls and virtual networks, to allow access to upload the files in container
+![Preview](./Images/azstorage50.png)
+![Preview](./Images/azstorage51.png)
+* Now in this storage account create a public container and upload some data
+![Preview](./Images/azstorage52.png)
+![Preview](./Images/azstorage53.png)
+* Now below url to access the container object so when other user access from internet they are unable to access, because it is private endpoint
+`https://sttestingpurposes.blob.core.windows.net/publiccontainer/one.txt.txt`
+* So even we can access the public container object by using curl from vm login into it, because we have added the v-net for vm and storage account same with establishing private endpoints 
+![Preview](./Images/azstorage54.png)
+* Now in this storage account create a private container and upload some data
+![Preview](./Images/azstorage55.png)
+![Preview](./Images/azstorage56.png)
+* In Networking settings=> Firewalls and virtual networks
+  * if i delete the ips ranges access from internet, then even from my laptop or my network from internet i am unable to access
+  ![Preview](./Images/azstorage59.png)
+  * Now delete the above said ips ranges access from internet, now try to access the object url from laptop or my own internet
+  ![Preview](./Images/azstorage60.png)
+  ![Preview](./Images/azstorage61.png)
+  * i got AuthorizationFailure when i access the public container object with below url
+  `https://sttestingpurposes.blob.core.windows.net/publiccontainer/one.txt.txt`
+  * but i am able to access from vm since both are are in the same network and that is how we have created private endpoint connection
+  ![Preview](./Images/azstorage62.png)
+  * that is how we secure the storage account of container object. 
+* If i access the private container with url or logging into vm i will get error message, it will not allow 
+`https://sttestingpurposes.blob.core.windows.net/private/one.txt.txt`
+![Preview](./Images/azstorage57.png)
+![Preview](./Images/azstorage58.png)
+* **To Accessing Private Data:**
+  * We can generate shared access signatures(SAS)
+  ![Preview](./Images/azstorage63.png)
+  ![Preview](./Images/azstorage64.png)
+  * After clicking generate SAS token we will get below url, observe screen shot
+  ![Preview](./Images/azstorage65.png)
+  * [Refer Here](https://sttestingpurposes.blob.core.windows.net/private/one.txt.txt?sp=r&st=2024-02-03T12:38:28Z&se=2024-02-04T13:30:00Z&sip=0.0.0.0-255.255.255.255&spr=https&sv=2022-11-02&sr=b&sig=FhMEKRx9k1SkUVi%2BUPaAIb31TpYRPfQ%2BGA7g00VTvR8%3D) for the SAS token url
+  * Access the url from browser, we can able to access private container 
+  ![Preview](./Images/azstorage66.png)
+* SAS Tokens provide temporary access to blobs and to generate sas tokens we need access keys
+![Preview](./Images/azstorage67.png)
+   * in case if Rotate the access key then, the old token is gone, means no longer will work we have to use new one which is generated after rotation
+   ![Preview](./Images/azstorage68.png)
+   * Now we are unable to access the private container url since access key rotation has done 
+   ![Preview](./Images/azstorage69.png)
+* **connection strings:**
+   * We can access storage accounts from code to perform operations using connection strings
+   * [Refer Here](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/api/connection-strings/storage-connection-strings)
+   * The connection string defines the resource to access and its authentication information. Azure Data Explorer supports the following authentication methods: Impersonation. Managed identity. Shared Access (SAS) key.
+   * [Refer Here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py)
+   
 
