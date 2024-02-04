@@ -697,3 +697,7 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
 
 * [Refer Here](https://www.microsoft.com/en-us/security/business/microsoft-entra-pricing) for Microsoft Entra ID/azure AD   
 
+
+
+
+

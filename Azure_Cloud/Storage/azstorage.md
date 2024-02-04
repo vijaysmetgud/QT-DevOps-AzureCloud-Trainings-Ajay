@@ -318,3 +318,39 @@ Connecting to Azure Storage Account privately
    * [Refer Here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py)
    
 
+Versioning in Azure Storage Account Blob Storage
+------------------------------------------------
+* Enabling versioning can be done in two options:
+  * one is while creating storage account from Data Protection tab
+  ![Preview](./Images/azstorage70.png)
+  * another one is Data Protection tab post creation of storage account
+  ![Preview](./Images/azstorage71.png)
+  * Create a public container with blob anonymous access and upload a text file
+  ![Preview](./Images/azstorage72.png)
+  ![Preview](./Images/azstorage73.png)
+  * now access the container of file
+  ![Preview](./Images/azstorage74.png)
+  * there is no versions in the file
+  ![Preview](./Images/azstorage75.png)
+  * Now upload the file again after making some changes and you should see a new version added in the versions tab, when uploading check the box for overwrite
+  ![Preview](./Images/azstorage76.png)
+  * Now when we access again file we can see new version for the same file 
+  ![Preview](./Images/azstorage77.png)
+  ![Preview](./Images/azstorage78.png)
+  * even we can make current default version when we access the file
+  ![PReview](./Images/azstorage79.png)
+
+Soft Delete of Containers and Blobs
+----------------------------------
+* Soft delete of blobs and container means, when we delete it, it can be recover with in the days mentioned in the data protection, observe below screen shot
+* Azure storage account offers soft delete for blobs and containers
+* A blob/container deleted can be restored in 7 days by default but the value can be set anywhere between 1 and 365
+![Preview](./Images/azstorage80.png)
+
+### Activity – Soft delete blob:
+* Create a storage account and ensure a container called as `docs` is created.
+![Preview](./Images/azstorage80.png)
+* upload 2 files into `docs` container.
+
+
+
