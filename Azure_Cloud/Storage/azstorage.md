@@ -349,8 +349,57 @@ Soft Delete of Containers and Blobs
 
 ### Activity – Soft delete blob:
 * Create a storage account and ensure a container called as `docs` is created.
-![Preview](./Images/azstorage80.png)
+![Preview](./Images/azstorage81.png)
 * upload 2 files into `docs` container.
+![Preview](./Images/azstorage82.png)
+* Now delete any one object (blob)
+![Preview](./Images/azstorage83.png)
+![Preview](./Images/azstorage84.png)
+* click on show Show deleted blobs, to see which file is deleted
+![Preview](./Images/azstorage85.png)
+* Recover the blob in next 7 days, since there is default option to recover in 7days is enabled
+![Preview](./Images/azstorage86.png)
+* Now refresh and check after clicked undeleted option file has again occurred 
+![Preview](./Images/azstorage87.png)
+* click on Show deleted blobs, it will not show any file has deleted
+![Preview](./Images/azstorage88.png)
+* **Note:** if the versioning is enabled post undelete make the undelete object as current version in versions tab. if not it will not show the file is occurred back. 
+* Delete the `docs` container
+![Preview](./Images/azstorage89.png)
+![Preview](./Images/azstorage90.png)
+* click on Show deleted containers, to see what all containers are deleted
+![Preview](./Images/azstorage91.png)
+* Recover the container
+![Preview](./Images/azstorage92.png)
+![Preview](./Images/azstorage93.png)
+* Now refresh and check container is back
+![Preview](./Images/azstorage94.png)
+* if we click on Show deleted containers, it not showing any container is deleted
+![Preview](./Images/azstorage95.png)
+
+### Recover a Deleted storage account
+* Once the storage is deleted, it can be recovered in 14 days in the following cases:
+  * The resource group in which storage account was created still exists or in the case if we deleted the resource group
+  * if we dint create a another resource group with same name 
+* Delete the storage account & wait for the operation to be complete
+![Preview](./Images/azstorage96.png)
+* Click on restore option to recover storage account which is deleted
+![Preview](./Images/azstorage97.png)
+![Preview](./Images/azstorage98.png)
+* observe it is recovered storage account back
+![Preview](./Images/azstorage99.png)
+
+### Snapshots and Point in time restore
+* A snapshot is a read-only version of blob that’s taken at a point of time
+* Point in time restore provides protection against accidental deletion or corruption by enabling you to restore block blob to its earlier
+* To enable point in time restore
+   * soft delete
+   * Change feed
+   * Blob versioning
+* Enable point int time restore
+![Preview](./Images/azstorage100.png)
+![Preview](./Images/azstorage101.png)
+* [Refer Here](https://learn.microsoft.com/en-us/azure/storage/blobs/point-in-time-restore-overview) for more info on point in time restore
 
 
 
