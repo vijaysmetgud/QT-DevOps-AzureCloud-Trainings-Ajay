@@ -401,5 +401,133 @@ Soft Delete of Containers and Blobs
 ![Preview](./Images/azstorage101.png)
 * [Refer Here](https://learn.microsoft.com/en-us/azure/storage/blobs/point-in-time-restore-overview) for more info on point in time restore
 
+### Replicating Storage Accounts
+* Object Replications allows us to sync the blobs accross storage accounts in the same or different accounts
+* Lets setup replication
+  * create storage account with standard and container
+  ![Preview](./Images/azstorage104.png)
+  * upload the files/content in the container
+  ![Preview](./Images/azstorage105.png)
+  * Create storage account with premium and container
+  ![Preview](./Images/azstorage106.png)
+  ![Preview](./Images/azstorage107.png)
+  * Now lets Replicating Storage Accounts from `storageaccountstand` all the files content to storage account `storageaccountpremim`
+  ![Preview](./Images/azstorage108.png)
+  ![Preview](./Images/azstorage109.png)
+  ![Preview](./Images/azstorage110.png)
+  ![Preview](./Images/azstorage111.png)
+  * Now observe the below screen shot data of the `storageaccountstand` copied to `storageaccountpremim`
+  ![Preview](./Images/azstorage112.png)
+  * The data will be copied when the objects inside the container matches the rules.
+  * When will the execution happen?
+     * Execution happens asynchronously, whenever a change happens in storage account, the destination will be updated in few seconds to minutes depending on the sizes of data
+
+### Redundancy Levels
+* By default in the case of GRS a region will be chosen by Azure cloud
+![Preview](./Images/azstorage113.png)
+* Changing the Redundancy of the complete account can be done over here
+* Exercise: Is it possible to change the Region shown in Redundancy Levels
+![Preview](./Images/azstorage114.png)
+  * No not possible to change the secondary region, because it is decided by azure, we can choose the primary region which we creating storage account or we have option called object replication with this we can choose our choose our own region to replicate data.
+
+### Content Delivery Networks and storage account as Website
+#### Lab setup for above (CDN) Solution
+* Ensure you have 4 videos of size atleast > 30 MB.
+* rename the files as one.mp4, two.mp4, three.mp4, four.mp4
+* Create a html page index.html with following content
+
+```
+<html>
+
+<head>
+    <style>
+    @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i&display=swap");
+
+body {
+  padding: 2em;
+  font-family: Raleway, sans-serif;
+  font-size: 1.2em;
+}
+
+h1 {
+  font-size: 3.6em;
+  margin-bottom: 0.5em;
+}
+h2 {
+  font-size: 2.4em;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin: 1em 0;
+  line-height: 1.25;
+}
+</style>
+</head>
+
+<body>
+    <h1>Video Sample Page</h1>
+
+<p>This is the video we will work with. It uses a movie from the Blender Foundation (thanks :)</p>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="one.mp4" type='video/mp4' />
+
+  </video>
+</div> <!-- End Container -->
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="two.mp4" type='video/mp4' />
+
+  </video>
+</div>
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="three.mp4" type='video/mp4' />
+
+  </video>
+</div>
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="four.mp4" type='video/mp4' />
+
+  </video>
+</div>
+
+</body>
+</html>
+```
+
+* **Hosting a static website using Azure Storage account:**
+   * Static website is website developed in can be hosted in azure storage account, like below developed website with static pages with below languages
+      * HTML
+      * CSS
+      * JAVASCRIPT
+* [Refer Here](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website) for Static website hosting in Azure Storage official docs
+* [Refer Here](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website-how-to?tabs=azure-portal) For step-by-step guidance to Host a static website in Azure Storage.
+* **Steps:**
+   * create a storage account
+   * Enable static website hosting
+      * provide the Index document name
+      * Error document path
+      * click on save
+      ![Preview](./Images/azstorage115.png)
+      * copy the primary endpoint url to access your static website
+      `https://stwebdemo.z13.web.core.windows.net/`
+   * after saving default container will created called `web container`
+   * upload files to the $web container 
+   * Now access you url static website to
+   `https://stwebdemo.z13.web.core.windows.net/`
+   ![Preview](./Images/azstorage116.png)
+   * if we type wrong url then it redirect to `error.html` page
+   ![Preview](./Images/azstorage117.png)
+
+   
+
+
+
 
 
