@@ -125,6 +125,7 @@ Redundancy in Azure Storage Account
 
 * LRS ( Locally Redundant Storage)
    * Any data uploaded will make three synchronous copies in 3 different physical servers
+   
    ![Preview](./Images/azstorage12.png)
 
 * ZRS (Zone Redundant storage)
@@ -518,14 +519,231 @@ p {
       * copy the primary endpoint url to access your static website
       `https://stwebdemo.z13.web.core.windows.net/`
    * after saving default container will created called `web container`
-   * upload files to the $web container 
+   * upload index.html,error.html files and also from one.mp4 to four.mp videos files to the $web container 
    * Now access you url static website to
    `https://stwebdemo.z13.web.core.windows.net/`
    ![Preview](./Images/azstorage116.png)
    * if we type wrong url then it redirect to `error.html` page
    ![Preview](./Images/azstorage117.png)
 
-   
+### Content Delivery Networks
+* CDN means copying the videos to nearest location so that it will improve the latency speed so that we can watch videos very fast 
+  * **Experiment:**
+* Steps:
+  * create storage account 
+  * create container
+  * uploaded vidoes one.mp4, two.mp4, three.mp4, four.mp4
+  * copy the above each of vidoes urls in the index.html files after upload is finished like below
+  ![Preview](./Images/azstorage118.png)
+  
+  ```
+  <html>
+
+<head>
+    <style>
+    @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i&display=swap");
+
+body {
+  padding: 2em;
+  font-family: Raleway, sans-serif;
+  font-size: 1.2em;
+}
+
+h1 {
+  font-size: 3.6em;
+  margin-bottom: 0.5em;
+}
+h2 {
+  font-size: 2.4em;
+  margin-bottom: 0.5em;
+}
+	
+p {
+  margin: 1em 0;
+  line-height: 1.25;
+}
+</style>
+</head>
+
+<body>
+    <h1>Video Sample Page</h1>
+
+<p>This is the video we will work with. It uses a movie from the Blender Foundation (thanks :) </p>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/one.mp4" type='video/mp4' />
+
+  </video>
+</div> <!-- End Container -->
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/two.mp4" type='video/mp4' />
+
+  </video>
+</div>
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/three.mp4" type='video/mp4' />
+
+  </video>
+</div>
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/four.mp4" type='video/mp4' />
+
+  </video>
+</div>
+
+</body>
+</html>
+  ```
+  
+* now click on index.html files and check the video playing speed, usually it will be slow because we have choose storage account from east us, so video is coming from that location to india bangalore it is taking time.
+* [Refer Here](https://www.azurespeed.com/Azure/Latency) for Azure Latency Test
+
+* **Configuring Azure Content Delivery Networks(CDN):**
+  * In Azure We can create Azure CDN or Azure Front door profile to a storage account.
+  * Once enabled the blobs can be cached in many regions and POP/Edge locations.
+  * This improves your website performance
+* **Steps:**
+![Preview](./Images/azstorage119.png)
+![Preview](./Images/azstorage120.png)
+![Preview](./Images/azstorage121.png)
+* Now access the videos with Endpoint url
+  `https://qtvideos.azureedge.net`
+* now we can access the videos very fast
+![Preview](./Images/azstorage122.png)
+* to check different between normal video uploaded and with cdn, just open two html files and check the videos playing speed
+* this below is new html file wit name `optindex.html` add the following content in this file 
+```
+<html>
+
+<head>
+    <style>
+    @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i&display=swap");
+
+body {
+  padding: 2em;
+  font-family: Raleway, sans-serif;
+  font-size: 1.2em;
+}
+
+h1 {
+  font-size: 3.6em;
+  margin-bottom: 0.5em;
+}
+h2 {
+  font-size: 2.4em;
+  margin-bottom: 0.5em;
+}
+	
+p {
+  margin: 1em 0;
+  line-height: 1.25;
+}
+</style>
+</head>
+
+<body>
+    <h1>Video Sample Page</h1>
+
+<p>This is the video we will work with. It uses a movie from the Blender Foundation (thanks :)</p>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://qtvideos.azureedge.net/vidoes/one.mp4" type='video/mp4' />
+
+  </video>
+</div> <!-- End Container -->
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://qtvideos.azureedge.net/vidoes/two.mp4" type='video/mp4' />
+
+  </video>
+</div>
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://qtvideos.azureedge.net/vidoes/three.mp4" type='video/mp4' />
+
+  </video>
+</div>
+<br/>
+<div id="container">
+  <video id='video' controls="controls" width="600">
+    <source id='mp4' src="https://qtvideos.azureedge.net/vidoes/four.mp4" type='video/mp4' />
+
+  </video>
+</div>
+
+</body>
+</html>
+```
+
+### Azure File Shares
+#### Activity:
+  * Overview
+  ![Preview](./Images/azstorage123.png)
+  * Create a Virtual Machine A
+  * Create a Virtual Machine B
+  ![Preview](./Images/azstorage124.png)
+  * create storage account 
+    * create a file share
+      * Standard Storage account
+      * Premium File Share
+      ![Preview](./Images/azstorage125.png)
+      ![Preview](./Images/azstorage126.png)
+  * Mount the Azure file share in both virtual machines
+  * look in linux os we have only two disk, osdisk and tempdisk
+  for vm1 and vm2
+  ![Preview](./Images/azstorage127.png)      
+  ![Preview](./Images/azstorage128.png)
+  * Now we will link azure file share to our linux vm and create another filesystem
+  ![Preview](./Images/azstorage129.png)
+  ![Preview](./Images/azstorage130.png)
+  * copy above screen sript and paste the script in the linux vm or create shell file and execute the script 
+  * execute below command to see filesystem
+    
+    `df -h`
+  * we have new file system is mounted called `//storagedemons.file.core.windows.net/tools` and folder is `tools`
+  ![Preview](./Images/azstorage131.png)
+  * create a folder called content
+
+    `mkdir /tools/content`
+   * when we executed above command in vm folder is created in the azure file share so link has done successfully between our vm and azure file share
+   ![Preview](./Images/azstorage132.png)
+   ![Preview](./Images/azstorage133.png)
+   * create a files inside the content folder
+
+      `touch /tools/content/{1..10}`
+   ![Preview](./Images/azstorage134.png)
+   ![Preview](./Images/azstorage135.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
