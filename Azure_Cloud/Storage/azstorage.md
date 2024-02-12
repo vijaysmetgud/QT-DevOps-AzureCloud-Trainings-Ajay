@@ -722,6 +722,112 @@ p {
    ![Preview](./Images/azstorage134.png)
    ![Preview](./Images/azstorage135.png)
 
+### Disk Storage in Azure
+* When we create a virtual machine the disks will be created.
+* In Azure we have 2 types of disks based on where they are created
+   * Created on the same physical server, where vm is created is called as => Temp Disk
+   * Created on the different physical server in Same Region/Zone is called as => Data Disk
+* Since Temp Disk is allocated from same server, when vm is stopped/deallocated or removed the Temp Disk also gets deallocated or deleted. (Non Persistent)
+* Data Disk where we have two types shown below can exist even after the virtual machine is deleted. (Persistent Disks)
+   * OS Disk (This disk has operating system)
+   * Data Disk
+   ![Preview](./Images/azstorage136)
+* Azure allow Disks to be created in two ways
+   * Storage Account
+     * This is referred as unmanaged disk
+     * Page Blobs in Storage accounts means virtual hard disk     
+
+   * Managed Disks:
+      * This is service for handling disks
+* Temp Disk: Size is decided by the vm type
+* Sizes of Data Disk, each data disk can have a maximum size of 32,767 GiB and Ma size of OS disk is 4095 GiB
+* Types of Azure Managed Disks:
+   * Ultra Disks
+   * Premium SSD v2
+   * Premium SSD
+   * Standard SSD
+   * Standard HDD
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#disk-type-comparison) for disk type comparison and Azure managed disk types
+![Preview](./Images/azstorage137.png)
+
+### Create a Azure Virtual Machine with Size B1s
+* Figure out the Max IOPS, Number of Data Disks possible and Temp Storage Size from VM Size chart
+![Preview](./Images/azstorage138.png)
+* Lets look at Disks Tab
+![Preview](./Images/azstorage39.png)
+* we Resize the possible way of available disk
+![Preview](./Images/azstorage140.png)
+* we can  Create and attach a new disk or Attach an existing disk 
+![Preview](./Images/azstorage141.png)
+* Now create the Virtual Machine
+![Preview](./Images/azstorage142.png)
+![Preview](./Images/azstorage143.png)
+* After creating vm lets check os disk by executing  below 
+![Preview](./Images/azstorage144.png)
+
+Azure Managed Disk
+-------------------
+* Azure is responsible for attaching disk to vm’s, Partitioning, formats and customizations post vm creation is user’s responsibility
+* Backups of Disks are called as snapshots and can be automated or scheduled.
+
+### Managed Disk – Activities – 1
+* Create a Windows VM with os,data disk and stop the vm, increase the size of data disk.
+![Preview](./Images/azstorage145.png)
+![Preview](./Images/azstorage146.png)
+* create and attach new disk
+![Preview](./Images/azstorage147.png)
+![Preview](./Images/azstorage148.png)
+![Preview](./Images/azstorage149.png)
+![Preview](./Images/azstorage150.png)
+![Preview](./Images/azstorage151.png)
+* windows vm is created
+![Preview](./Images/azstorage152.png)
+* Login into windows server with username and password
+* go to server manager and check the disk details
+![Preview](./Images/azstorage153.png)
+* there only two disk, os diks and temp disk but we have created 4gb extra disk which is created but not allocated so we needs to allocate it
+* follow below screen shots steps 
+![Preview](./Images/azstorage154.png)
+![Preview](./Images/azstorage155.png)
+![Preview](./Images/azstorage156.png)
+![Preview](./Images/azstorage157.png)
+![Preview](./Images/azstorage158.png)
+![Preview](./Images/azstorage159.png)
+![Preview](./Images/azstorage160.png)
+![Preview](./Images/azstorage161.png)
+* Now check new disk has allocated has f drive which we configured above and Created a disk with 4 GB 
+![Preview](./Images/azstorage162.png)
+* Now resize the data disk to the higher size
+![Preview](./Images/azstorage163.png)
+![Preview](./Images/azstorage164.png)
+![Preview](./Images/azstorage165.png)
+* Now we have resized the data disk to 8 gb but when we look under server manager => file and storage => disk=> and also file explorer still it shows 4 gb
+![Preview](./Images/azstorage166.png)
+![Preview](./Images/azstorage167.png)
+* We have to add or formate to extra added disk to drive/volume
+![Preview](./Images/azstorage168.png)
+![Preview](./Images/azstorage169.png)
+* after adding/formate check it showing 8 gb
+![Preview](./Images/azstorage170.png)
+* Look at the file explorer it is also shows 8gb
+![Preview](./Images/azstorage171.png)
+* Even in the azure cloud portal also we can see size has been increased
+![Preview](./Images/azstorage172.png)
+* Now try to resize the data disk to lower size and storage type to different it will not allow.but we increase the size not decrease.
+* Once vm is stopped/deallocated then we can change the storage type and increase the size for data disk but even cannot go to lower size 
+* Temp disk can be resized only by changing vm size
+
+### Terms
+* Backup Options
+   * Full Backup
+   * Incremental Backup
+* Restore Options
+   * restore backup
+   * point in time restore
+
+ 
+
+
 
 
 
