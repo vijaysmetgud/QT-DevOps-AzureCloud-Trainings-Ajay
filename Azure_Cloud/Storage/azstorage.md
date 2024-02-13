@@ -535,72 +535,7 @@ p {
   * uploaded vidoes one.mp4, two.mp4, three.mp4, four.mp4
   * copy the above each of vidoes urls in the index.html files after upload is finished like below
   ![Preview](./Images/azstorage118.png)
-  
-  ```
-  <html>
-
-<head>
-    <style>
-    @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i&display=swap");
-
-body {
-  padding: 2em;
-  font-family: Raleway, sans-serif;
-  font-size: 1.2em;
-}
-
-h1 {
-  font-size: 3.6em;
-  margin-bottom: 0.5em;
-}
-h2 {
-  font-size: 2.4em;
-  margin-bottom: 0.5em;
-}
-	
-p {
-  margin: 1em 0;
-  line-height: 1.25;
-}
-</style>
-</head>
-
-<body>
-    <h1>Video Sample Page</h1>
-
-<p>This is the video we will work with. It uses a movie from the Blender Foundation (thanks :) </p>
-<div id="container">
-  <video id='video' controls="controls" width="600">
-    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/one.mp4" type='video/mp4' />
-
-  </video>
-</div> <!-- End Container -->
-<br/>
-<div id="container">
-  <video id='video' controls="controls" width="600">
-    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/two.mp4" type='video/mp4' />
-
-  </video>
-</div>
-<br/>
-<div id="container">
-  <video id='video' controls="controls" width="600">
-    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/three.mp4" type='video/mp4' />
-
-  </video>
-</div>
-<br/>
-<div id="container">
-  <video id='video' controls="controls" width="600">
-    <source id='mp4' src="https://stvideocdn.blob.core.windows.net/vidoes/four.mp4" type='video/mp4' />
-
-  </video>
-</div>
-
-</body>
-</html>
-  ```
-  
+  * [Refer Here](https://github.com/codesquareZone/AzureCloudZone/commit/8ed9ba059a56ea4412a6a824ad069768434ad070) index.html with urls 
 * now click on index.html files and check the video playing speed, usually it will be slow because we have choose storage account from east us, so video is coming from that location to india bangalore it is taking time.
 * [Refer Here](https://www.azurespeed.com/Azure/Latency) for Azure Latency Test
 
