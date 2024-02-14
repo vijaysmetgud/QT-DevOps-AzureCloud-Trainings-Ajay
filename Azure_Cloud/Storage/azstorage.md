@@ -705,7 +705,7 @@ Azure Managed Disk
 * Azure is responsible for attaching disk to vm’s, Partitioning, formats and customizations post vm creation is user’s responsibility
 * Backups of Disks are called as snapshots and can be automated or scheduled.
 
-### Managed Disk – Activities – 1
+### Managed Disk on Windows – Activities – 1
 * Create a Windows VM with os,data disk and stop the vm, increase the size of data disk.
 ![Preview](./Images/azstorage145.png)
 ![Preview](./Images/azstorage146.png)
@@ -760,14 +760,105 @@ Azure Managed Disk
    * restore backup
    * point in time restore
 
- 
+### Managed Disk on Linux – Activities – 2
+#### Mounting Disks on Linux VM’s:
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal?tabs=ubuntu) for the article about attaching disks to linux
+* Create an ubuntu vm with additional data disk of size 1GiB
+![Preview](./Images/azstorage173.png)
+![Preview](./Images/azstorage174.png) 
+![Preview](./Images/azstorage175.png)
+![Preview](./Images/azstorage176.png)
+![Preview](./Images/azstorage177.png)
+![Preview](./Images/azstorage178.png)
+![Preview](./Images/azstorage179.png)
+* Login into linux vm to list block devices
+![Preview](./Images/azstorage180.png)
+* Create file system (format) with xfs
+![Preview](./Images/azstorage181.png)
+* Now mount the device onto /tools folder
+![Preview](./Images/azstorage182.png)
+![Preview](./Images/azstorage183.png)
+* Now to make persist mounts means, To ensure that the drive is remounted automatically after a reboot, it must be added to the /etc/fstab file, if not when we reboot the vm mount will be lost [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal?tabs=ubuntu#mount-the-disk)
+* Follow the below steps to add mount filesystem to FSTAB
+* execute below command to get UUID
+![Preview](./Images/azstorage184.png)
+* add the below entries in the fstab with above found UUID and folder name
+```
+# open fstab
+sudo vi etc/fstab
+# copy below content into fstab
+UUID=af5a4a4c-a549-4e9f-bee3-6a93a0b49c29   /tools  xfs   defaults,nofail   1   2`
+# now save the file fstab
+# enter below command and check block dive
+lsblk
+df -h
+```
+![Preview](./Images/azstorage185.png)
+![Preview](./Images/azstorage186.png)
+* Even we can resize the data disk
+![Preview](./Images/azstorage187.png)
+![Preview](./Images/azstorage188.png)
 
+### Snapshots of Disk
+* Snapshot is backup of the disk
+![Preview](./Images/azstorage189.png)
+* Lets create a snapshot (Full Backup)
+![Preview](./Images/azstorage190.png)
+![Preview](./Images/azstorage191.png)
+![Preview](./Images/azstorage192.png)
+![Preview](./Images/azstorage193.png)
+![Preview](./Images/azstorage194.png)
+* In Azure, the disk is scoped to a region and snapshot is also scoped to a region. i.e. Snapshot created from one region can be used to create a disk in the same region, not possible in another region.
+* example below screen shot, it is not showing any region option to select, apart from zones.
+![Preview](./Images/azstorage195.png)
+![Preview](./Images/azstorage196.png)
+* If you want to create a disk in other region,then first copy snapshot to that region
+![Preview](./Images/azstorage197.png)
 
+Azure Backup Center
+-------------------
+* This is a central service for backup of many Azure Services including virtual machines, Disks. [Refer Here](https://learn.microsoft.com/en-us/azure/backup/backup-center-overview) for Azure Backup and Azure Site Recovery official docs
+* Create a vault:
+  * Backup Vault
+  ![Preview](./Images/azstorage198.png)
+  ![Preview](./Images/azstorage199.png)
+  ![Preview](./Images/azstorage200.png)
+  ![Preview](./Images/azstorage201.png)
+  ![Preview](./Images/azstorage203.png)
+  ![Preview](./Images/azstorage204.png)
+* Now ensure you have a vm with data disks attached. In this demonstration we have a vm with
+   * os disk: 30 GB
+   * Data disk 0 : 1 GB
+   * Data disk 2 : 2 GB
+![Preview](./Images/azstorage205.png)
+![Preview](./Images/azstorage206.png)
+![Preview](./Images/azstorage207.png)
+* Ensure the disks are formatted and mounted to vm with some data in it
+  * Steps:
+     * Login into vm
+     ![Preview](./Images/azstorage208.png)
+     ![Preview](./Images/azstorage209.png)
+     ![Preview](./Images/azstorage210.png)
+     ![Preview](./Images/azstorage211.png)
+     ![Preview](./Images/azstorage212.png)
+     * add the below entries in the fstab with above found UUID and folder name
 
-
-
-
-
+     ```
+     # open fstab
+     sudo vi etc/fstab
+     # copy below content into fstab
+     UUID=af5a4a4c-a549-4e9f-bee3-6a93a0b49c29   /tools  xfs   defaults,nofail   1   2`
+     # now save the file fstab
+     # enter below command and check block dive
+     lsblk
+     df -h
+     ```
+     ![Preview](./Images/azstorage213.png)
+     ![Preview](./Images/azstorage214.png)
+     * Now adding some to to datadisk1 and datadisk2
+     ![Preview](./Images/azstorage215.png)
+     ![Preview](./Images/azstorage216.png)
+* Lets configure backup for managed disks
 
 
 
