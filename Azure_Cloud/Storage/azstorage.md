@@ -814,8 +814,10 @@ df -h
 * example below screen shot, it is not showing any region option to select, apart from zones.
 ![Preview](./Images/azstorage195.png)
 ![Preview](./Images/azstorage196.png)
+* To Copy an incremental snapshot to a new region/another region
 * If you want to create a disk in other region,then first copy snapshot to that region
 ![Preview](./Images/azstorage197.png)
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-copy-incremental-snapshot-across-regions?tabs=azure-portal) for copying snapshot to another region
 
 Azure Backup Center
 -------------------
@@ -886,8 +888,36 @@ Azure Backup Center
 * We have triggered the manual backup for 2 disks for the experiment, since we shouldn't do that because our backup policies should do that.
 ![Preview](./Images/azstorage235.png)
 ![Preview](./Images/azstorage236.png)
-* To perform the restore operation for backup
+* Now check the backup status
 ![Preview](./Images/azstorage237.png)
+![Preview](./Images/azstorage238.png)
+![Preview](./Images/azstorage239.png)
+![Preview](./Images/azstorage240.png)
+* To perform the restore operation for backup
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/backup/restore-managed-disks) Restore Azure backup
+![Preview](./Images/azstorage241.png)
+![Preview](./Images/azstorage242.png)
+![Preview](./Images/azstorage243.png)
+![Preview](./Images/azstorage244.png)
+![Preview](./Images/azstorage245.png)
+![Preview](./Images/azstorage246.png)
+![Preview](./Images/azstorage247.png)
+* Now check in the resource group backup restore has done successfully 
+![Preview](./Images/azstorage248.png)
+![Preview](./Images/azstorage249.png)
+ 
+
+Encryption of Storage
+---------------------
+* [Refer Here](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts) for azure key vault official docs
+* Create a key vault
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal) steps for creating key vault
+* Disk Encryption Options in Azure [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview)
+* Azure Linux VM Disk Encryption for the step by step instructions to enable and encrypt disks using Azure Key Vault [Refer here](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-enable-host-based-encryption-portal?tabs=azure-cli#prerequisites) 
+
+
+
+
 
 
 
