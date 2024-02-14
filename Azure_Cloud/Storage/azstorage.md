@@ -619,6 +619,8 @@ p {
 ```
 
 ### Azure File Shares
+* [Refer Here](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction) for Azure file shares official docs
+* [Refer Here](https://learn.microsoft.com/en-us/azure/storage/files/storage-how-to-use-files-portal?tabs=azure-portal) for Create and use an Azure file share
 #### Activity:
   * Overview
   ![Preview](./Images/azstorage123.png)
@@ -859,18 +861,33 @@ Azure Backup Center
      ![Preview](./Images/azstorage215.png)
      ![Preview](./Images/azstorage216.png)
 * Lets configure backup for managed disks
-
-
-
-
-
-
-
-
-
-
-
-
+![Preview](./Images/azstorage217.png)
+![Preview](./Images/azstorage218.png)
+![Preview](./Images/azstorage219.png)
+![Preview](./Images/azstorage220.png)
+![Preview](./Images/azstorage221.png)
+![Preview](./Images/azstorage222.png)
+![Preview](./Images/azstorage223.png)
+![Preview](./Images/azstorage224.png)
+![Preview](./Images/azstorage225.png)
+![Preview](./Images/azstorage226.png)
+![Preview](./Images/azstorage227.png)
+![Preview](./Images/azstorage228.png)
+* Datasources tab refers to the source resources, here add data disks (we skipped os disk intentionally)
+* We need a dedicated resource group for storing snapshots (in this case i’m using the different resource group)
+![Preview](./Images/azstorage229.png)
+![Preview](./Images/azstorage230.png)
+![Preview](./Images/azstorage231.png)
+![Preview](./Images/azstorage232.png)
+* Backup policies 
+![Preview](./Images/azstorage233.png)
+* Backup instances
+![Preview](./Images/azstorage234.png)
+* We have triggered the manual backup for 2 disks for the experiment, since we shouldn't do that because our backup policies should do that.
+![Preview](./Images/azstorage235.png)
+![Preview](./Images/azstorage236.png)
+* To perform the restore operation for backup
+![Preview](./Images/azstorage237.png)
 
 
 
