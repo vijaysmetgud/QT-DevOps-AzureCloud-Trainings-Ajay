@@ -738,6 +738,199 @@ Network Security Groups (NSG)
   ![Preview](./Images/network151.png)
   ![Preview](./Images/network152.png)
   ![Preview](./Images/network153.png)
+                                       
+
+
+
+
+
+
+
+### Vnet Peering:
+#### Azure Inter-Network private connectivity
+* Establishing connectivity between vnets in Azure
+* Rules:
+   * CIDR Ranges should not collide
+* Options:
+  * VNET TO VNET [Refer Here](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-vnet-vnet-cli#vnet-to-vnet)
+  * VNET Peering [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview) 
+
+* Peering overview:
+![Preview](./Images/network154.png)
+* Peering connection is between two networks, but one network can create multiple peering connections with different networks
+* Peering connections are not transitive i.e. A is Peered to B and B is Peered to C that does not mean A is peered to C
+* **Experiment:**
+* We have create two vnets and vms as shown in the below image
+![Preview](./Images/network155.png)
+* **Steps:**
+* Lets create vnet A with subnet web,region east us
+![Preview](./Images/network156.png)
+![Preview](./Images/network157.png)
+* now create webvm in vnet A with subnet web and open ssh port, region east us
+![Preview](./Images/network158.png)
+![Preview](./Images/network159.png)
+*  Lets create vnet B with subnet app, region central us
+![Preview](./Images/network160.png)
+![Preview](./Images/network161.png)
+* Now create appvm in vnet B with subnet app and open ping port , region central us
+![Preview](./Images/network162.png)
+![Preview](./Images/network163.png)
+* Now lets create a Vnet peering connection for Vnet A to Vnet B
+![Preview](./Images/network164.png)
+![Preview](./Images/network165.png)
+![Preview](./Images/network166.png)
+![Preview](./Images/network167.png)
+![Preview](./Images/network168.png)
+* Now try connect from vnet A wevm to vnet B appvm via ping action 
+![Preview](./Images/network169.png)
+* it is connecting and able to ping from webvm to appvm in different vnet with different region
+* Even ssh from webvm to appvm is possible below screen shot proves it.
+![Preview](./Images/network170.png)
+
+### Virtual Private Networks (VPN)
+* Virtual Private Networks allow private network connectivity between two networks.
+* what is the difference between peering is vpn will connect any two network like on premise/organizational and virtual
+* VPN works with any two networks satisfying minimal criteria
+   * ip’s should not collide
+   * There is some infra to connect two networks, so that infra could be (Physical cables/internet connectivity/virtual connectivity) 
+* VPN are of two types:
+   * Point to Site Connection
+     * point to site connection means below image, like we connecting our laptop from home to our organization network
+   ![Preview](./Images/network171.png)
+   * Site to Site Connection
+     * site to site connection means below image, like connection two different branches of same organization networks
+   ![Preview](./Images/network172.png)
+
+#### What is VPN
+* VPN enables private connectivity between networks or a device to a network
+* VPNs are of two types
+   * Point to Site (Private connection between device and a network)
+   * Site to Site (private Connection between two networks)
+* Site to Site:
+![Preview](./Images/network173.png)
+* Mutli site:
+![Preview](./Images/network174.png)
+* Hub Spoke model azure:
+![Preview](./Images/network175.png)
+* Virtual WAN:
+![Preview](./Images/network176.png)
+
+
+Azure Site to Site VPN
+----------------------
+* [Refer Here](https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal)
+* overview
+![Preview](./Images/network177.png)
+* We need a virtual network and with VPN gateway in Azure
+* We also need a onprem network with vpn. Supported vendors for vpn [Refer Here](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-devices)
+* What we want to acheive
+![Preview](./Images/network178.png)
+* **Experiment:**
+* **Steps:**
+#### In Azure Cloud
+* Create a vnet in Azure with cidr range of `10.250.0.0/16` and subnet for web and app.
+![Preview](./Images/network179.png)
+![Preview](./Images/network180.png)
+* We need to create a vpn gateway and Gateways will be part of Gateway subnet
+![Preview](./Images/network181.png)
+![Preview](./Images/network182.png)
+* Lets create Virtual network gateways [Refer Here](https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal#create-the-gateway)
+![Preview](./Images/network193.png)
+![Preview](./Images/network194.png)
+![Preview](./Images/network195.png)
+![Preview](./Images/network196.png)
+![Preview](./Images/network197.png)
+* Lets create Local network gateways
+![Preview](./Images/network205.png)
+![Preview](./Images/network206.png)
+![Preview](./Images/network207.png)
+![Preview](./Images/network208.png)
+![Preview](./Images/network209.png)
+
+#### In AWS Cloud
+* Now lets simulate the on-prem vpn. in this case we are simulating on-prem in AWS
+  * because we dint have the our organization on-prem network 
+* Lets create vpc with subnets
+![Preview](./Images/network183.png)
+![Preview](./Images/network184.png)
+![Preview](./Images/network185.png)
+![Preview](./Images/network186.png)
+![Preview](./Images/network187.png)
+![Preview](./Images/network188.png)
+* Create Virtual private gateways(VPN) and attach to above created vpc
+![Preview](./Images/network189.png)
+![Preview](./Images/network190.png)
+![Preview](./Images/network191.png)
+![Preview](./Images/network192.png)
+* Lets create Customer gateways
+  * customer gateways is azure vpn 
+  * mention ip address tab of azure virtual network gateways Public IP address.
+![Preview](./Images/network198.png)
+![Preview](./Images/network199.png)
+![Preview](./Images/network200.png)
+* Lets created Site-to-Site VPN connections
+![Preview](./Images/network201.png)
+![Preview](./Images/network202.png)
+![Preview](./Images/network203.png)
+![Preview](./Images/network204.png)
+* once the state shows available then download the configuration file in that shared key to connect azure to aws vpn and public ip address of vpn server, all the vpn details are available.
+
+#### Finally if we do this configuration then site to site vpn will work properly
+* this is the final step
+* go to Virtual network gatways in azure
+![Preview](./Images/network210.png)
+![Preview](./Images/network211.png)
+![Preview](./Images/network212.png)
+* but in this experiement things will not work properly because azure list supported vendor for vpn is not there since we have did trial in aws clous for on-prem network with aws vpn, it is kind of stimulation.
+
+
+Virtual WAN
+-------------
+
+>>if we want to create two or three peering and multiple branches of organization networks and also azure networks together, then it is better option to go with virtual wan since all networks connection we connect to virtual wan through which we connect each other networks. and also even we can connect point to site vpn to means even our laptop connection to network also we can connect to virtual wan.
+>>
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about) for virtual wan official docs
+![Preview](https://i0.wp.com/learn.microsoft.com/en-us/azure/virtual-wan/media/virtual-wan-about/virtual-wan-diagram.png?w=800&ssl=1)
+
+* Alternative to WAN
+![Preview](https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/images/hub-spoke.png#lightbox)
+
+
+Express Route
+-------------
+* [Refer Here](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction) for express route
+![Preview](https://learn.microsoft.com/en-us/azure/expressroute/media/expressroute-introduction/expressroute-connection-overview.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
