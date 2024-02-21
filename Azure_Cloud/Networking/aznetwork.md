@@ -738,13 +738,7 @@ Network Security Groups (NSG)
   ![Preview](./Images/network151.png)
   ![Preview](./Images/network152.png)
   ![Preview](./Images/network153.png)
-                                       
-
-
-
-
-
-
+* when i tried to test it, appvm without public ip but we have attached nat gateway even though it is not getting the internet connection, also sir was very angry he dint tell about it.. so this is pending task....                                       
 
 ### Vnet Peering:
 #### Azure Inter-Network private connectivity
@@ -900,6 +894,207 @@ Express Route
 -------------
 * [Refer Here](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction) for express route
 ![Preview](https://learn.microsoft.com/en-us/azure/expressroute/media/expressroute-introduction/expressroute-connection-overview.png)
+
+
+Distributing Traffic
+---------------------
+
+### Problem with load/stress on the application
+* Generally web servers when accessed create a load on cpu and memory for every request. As number of request increase one server will not be able to solve the problem/execute the request. On a broader note we have two options
+   * Horizontal scaling: Increase number of servers running the application
+   * Vertical Scaling: Increase the server resources such as CPU/Memory etc.
+   ![Preview](./Images/network213.png)
+* If the number of servers are many then we cant share all the vms ips to requester. To solve this we need to understand the concept of Proxy Servers   
+
+#### Proxy Server
+* proxy server means to block any request or if companies says that we cannot use social media so if someone from the organization wants to access any urls which is not allowed then this proxy server will filter the request and block it. we can write rules on this proxy server allow or deny.
+* proxy server is used for client for outgoing connection or requests
+* proxy server is responsiblity for blocking url or request
+* proxy is about outgoing request
+* proxy server is responsible for filtering the network traffic
+![Preview](./Images/network214.png)
+
+#### Reverse Proxy Server
+* reverse proxy server is about incoming request.
+* for an example if users use browser based application or mobile app based application if they want to access our application, they will request through internet and internet will forward the request to public ip server and this server will forward the request to server which our application is running so this is known as incoming request.
+* reverse proxy is responsible for forwarding incoming client request
+* reverse proxy is responsible for distributing incoming traffic
+![Preview](./Images/network215.png)
+
+#### Forward Proxy Server
+* [Refer Here](https://iamabhishek-dubey.medium.com/forward-proxy-and-reverse-proxy-128e05e9e43a)
+* [Refer Here](https://www.indusface.com/blog/what-is-reverse-proxy/)
+
+
+### Load Balancers
+* Load Balancers serve incoming traffic to a application and distribute it across servers
+* Load Balancers major functionality is around
+   * Distributing an application traffic so that the individual servers do not become overloaded
+![Preview](./Images/network216.png)
+* Types of Load Balancers (functionality)
+   * Layer 4 load balancer
+   * Layer 7 load balancer
+* Type of Load Balancers (creation)
+   * Hardware load balancer
+   * Software load balancer
+   * Virtual load balancer
+
+### OSI Networking Model
+* Model overview
+![Preview](./Images/network217.png)
+![Preview](./Images/network218.png)
+* Each layer adds functionality
+![Preview](./Images/network219.png)
+![Preview](./Images/network220.png)
+* Now layer 4 loadbalancing can make load balancing decisions on the basis of
+   * ip address
+   * port
+   * protocol (TCP/UDP)
+* Layer 7 has knowledge of http in addition to layer 4
+
+### Layer 4 scenario in Cloud
+* In cloud generally we have two types of load balancing
+   * internal load balancing
+   * internet facing/public load balancing
+![Preview](./Images/network221.png)
+* Terms: in configurations
+  * inbound: where the users will hit the load balancer
+  * outbound: where the load balancer needs to send the traffic
+* Azure Layer 4 Load Balancer
+![Preview](./Images/network222.png)
+
+* AWS Layer 4 Load Balancer
+![Preview](./Images/network223.png)
+
+* Mapping name to public address of Load Balancer is done in DNS zone
+![Preview](./Images/network224.png)
+
+### Load Balancing Algorithms
+   * [Refer Here](https://www.cloudflare.com/learning/performance/types-of-load-balancing-algorithms/) for load balancer algorithms
+
+### DMZ (De-militarized Zone)
+![Previw](./Images/network225.png)
+
+### Lab setup for Load Balancing
+* **Steps:**
+* Create a ubuntu vm/ec2 instance with 80 port and 22 port opened
+```
+sudo apt update
+sudo apt install apache2 -y
+sudo apt install stress -y
+```
+* Create a file in `/var/www/html/index.html` with following content
+```
+<!DOCTYPE html>
+<html>
+<body style="background-color:powderblue;">
+<h1>Welcome to Load Balancing</h1>
+<p>This is for learning</p>
+</body>
+</html>
+```
+* Now access `http://<public ip>`
+* shutdown this instance
+
+Azure load Balancers
+---------------------
+* Azure has two types of load balancers
+   * Azure Load Balancer (Layer 4)
+   * Azure Application Gateway (Layer 7)
+
+### Azure Load Balancers
+* This is layer 4 lb as a service offered by Azure
+* Load Balancer components
+   * SKU:
+      * Basic
+      * Standard
+      * Gateway
+   * Type:
+      * Public
+      * Internal
+   * Tier:
+      * Region
+      * Global
+   * Health Probes:
+* [Refer Here](https://learn.microsoft.com/en-us/azure/load-balancer/skus) for Azure Load Balancer SKUs
+
+### Scenario: Create a load balancing for an application
+* overview
+![Preview](./Images/network226.png)
+* The network will be as shown below
+![Preview](./Images/network227.png)
+* **Experiment:**
+* **Steps:**
+* Lets create vnet with subnet web and app
+![Preview](./Images/network228.png)
+![Preview](./Images/network229.png)
+![Preview](./Images/network230.png)
+* Lets create  web vm in ntier vnet with subnet web
+![Preview](./Images/network231.png)
+![Preview](./Images/network232.png)
+![Preview](./Images/network233.png)
+![Preview](./Images/network234.png)
+![Preview](./Images/network235.png)
+* Login into vm and execute below commands
+```bash
+sudo apt update
+sudo apt install apache2 -y
+sudo apt install stress -y
+```
+* Create a file in `/var/www/html/index.html` with following content
+```html
+<!DOCTYPE html>
+<html>
+<body style="background-color:powderblue;">
+<h1>Welcome to Load Balancing</h1>
+<p>This is for learning</p>
+</body>
+</html>
+```
+* Now access `http://<public ip>`
+![Preview](./Images/network236.png)
+
+* Now create a public load balancer of web vms
+![Preview](./Images/network237.png)
+![Preview](./Images/network238.png)
+![Preview](./Images/network239.png)
+![Preview](./Images/network240.png)
+![Preview](./Images/network241.png)
+![Preview](./Images/network242.png)
+![Preview](./Images/network243.png)
+![Preview](./Images/network244.png)
+![Preview](./Images/network245.png)
+![Preview](./Images/network246.png)
+![Preview](./Images/network247.png)
+![Preview](./Images/network248.png)
+![Preview](./Images/network249.png)
+![Preview](./Images/network250.png)
+![Preview](./Images/network251.png)
+![Preview](./Images/network252.png)
+* Now access the loadbalancer frontend public ip, so that we can access our application which is running vm.
+![Preview](./Images/network253.png)
+* Lets view vm, observe here very carefully, vm doesn't have public ip, so azure has assigned loadbalancer public ip to vm below screen shot proves it.
+![Preview](./Images/network254.png)
+
+
+Azure Application Gateway
+-------------------------
+* This is layer 7 load balancer offered by Azure
+* [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/overview) for official docs
+* Different types of Routing in loadbalancer
+  * Multisite Routing [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/multiple-site-overview)
+  * URL or Path Routing [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/url-route-overview)
+  * Redirection Routing [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/redirect-overview)
+  * Rewrite HTTP Routing [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/rewrite-http-headers-url)
+
+### Lets create an Application Gateway
+* Azure Application Gateway SKU [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/overview-v2)
+* [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/quick-create-portal) for quick start Application Gateway Azure portal
+![Preview](./Images/network255.png)
+
+
+
+
 
 
 
