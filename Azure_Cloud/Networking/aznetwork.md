@@ -1087,10 +1087,138 @@ Azure Application Gateway
   * Redirection Routing [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/redirect-overview)
   * Rewrite HTTP Routing [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/rewrite-http-headers-url)
 
+#### Experiment:
+* **Steps:**
+* Lets create vnet with subnet web
+![Preview](./Images/network256.png)
+![Preview](./Images/network257.png)
+* Lets create order vm and admin vm in ntier vnet in web subnet 
+![Preview](./Images/network258.png)
+
+* Now login to both vms and execute below commands
+```bash
+sudo apt update
+sudo apt install apache2 -y
+sudo apt install stress -y
+```
+* Create a file in `/var/www/html/index.html` with following content
+```html
+<!DOCTYPE html>
+<html>
+<body style="background-color:powderblue;">
+<h1>Welcome to Load Balancing</h1>
+<p>This is for learning</p>
+</body>
+</html>
+```
+* Now access `http://<public ip>`
+
+* Now execute below commands on admin
+```bash
+sudo mkdir /var/www/html/admin
+sudo mv /var/www/html/index.html /var/www/html/admin
+```
+* Now execute below commands on orders
+```bash
+sudo mkdir /var/www/html/orders
+sudo mv /var/www/html/index.html /var/www/html/orders/
+```
+
 ### Lets create an Application Gateway
 * Azure Application Gateway SKU [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/overview-v2)
 * [Refer Here](https://learn.microsoft.com/en-us/azure/application-gateway/quick-create-portal) for quick start Application Gateway Azure portal
 ![Preview](./Images/network255.png)
+* **Steps:**
+* create application gateway subnet
+![Preview](./Images/network260.png)
+* Lets create an application gateway loadbalancer
+![Preview](./Images/network259.png)
+![Preview](./Images/network261.png)
+![Preview](./Images/network262.png)
+![Preview](./Images/network263.png)
+![Preview](./Images/network267.png)
+![Preview](./Images/network268.png)
+![Preview](./Images/network269.png)
+![Preview](./Images/network270.png)
+![Preview](./Images/network271.png)
+![Preview](./Images/network272.png)
+![Preview](./Images/network273.png)
+![Preview](./Images/network274.png)
+![Preview](./Images/network275.png)
+![Preview](./Images/network276.png)
+![Preview](./Images/network277.png)
+![Preview](./Images/network278.png)
+![Preview](./Images/network279.png)
+![Preview](./Images/network280.png)
+![Preview](./Images/network281.png)
+![Preview](./Images/network282.png)
+![Preview](./Images/network283.png)
+* Now access the applications with loadbalancer with /orders
+![Preview](./Images/network284.png)
+* Now access the applications with loadbalancer with /admin
+![Preview](./Images/network285.png)
+
+
+Azure Firewall
+---------------
+* [Refer Here](https://learn.microsoft.com/en-us/azure/firewall/overview) for official docs
+* Protecting Azure Virtual Desktop [Refer Here](https://learn.microsoft.com/en-us/azure/firewall/protect-azure-virtual-desktop?tabs=azure)
+* Protecting AKS [Refer Here](https://learn.microsoft.com/en-us/azure/firewall/protect-azure-kubernetes-service)
+* Choosing the right firewall [Refer Here](https://learn.microsoft.com/en-us/azure/firewall/choose-firewall-sku)
+### Experiment:
+* **Steps:**
+* Lets create vnet with enabling azure bastion and firewall
+![Preview](./Images/network287.png)
+![Preview](./Images/network288.png)
+![Preview](./Images/network289.png)
+![Preview](./Images/network290.png)
+![Preview](./Images/network291.png)
+![Preview](./Images/network292.png)
+![Preview](./Images/network293.png)
+![Preview](./Images/network299.png)
+![Preview](./Images/network301.png)
+* migrate to firewall policy
+![Preview](./Images/network294.png)
+![Preview](./Images/network295.png)
+![Preview](./Images/network296.png)
+* Firewall policy created
+![Preview](./Images/network297.png)
+![Preview](./Images/network298.png)
+![Preview](./Images/network300.png)
+* Enable SNAT IP Prefixes/Auto-learned SNAT IP prefixes
+![Preview](./Images/network302.png)
+![Preview](./Images/network303.png)
+![Preview](./Images/network304.png)
+![Preview](./Images/network305.png)
+
+Azure Bastion
+--------------
+Azure Bastion helps connecting to vm’s from portal without vm having public ip
+* [Refer Here](https://learn.microsoft.com/en-us/azure/bastion/bastion-overview) for azure bastion official docs
+* [Refer Here](https://learn.microsoft.com/en-us/azure/bastion/quickstart-host-portal) for Quickstart Deploy Azure Bastion
+![Preview](./Images/network286.png)
+### Experiment:
+* **Steps:**
+* create a vnet with enabling azure bastion with subnet
+![Preview](./Images/network306.png)
+* Now Lets create vm in already created vnet enabling azure bastion with subnet
+![Preview](./Images/network307.png)
+![Preview](./Images/network308.png)
+* Now provide the username and password while created vm
+![Preview](./Images/network309.png)
+* after clicked on connect it will connect via azure portal to our linux vm
+![Preview](./Images/network310.png)
+![Preview](./Images/network311.png)
+* thats all done azure bastion.
+
+
+
+
+
+
+
+
+
 
 
 
