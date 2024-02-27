@@ -507,6 +507,81 @@ chmod +x azurecli.sh
 ![Preview](./Images/azcompute86.png)
 
 
+Azure Powershell
+----------------
+* Azure Offers command line capabilities over powershell
+* Powershell will have cmdlets which will be in the form of `verb-noun` eg:- `New-Item` or `Get-Process`
+* [Refer Here](https://learn.microsoft.com/en-us/powershell/azure/install-azps-windows?view=azps-11.3.0&tabs=powershell&pivots=windows-psgallery) Install Azure PowerShell on Windows
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-powershell) for powershell to create a linux vm
+
+* Basic Commands
+```
+Get-Command
+Get-Help
+Get-Help Get-Acl -online
+Get-Help Get-Process -online
+Get-Process | Where ProcessName -eq Notepad
+Get-Process | Where ProcessName -eq Notepad | Stop-Process
+Get-AzResourceGroup | Where Location -eq eastus | Select ResourceGroupName
+Get-AzResourceGroup | Where Location -eq eastus
+Get-AzResourceGroup | Select ResourceGroupName
+Get-Help New-AzResourceGroup -online
+Get-Command '*-AzVirtualNetwork'
+Get-Help New-AzVirtualNetwork -online
+Get-Help New-AzVM -online
+Get-Credentials
+Remove-AzResourceGroup -Name myvm
+```
+
+* To Authenticate azure cloud from local powershell
+```
+Connect-AzAccount
+```
+* Then authenticate login into your azure account
+![Preview](./Images/azcompute87.png)
+
+### Activity:
+#### Lets create linux vm in azure powershell
+* [Refer Here](https://github.com/codesquareZone/AzureCliZone/commit/a3e51c445e4ced9f30bde1f053fc5f2f2b504139) for powershell commands to create resource in azure
+* copy this script and paste into powershell, it will ask for credentials provide it, it will create the resources in azure
+* Output in powershell after executing powershell commands
+![Preview](./Images/azcompute88.png)
+* Created resources in azure 
+![Preview](./Images/azcompute89.png)
+
+### To create virtual machine in azure using powershell
+* [Refer Here](https://learn.microsoft.com/en-us/powershell/module/az.compute/new-azvm?view=azps-11.3.0) for official docs
+* in above url just execute one command it will create virtual machine in azure
+```PowerShell
+New-AzVM -Name commandVm -Credential (Get-Credential)
+         or
+New-AzVM -Name MymVm -Credential (Get-Credential) -SecurityType "Standard"
+```
+* This example script shows how to create a virtual machine. The script will ask a user name and password for the VM. This script uses several other cmdlets.
+![Preview](./Images/azcompute90.png)
+![Preview](./Images/azcompute91.png)
+![Preview](./Images/azcompute92.png)
+![Preview](./Images/azcompute93.png)
+![Preview](./Images/azcompute94.png)
+
+Azure Vm creation
+-----------------
+* Create a ubuntu linux vm and install the following
+```bash
+sudo apt update
+sudo apt install apache2 stress -y
+sudo apt install php libapache2-mod-php php-mysql -y
+```
+* Create a file at /var/www/html/info.php with following content
+```php
+<?php
+phpinfo();
+?>
+```
+* Access the `http://publicip/info.php`
+* Big Picture for Horizontal Scaling with Zero down time deployments
+![PReview](./Images/azcompute95.png)
+
 
 
 
