@@ -564,23 +564,110 @@ New-AzVM -Name MymVm -Credential (Get-Credential) -SecurityType "Standard"
 ![Preview](./Images/azcompute93.png)
 ![Preview](./Images/azcompute94.png)
 
-Azure Vm creation
+
+* Big Picture for Horizontal Scaling with Zero down time deployments
+![PReview](./Images/azcompute95.png)
+
+
+Generation I vs Generation II vms
+----------------------------------
+* Generation I is older version of VMS
+* Generation II supports new generation with feature support such as
+   * larger vm sizes
+   * uefi and vTPM (Secured Boot) (Trusted => OS Secured)
+   * Resizing Disks on the fly
+   * Faster OS boot times
+
+VM Image Creation
 -----------------
+
+* Azure VM Images are of two types
+   * Generalized:
+       * These images allows to set credentials while creating virtual machine
+   * Specialized:
+       * These image have a built in user and will not allow you to set credentials during creation.
+* Azure VM Images can be hosted by two ways
+    * Managed Image
+    * Azure Compute Gallery (Supports versioning)
+
+### Lets create our first vm image
+
 * Create a ubuntu linux vm and install the following
 ```bash
 sudo apt update
 sudo apt install apache2 stress -y
 sudo apt install php libapache2-mod-php php-mysql -y
 ```
-* Create a file at /var/www/html/info.php with following content
+* Create a file at `/var/www/html/info.php` with following content
 ```php
 <?php
 phpinfo();
 ?>
 ```
 * Access the `http://publicip/info.php`
-* Big Picture for Horizontal Scaling with Zero down time deployments
-![PReview](./Images/azcompute95.png)
+![Preview](./Images/azcompute96.png)
+![Preview](./Images/azcompute97.png)
+![Preview](./Images/azcompute98.png)
+
+* **Lets create reusable image or capture image from vm in azure for above created vm with apache2 and php:**
+* Create a resource group called as `resuableimages`
+* Navigate to the vm & then click on capture button
+![Preview](./Images/azcompute99.png)
+![Preview](./Images/azcompute100.png)
+* Lets create a gallery called as `learning` to store the image
+![Preview](./Images/azcompute101.png)
+![Preview](./Images/azcompute102.png)
+* Create vm image definition
+  * Every VM Image in Azure is identified by 4 parameters
+     * publisher: referes to an organization publishing images
+     * offer: This is the offering from the organization
+     * sku: This is store keep unit
+     * version: version of the release
+* lets create a vm definition with our details in publisher, offer and sku
+![Preview](./Images/azcompute103.png)
+![Preview](./Images/azcompute104.png)
+![Preview](./Images/azcompute105.png)
+* Other details
+![Preview](./Images/azcompute106.png)
+* Now Review and create
+![Preview](./Images/azcompute107.png)
+![Preview](./Images/azcompute108.png)
+* if we want to create the same image in other region to for back up but i dont needs it since it is cost for me.
+
+* VM Image creation happens in 4 steps
+   * stop the vm
+   * Generalize the vm (Remove user credentials)
+   * Create a snapshot of disk with additional metadata to create a vm image
+   * successfully deleted the previous vm, which we created image out of it
+![Preview](./Images/azcompute109.png)
+![Preview](./Images/azcompute110.png)
+* VM image has been created
+![Preview](./Images/azcompute111.png)
+![Preview](./Images/azcompute112.png)
+* benefit of selecting this reusable image is already we installed the required software into it, so each time when we create the vm not required to install any software.
+* **Lets Create vm from vm image from gallery:**
+   * To create vm from vm image there is two ways
+       * Option:1  
+       ![Preview](./Images/azcompute113.png)
+       ![Preview](./Images/azcompute114.png)
+       ![Preview](./Images/azcompute115.png)
+       ![Preview](./Images/azcompute116.png)
+       ![Preview](./Images/azcompute117.png)
+       ![Preview](./Images/azcompute118.png)
+       ![Preview](./Images/azcompute119.png)
+       ![Preview](./Images/azcompute120.png)
+       * Options:2
+       * Navigate to resource group where vm image is created
+       * Now select vm image version
+        ![Preview](./Images/azcompute121.png)
+       * Click on create vm or vmss 
+       ![Preview](./Images/azcompute122.png)
+       ![Preview](./Images/azcompute123.png)
+       ![Preview](./Images/azcompute124.png)
+
+
+
+
 
 
 
