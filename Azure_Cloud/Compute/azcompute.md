@@ -565,10 +565,6 @@ New-AzVM -Name MymVm -Credential (Get-Credential) -SecurityType "Standard"
 ![Preview](./Images/azcompute94.png)
 
 
-* Big Picture for Horizontal Scaling with Zero down time deployments
-![PReview](./Images/azcompute95.png)
-
-
 Generation I vs Generation II vms
 ----------------------------------
 * Generation I is older version of VMS
@@ -665,16 +661,504 @@ phpinfo();
        ![Preview](./Images/azcompute123.png)
        ![Preview](./Images/azcompute124.png)
 
+Azure Virtual Machine Scaleset (VMSS) With Out Loadbalancer
+---------------------------------------
+### Activity:1
+* Big Picture for Horizontal Scaling with Zero down time deployments
+![PReview](./Images/azcompute95.png)
+* Virtual machine scaleset allows to perform automatic horizontal scaling based on metrics such as cpu, network, memory or even custom metrics
+* To Create a virtual machine scaleset we need a image. Here we have two choices, use
+   * OS image
+   * Custom image with application preinstalled
+* Using Custom image is widely adopted option.
+* We will be creating a VMSS using the image which we stored in compute gallery
+![Preview](./Images/azcompute125.png)
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview) for virtual machine scale set official docs
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/flexible-virtual-machine-scale-sets-portal) for Create virtual machines in a scale set using Azure portal for quick start
+* **Steps to Create VMSS:**
+![Preview](./Images/azcompute126.png)
+![Preview](./Images/azcompute127.png)
+![Preview](./Images/azcompute128.png)
+![Preview](./Images/azcompute129.png)
+![Preview](./Images/azcompute130.png)
+![Preview](./Images/azcompute131.png)
+![Preview](./Images/azcompute132.png)
+![Preview](./Images/azcompute133.png)
+![Preview](./Images/azcompute134.png)
+![Preview](./Images/azcompute135.png)
+![Preview](./Images/azcompute136.png)
+![Preview](./Images/azcompute137.png)
+![Preview](./Images/azcompute138.png)
+![Preview](./Images/azcompute139.png)
+* We have create a vmss with
+   * scale condition: when average `cpu utilization > 90 %` for last 5 minutes increase `1 vms` and when average `cpu utilization < 50%` for last 5 mins decrease `1 vm`
+   * min vms 1
+   * max vms 5
+   * No loadbalancer selected 
+   * Selected public ip for each vm
+   ![Preview](./Images/azcompute140.png)
+   ![Preview](./Images/azcompute141.png)
+   ![Preview](./Images/azcompute142.png)
+   * we asked for one vm so one vm is running
+   ![Preview](./Images/azcompute143.png)
+   * observe below screen shot, public ip and private ip are same when we access php application
+   ![Preview](./Images/azcompute144.png)
+   * To scale these machines the condition is Average cpu utilization should be greater than 90% for 5 minutes.
+   * To put artificial load on cpu lets use the stress tool
+   ```
+   # login into vm and execute the following command
+   stress --cpu 8 --io 4 --vm 2 --vm-bytes 128M --timeout 15m -v
+   ```
+   ![Preview](./Images/azcompute145.png)
+   * observe below screen shot before we run above stress command cpu utilization is `0`
+   ![Preview](./Images/azcompute146.png)
+   * observe below screen shot after we run above stress command cpu utilization is `100`
+   ![Preview](./Images/azcompute147.png)
+   * observe the cpu utilization it is reaching more then 90 percentage, when we execute stress tool
+   ![Preview](./Images/azcompute149.png)
+   * we have observed the number of vms increased based on dynamic metrics.
+   ![Preview](./Images/azcompute148.png)
+   * observe the cpu utilization, when we stop stress tool executing, it will decrease to below 50 percentage
+   ![Preview](./Images/azcompute150.png)
+   ![Preview](./Images/azcompute151.png)
+   * we have observed the number of vms decreased based on dynamic metrics.
+   ![Preview](./Images/azcompute152.png)
 
+### Azure Virtual Machine Scale sets More Information:
+#### Orchestration Modes in Azure VMSS
+   * Uniform:
+      * All the vms will have same sizes
+      * Supports zero down time deployments
+   * Flexible
+      * The sizes can be customized per vm
+      * Still upgrade support is not added.
+#### Deployment options/(Upgrade Policy)
+   * Manual Upgrade
+   * Automatic Upgrade
+#### Scaling Policies
+ * Manual scaling
+ * Metric Based Scaling: we define some metric and control scaling
+ * Predictive Scaling: Maching learning algorithm does the scaling based on historical utilization. This requires atleast 7 days of scaling information to be effective.
 
+Azure Virtual Machine Scale sets With loadbalancer
+--------------------------------------------------
+### Activity:2
+### Virtual Machine Image Auto Upgrade
+* The goal of this activity is to check if the vm image update to the compute gallery image definition will deploy into vmss
+* **Detailed Information:**
+  * We have a version 1.0.0 where vmss was created
+  * Now we have a new release 1.1.0. When we have a new release how will vmss handle this
+* Lets have a compute gallery with some image definition at version 1.0.0.  
+* Create a vmss with this image
+* Now add one more version of the vm image 1.1.0 to the compute gallery and wait for the vmimage to be deployed to vmss
+* ensure you are able to access application using load balancer
+* Now create a new latest version and wait for web pages to be loaded. or Wait till new version is of image is deployed to vmss/generated completely
+* **To update the image to latest version we have 3 options:**
+   * os upgrade (manual)
+   ![Preview](./Images/azcompute238.png)
+   * reimage (manual)
+   ![Preview](./Images/azcompute239.png)
+   * set auto update
+     * We needs to do two things/set two ways:
+       * First Way: Enable Application Health Monitoring
+          * If we have loadbalancer health probe configured then we can select loadbalancer health probe or we can select Application health extension.
+     * Second Way: 
+         * needs to execute below command when we as soon as created VMSS, so then when ever the new image is available in the compute gallery vmss will deploy automatically and we can see the new image version
+     `az vmss update --name carvilla --resource-group vmssdemo --set UpgradePolicy.AutomaticOSUpgradePolicy.EnableAutomaticOSUpgrade=true`
+* **Ideal steps:**
+  * Create a vm image from compute gallery
+  * Create a vmss with automatic updates or rolling updates
+  * Set the cli as shown above
+  * From now on when the compute gallery is updated with latest image the deployment to vmss starts automatically     
 
+#### This above said is the work flow of experiment which we are going to do now.  
+### Steps:
+* Create a ubuntu linux vm wit port 22 and 80 opened
+install the following
+```bash
+sudo apt update
+sudo apt install apache2 stress -y
+sudo apt install php libapache2-mod-php php-mysql -y
+```
+* Create a file at /var/www/html/info.php with following content
+```php
+<?php
+phpinfo();
+?>
+```
+![Preview](./Images/azcompute153.png)
+![Preview](./Images/azcompute154.png)
+![Preview](./Images/azcompute155.png)
+![Preview](./Images/azcompute156.png)
+![Preview](./Images/azcompute157.png)
+* Download html free template from below url
+   * [Refer Here](https://www.free-css.com/free-css-templates)
+   * I have downloaded `carvilla` html frontend home page
+* Login into vm `twebimageversion-1` execute below commands
+```
+# copy the download link execute below command
+wget https://www.free-css.com/assets/files/free-css-templates/download/page296/carvilla.zip
+# install unzip
+sudo apt install unzip
+# unzip carvilla
+unzip carvilla.zip
+# rename the file
+sudo mv carvilla-v1.0/ carvilla
+# move the file to location
+sudo mv carvilla /var/www/html/
+```
+* Access the `http://publicip/info.php`
+![Preview](./Images/azcompute158.png)
+* Access the `http://publicip/carvilla`
+![Preview](./Images/azcompute159.png)
 
+#### Lets create a gallery with image definition at version 1.0.0.
+![Preview](./Images/azcompute160.png)
+![Preview](./Images/azcompute161.png)
+![Preview](./Images/azcompute162.png)
+![Preview](./Images/azcompute163.png)
+![Preview](./Images/azcompute164.png)
+![Preview](./Images/azcompute165.png)
+![Preview](./Images/azcompute166.png)
+![Preview](./Images/azcompute167.png)
+![Preview](./Images/azcompute168.png)
+![Preview](./Images/azcompute170.png)
+![Preview](./Images/azcompute171.png)
+![Preview](./Images/azcompute172.png)
+#### Lets Create reusable image or capture image to store in the gallery
+![Preview](./Images/azcompute173.png)
+![Preview](./Images/azcompute174.png)
+![Preview](./Images/azcompute175.png)
+![Preview](./Images/azcompute176.png)
+![Preview](./Images/azcompute177.png)
+![Preview](./Images/azcompute178.png)
+![Preview](./Images/azcompute179.png)
+#### Lets create VMSS with an Autoscaling group and auto upgrade policy
+![Preview](./Images/azcompute180.png)
+![Preview](./Images/azcompute181.png)
+![Preview](./Images/azcompute182.png)
+![Preview](./Images/azcompute183.png)
+![Preview](./Images/azcompute184.png)
+![Preview](./Images/azcompute185.png)
+![Preview](./Images/azcompute186.png)
+![Preview](./Images/azcompute187.png)
+![Preview](./Images/azcompute188.png)
+* Ensure Upgrade policy is automatic or rolling updates
+![Preview](./Images/azcompute189.png)
+![Preview](./Images/azcompute190.png)
+* Review and create 
+![Preview](./Images/azcompute191.png)
+![Preview](./Images/azcompute192.png)
+![Preview](./Images/azcompute193.png)
+![Preview](./Images/azcompute194.png)
+![Preview](./Images/azcompute195.png)
+![Preview](./Images/azcompute196.png)
+![Preview](./Images/azcompute197.png)
+* Important Step After VMSS is created:
+  * Enable Application Health Monitoring
+    * If we have loadbalancer health probe configured then we can select loadbalancer health probe or we can select Application health extension.
+      * In my case i am selecting loadbalancer since i do have loadbalancer health probe
+          ![Preview](./Images/azcompute240.png)
+          ![Preview](./Images/azcompute241.png)
+          ![Preview](./Images/azcompute242.png)
+  * Execute/Set the cli command 
+     * for  auto update as soon as vmss is created. So From now on when the compute gallery is updated with latest image the deployment starts automatically and we can see the new image version
 
-
-
-
-
-
+     `az vmss update --name carvilla --resource-group vmssdemo --set UpgradePolicy.AutomaticOSUpgradePolicy.EnableAutomaticOSUpgrade=true`
+     * Output:
+```
+{
+  "additionalCapabilities": null,
+  "automaticRepairsPolicy": {
+    "enabled": false,
+    "gracePeriod": "PT10M",
+    "repairAction": null
+  },
+  "constrainedMaximumCapacity": null,
+  "doNotRunExtensionsOnOverprovisionedVMs": false,
+  "etag": null,
+  "extendedLocation": null,
+  "hostGroup": null,
+  "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Compute/virtualMachineScaleSets/carvilla",
+  "identity": null,
+  "location": "eastus",
+  "name": "carvilla",
+  "orchestrationMode": "Uniform",
+  "overprovision": false,
+  "plan": null,
+  "platformFaultDomainCount": 1,
+  "priorityMixPolicy": null,
+  "provisioningState": "Succeeded",
+  "proximityPlacementGroup": null,
+  "resiliencyPolicy": null,
+  "resourceGroup": "vmssdemo",
+  "scaleInPolicy": {
+    "forceDeletion": false,
+    "rules": [
+      "Default"
+    ]
+  },
+  "singlePlacementGroup": false,
+  "sku": {
+    "capacity": 1,
+    "name": "Standard_B1s",
+    "tier": "Standard"
+  },
+  "spotRestorePolicy": null,
+  "tags": {},
+  "timeCreated": "2024-02-29T15:56:46.426103+00:00",
+  "type": "Microsoft.Compute/virtualMachineScaleSets",
+  "uniqueId": "a7b82656-ca9c-4262-becf-3019cd71175f",
+  "upgradePolicy": {
+    "automaticOsUpgradePolicy": {
+      "disableAutomaticRollback": false,
+      "enableAutomaticOsUpgrade": true,
+      "osRollingUpgradeDeferral": null,
+      "useRollingUpgradePolicy": false
+    },
+    "mode": "Automatic",
+    "rollingUpgradePolicy": {
+      "enableCrossZoneUpgrade": null,
+      "maxBatchInstancePercent": 20,
+      "maxSurge": false,
+      "maxUnhealthyInstancePercent": 20,
+      "maxUnhealthyUpgradedInstancePercent": 20,
+      "pauseTimeBetweenBatches": "PT0S",
+      "prioritizeUnhealthyInstances": null,
+      "rollbackFailedInstancesOnPolicyBreach": false
+    }
+  },
+  "virtualMachineProfile": {
+    "applicationProfile": null,
+    "billingProfile": null,
+    "capacityReservation": null,
+    "diagnosticsProfile": {
+      "bootDiagnostics": {
+        "enabled": true,
+        "storageUri": null
+      }
+    },
+    "evictionPolicy": null,
+    "extensionProfile": {
+      "extensions": [],
+      "extensionsTimeBudget": null
+    },
+    "hardwareProfile": null,
+    "licenseType": null,
+    "networkProfile": {
+      "healthProbe": {
+        "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/loadBalancers/carvillalb/probes/carvillahp",
+        "resourceGroup": "vmssdemo"
+      },
+      "networkApiVersion": null,
+      "networkInterfaceConfigurations": [
+        {
+          "auxiliaryMode": null,
+          "auxiliarySku": null,
+          "deleteOption": null,
+          "disableTcpStateTracking": false,
+          "dnsSettings": {
+            "dnsServers": []
+          },
+          "enableAcceleratedNetworking": false,
+          "enableFpga": null,
+          "enableIpForwarding": false,
+          "ipConfigurations": [
+            {
+              "applicationGatewayBackendAddressPools": null,
+              "applicationSecurityGroups": null,
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/loadBalancers/carvillalb/backendAddressPools/carvillabp",
+                  "resourceGroup": "vmssdemo"
+                }
+              ],
+              "loadBalancerInboundNatPools": null,
+              "name": "vmssdemo-vnet-nic01-defaultIpConfiguration",
+              "primary": true,
+              "privateIpAddressVersion": "IPv4",
+              "publicIpAddressConfiguration": {
+                "deleteOption": null,
+                "dnsSettings": null,
+                "idleTimeoutInMinutes": 15,
+                "ipTags": [],
+                "name": "publicIp-vmssdemo-vnet-nic01",
+                "publicIpAddressVersion": "IPv4",
+                "publicIpPrefix": null,
+                "sku": null
+              },
+              "subnet": {
+                "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/virtualNetworks/vmssdemo-vnet/subnets/default",
+                "resourceGroup": "vmssdemo"
+              }
+            }
+          ],
+          "name": "vmssdemo-vnet-nic01",
+          "networkSecurityGroup": {
+            "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/networkSecurityGroups/basicNsgvmssdemo-vnet-nic01",
+            "resourceGroup": "vmssdemo"
+          },
+          "primary": true
+        }
+      ]
+    },
+    "osProfile": {
+      "adminPassword": null,
+      "adminUsername": "dell",
+      "allowExtensionOperations": true,
+      "computerNamePrefix": "carvilla2",
+      "customData": null,
+      "linuxConfiguration": {
+        "disablePasswordAuthentication": false,
+        "enableVmAgentPlatformUpdates": false,
+        "patchSettings": null,
+        "provisionVmAgent": true,
+        "ssh": null
+      },
+      "requireGuestProvisionSignal": true,
+      "secrets": [],
+      "windowsConfiguration": null
+    },
+    "priority": null,
+    "scheduledEventsProfile": null,
+    "securityPostureReference": null,
+    "securityProfile": {
+      "encryptionAtHost": null,
+      "encryptionIdentity": null,
+      "proxyAgentSettings": null,
+      "securityType": "TrustedLaunch",
+      "uefiSettings": {
+        "secureBootEnabled": true,
+        "vTpmEnabled": true
+      }
+    },
+    "serviceArtifactReference": null,
+    "storageProfile": {
+      "dataDisks": null,
+      "diskControllerType": "SCSI",
+      "imageReference": {
+        "communityGalleryImageId": null,
+        "exactVersion": null,
+        "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/reusableimage/providers/Microsoft.Compute/galleries/ltecommerce/images/ltwebfrontend",
+        "offer": null,
+        "publisher": null,
+        "resourceGroup": "reusableimage",
+        "sharedGalleryImageId": null,
+        "sku": null,
+        "version": null
+      },
+      "osDisk": {
+        "caching": "ReadWrite",
+        "createOption": "FromImage",
+        "deleteOption": null,
+        "diffDiskSettings": null,
+        "diskSizeGb": 30,
+        "image": null,
+        "managedDisk": {
+          "diskEncryptionSet": null,
+          "securityProfile": null,
+          "storageAccountType": "Premium_LRS"
+        },
+        "name": null,
+        "osType": "Linux",
+        "vhdContainers": null,
+        "writeAcceleratorEnabled": null
+      }
+    },
+    "timeCreated": "2024-03-01T06:55:01.093956+00:00",
+    "userData": null
+  },
+  "zoneBalance": true,
+  "zones": [
+    "1",
+    "2",
+    "3"
+  ]
+}
+``` 
+#### Now lets create a public load balancer
+* For loadbalancer frontend will be public ip, where the user hit the loadbalancer to access our applications
+* And For load balancer vmss is a backend pool, where when user hit the loadbalancer to access our application the loadbalancer will forward the request to vmss to access our application
+![Preview](./Images/azcompute198.png)
+![Preview](./Images/azcompute199.png)
+![Preview](./Images/azcompute200.png)
+![Preview](./Images/azcompute201.png)
+![Preview](./Images/azcompute202.png)
+![Preview](./Images/azcompute203.png)
+![Preview](./Images/azcompute204.png)
+![Preview](./Images/azcompute205.png)
+![Preview](./Images/azcompute206.png)
+![Preview](./Images/azcompute207.png)
+![Preview](./Images/azcompute208.png)
+![Preview](./Images/azcompute209.png)
+![Preview](./Images/azcompute210.png)
+![Preview](./Images/azcompute211.png)
+![Preview](./Images/azcompute212.png)
+![Preview](./Images/azcompute213.png)
+![Preview](./Images/azcompute214.png)
+![Preview](./Images/azcompute215.png)
+![Preview](./Images/azcompute216.png)
+![Preview](./Images/azcompute217.png)
+* Loadbalancer frontend ip and VMSS Public IP address, both are same because we have configured loadbalancer with vmss
+![Preview](./Images/azcompute218.png)
+* Observe here in VMSS we can see only one instance of carvilla, because when configuring scaling we have set initial vm is only one so it is showing only one
+![Preview](./Images/azcompute220.png)
+![Preview](./Images/azcompute219.png)
+* Now ill change the scaling initial vm to 2 observe the different it will create one more vm
+![Preview](./Images/azcompute221.png)
+![Preview](./Images/azcompute222.png)
+* Now we can access the application using load balancer ip address
+![Preview](./Images/azcompute223.png)
+![Preview](./Images/azcompute224.png)
+#### To Deploy new image version in compute gallery, Let us create the ubuntu machine with application installed
+* Create a ubuntu linux vm wit port 22 and 80 opened
+install the following
+```bash
+sudo apt update
+sudo apt install apache2 stress -y
+sudo apt install php libapache2-mod-php php-mysql -y
+```
+* Create a file at /var/www/html/info.php with following content
+```php
+<?php
+phpinfo();
+?>
+```
+![Preview](./Images/azcompute225.png)
+* Download html free template from below url
+   * [Refer Here](https://www.free-css.com/free-css-templates)
+   * I have downloaded `Rent4U` html frontend home page
+* Login into vm `ltwebimageversion-2` execute below commands
+```
+# copy the download link execute below command
+wget https://www.free-css.com/assets/files/free-css-templates/download/page294/rent4u.zip
+# install unzip
+sudo apt install unzip -y 
+# unzip rent4u
+unzip rent4u.zip
+# rename the file
+ sudo mv rent4u-html/ carvilla
+# move the file to location
+sudo mv carvilla /var/www/html/
+```
+* Access the `http://publicip/info.php`
+![Preview](./Images/azcompute226.png)
+* Access the `http://publicip/carvilla`
+![Preview](./Images/azcompute227.png)
+#### Lets Create reusable image or capture image version to store in compute gallery
+![Preview](./Images/azcompute228.png)
+![Preview](./Images/azcompute229.png)
+![Preview](./Images/azcompute230.png)
+![Preview](./Images/azcompute231.png)
+![Preview](./Images/azcompute232.png)
+* Observe below new image version`1.1.0` has been created in the compute gallery and marked as latest version
+![Preview](./Images/azcompute233.png)
+![Preview](./Images/azcompute234.png)
+![Preview](./Images/azcompute235.png)
+![Preview](./Images/azcompute236.png)
+* Now once we have deployed new image version `1.1.0` to compute gallery, VMSS has taken automatically the new/latest version `1.1.0` of an image, because we have given upgrade policy has Automatic
+* And Now when we access application with loadbalancer we have to see the new version of image that is `Rent4U`, thats our `carvilla version 1.1.0`
+![Preview](./Images/azcompute237.png)
 
 
 
