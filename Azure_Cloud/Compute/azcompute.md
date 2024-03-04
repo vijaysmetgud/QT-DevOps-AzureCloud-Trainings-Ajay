@@ -754,6 +754,7 @@ Azure Virtual Machine Scale sets With loadbalancer
 * ensure you are able to access application using load balancer
 * Now create a new latest version and wait for web pages to be loaded. or Wait till new version is of image is deployed to vmss/generated completely
 * **To update the image to latest version we have 3 options:**
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-automatic-upgrade) for official docs
    * os upgrade (manual)
    ![Preview](./Images/azcompute238.png)
    * reimage (manual)
@@ -865,217 +866,9 @@ sudo mv carvilla /var/www/html/
      * for  auto update as soon as vmss is created. So From now on when the compute gallery is updated with latest image the deployment starts automatically and we can see the new image version
 
      `az vmss update --name carvilla --resource-group vmssdemo --set UpgradePolicy.AutomaticOSUpgradePolicy.EnableAutomaticOSUpgrade=true`
-     * Output:
-```
-{
-  "additionalCapabilities": null,
-  "automaticRepairsPolicy": {
-    "enabled": false,
-    "gracePeriod": "PT10M",
-    "repairAction": null
-  },
-  "constrainedMaximumCapacity": null,
-  "doNotRunExtensionsOnOverprovisionedVMs": false,
-  "etag": null,
-  "extendedLocation": null,
-  "hostGroup": null,
-  "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Compute/virtualMachineScaleSets/carvilla",
-  "identity": null,
-  "location": "eastus",
-  "name": "carvilla",
-  "orchestrationMode": "Uniform",
-  "overprovision": false,
-  "plan": null,
-  "platformFaultDomainCount": 1,
-  "priorityMixPolicy": null,
-  "provisioningState": "Succeeded",
-  "proximityPlacementGroup": null,
-  "resiliencyPolicy": null,
-  "resourceGroup": "vmssdemo",
-  "scaleInPolicy": {
-    "forceDeletion": false,
-    "rules": [
-      "Default"
-    ]
-  },
-  "singlePlacementGroup": false,
-  "sku": {
-    "capacity": 1,
-    "name": "Standard_B1s",
-    "tier": "Standard"
-  },
-  "spotRestorePolicy": null,
-  "tags": {},
-  "timeCreated": "2024-02-29T15:56:46.426103+00:00",
-  "type": "Microsoft.Compute/virtualMachineScaleSets",
-  "uniqueId": "a7b82656-ca9c-4262-becf-3019cd71175f",
-  "upgradePolicy": {
-    "automaticOsUpgradePolicy": {
-      "disableAutomaticRollback": false,
-      "enableAutomaticOsUpgrade": true,
-      "osRollingUpgradeDeferral": null,
-      "useRollingUpgradePolicy": false
-    },
-    "mode": "Automatic",
-    "rollingUpgradePolicy": {
-      "enableCrossZoneUpgrade": null,
-      "maxBatchInstancePercent": 20,
-      "maxSurge": false,
-      "maxUnhealthyInstancePercent": 20,
-      "maxUnhealthyUpgradedInstancePercent": 20,
-      "pauseTimeBetweenBatches": "PT0S",
-      "prioritizeUnhealthyInstances": null,
-      "rollbackFailedInstancesOnPolicyBreach": false
-    }
-  },
-  "virtualMachineProfile": {
-    "applicationProfile": null,
-    "billingProfile": null,
-    "capacityReservation": null,
-    "diagnosticsProfile": {
-      "bootDiagnostics": {
-        "enabled": true,
-        "storageUri": null
-      }
-    },
-    "evictionPolicy": null,
-    "extensionProfile": {
-      "extensions": [],
-      "extensionsTimeBudget": null
-    },
-    "hardwareProfile": null,
-    "licenseType": null,
-    "networkProfile": {
-      "healthProbe": {
-        "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/loadBalancers/carvillalb/probes/carvillahp",
-        "resourceGroup": "vmssdemo"
-      },
-      "networkApiVersion": null,
-      "networkInterfaceConfigurations": [
-        {
-          "auxiliaryMode": null,
-          "auxiliarySku": null,
-          "deleteOption": null,
-          "disableTcpStateTracking": false,
-          "dnsSettings": {
-            "dnsServers": []
-          },
-          "enableAcceleratedNetworking": false,
-          "enableFpga": null,
-          "enableIpForwarding": false,
-          "ipConfigurations": [
-            {
-              "applicationGatewayBackendAddressPools": null,
-              "applicationSecurityGroups": null,
-              "loadBalancerBackendAddressPools": [
-                {
-                  "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/loadBalancers/carvillalb/backendAddressPools/carvillabp",
-                  "resourceGroup": "vmssdemo"
-                }
-              ],
-              "loadBalancerInboundNatPools": null,
-              "name": "vmssdemo-vnet-nic01-defaultIpConfiguration",
-              "primary": true,
-              "privateIpAddressVersion": "IPv4",
-              "publicIpAddressConfiguration": {
-                "deleteOption": null,
-                "dnsSettings": null,
-                "idleTimeoutInMinutes": 15,
-                "ipTags": [],
-                "name": "publicIp-vmssdemo-vnet-nic01",
-                "publicIpAddressVersion": "IPv4",
-                "publicIpPrefix": null,
-                "sku": null
-              },
-              "subnet": {
-                "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/virtualNetworks/vmssdemo-vnet/subnets/default",
-                "resourceGroup": "vmssdemo"
-              }
-            }
-          ],
-          "name": "vmssdemo-vnet-nic01",
-          "networkSecurityGroup": {
-            "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/vmssdemo/providers/Microsoft.Network/networkSecurityGroups/basicNsgvmssdemo-vnet-nic01",
-            "resourceGroup": "vmssdemo"
-          },
-          "primary": true
-        }
-      ]
-    },
-    "osProfile": {
-      "adminPassword": null,
-      "adminUsername": "dell",
-      "allowExtensionOperations": true,
-      "computerNamePrefix": "carvilla2",
-      "customData": null,
-      "linuxConfiguration": {
-        "disablePasswordAuthentication": false,
-        "enableVmAgentPlatformUpdates": false,
-        "patchSettings": null,
-        "provisionVmAgent": true,
-        "ssh": null
-      },
-      "requireGuestProvisionSignal": true,
-      "secrets": [],
-      "windowsConfiguration": null
-    },
-    "priority": null,
-    "scheduledEventsProfile": null,
-    "securityPostureReference": null,
-    "securityProfile": {
-      "encryptionAtHost": null,
-      "encryptionIdentity": null,
-      "proxyAgentSettings": null,
-      "securityType": "TrustedLaunch",
-      "uefiSettings": {
-        "secureBootEnabled": true,
-        "vTpmEnabled": true
-      }
-    },
-    "serviceArtifactReference": null,
-    "storageProfile": {
-      "dataDisks": null,
-      "diskControllerType": "SCSI",
-      "imageReference": {
-        "communityGalleryImageId": null,
-        "exactVersion": null,
-        "id": "/subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/reusableimage/providers/Microsoft.Compute/galleries/ltecommerce/images/ltwebfrontend",
-        "offer": null,
-        "publisher": null,
-        "resourceGroup": "reusableimage",
-        "sharedGalleryImageId": null,
-        "sku": null,
-        "version": null
-      },
-      "osDisk": {
-        "caching": "ReadWrite",
-        "createOption": "FromImage",
-        "deleteOption": null,
-        "diffDiskSettings": null,
-        "diskSizeGb": 30,
-        "image": null,
-        "managedDisk": {
-          "diskEncryptionSet": null,
-          "securityProfile": null,
-          "storageAccountType": "Premium_LRS"
-        },
-        "name": null,
-        "osType": "Linux",
-        "vhdContainers": null,
-        "writeAcceleratorEnabled": null
-      }
-    },
-    "timeCreated": "2024-03-01T06:55:01.093956+00:00",
-    "userData": null
-  },
-  "zoneBalance": true,
-  "zones": [
-    "1",
-    "2",
-    "3"
-  ]
-}
-``` 
+     ![Preview](./Images/azcompute243.png)
+     ![Preview](./Images/azcompute244.png)
+
 #### Now lets create a public load balancer
 * For loadbalancer frontend will be public ip, where the user hit the loadbalancer to access our applications
 * And For load balancer vmss is a backend pool, where when user hit the loadbalancer to access our application the loadbalancer will forward the request to vmss to access our application
@@ -1158,7 +951,282 @@ sudo mv carvilla /var/www/html/
 ![Preview](./Images/azcompute236.png)
 * Now once we have deployed new image version `1.1.0` to compute gallery, VMSS has taken automatically the new/latest version `1.1.0` of an image, because we have given upgrade policy has Automatic
 * And Now when we access application with loadbalancer we have to see the new version of image that is `Rent4U`, thats our `carvilla version 1.1.0`
+* >> **Note:** 
+It can take up to 3 hours for a scale set to trigger the first image upgrade rollout after the scale set is first configured for automatic OS upgrades due to certain factors such as Maintenance Windows or other restrictions. Customers on the latest image may not get an upgrade until a new image is available.
+>>
 ![Preview](./Images/azcompute237.png)
+![Preview](./Images/azcompute245.png)
+
+
+Azure VMSS with Load balancer and DNS Zone
+-------------------------------------------
+### Activity:3
+![Preview](./Images/azcompute269.png)
+#### Lets create a VMSS and image from compute gallery and loadbalancer
+* The image which is already stored in the compute gallery is already installed these applications `apache` `php` and `carvilla` in `Activity:2`
+* Below screen shot proves it
+![Preview](./Images/azcompute256.png)
+* By accessing public ip of image `ltecommerce/ltwebfrontend/1.1.0` proves that above applications has been installed
+* Access the `http://20.51.230.160/`
+![Preview](./Images/azcompute257.png)
+* Access the `http://20.51.230.160/info.php`
+![Preview](./Images/azcompute258.png)
+* Access the `http://20.51.230.160/carvilla/`
+![Preview](./Images/azcompute259.png)
+* Now Creating a VMSS and existing image from compute gallery and loadbalancer
+![Preview](./Images/azcompute260.png)
+![Preview](./Images/azcompute261.png)
+![Preview](./Images/azcompute262.png)
+![Preview](./Images/azcompute263.png)
+![Preview](./Images/azcompute264.png)
+![Preview](./Images/azcompute265.png)
+![Preview](./Images/azcompute266.png)
+![Preview](./Images/azcompute267.png)
+![Preview](./Images/azcompute268.png)
+![PReview](./Images/azcompute270.png)
+![Preview](./Images/azcompute271.png)
+#### Lets create a public DNS Zone
+### DNS in Azure
+* [Refer Here](https://learn.microsoft.com/en-us/azure/dns/dns-overview) for What is Azure DNS official docs
+* [Refer Here](https://azure.microsoft.com/en-in/products/dns) for Azure DNS official docs
+* [Refer Here](https://learn.microsoft.com/en-us/azure/dns/dns-delegate-domain-azure-dns) for Host your domain/create in Azure DNS official docs
+* DNS record types [Refer Here](https://www.site24x7.com/learn/dns-record-types.html)
+* **Steps:**
+  * Needs to purchase Domain in web hosting company like `Godaddy` or `Hostinger`
+  * Ill purchase in hostinger [Refer Here](https://hpanel.hostinger.com/domain/azurebyexamplecloud.cloud/domain-overview)
+  ![Preview](./Images/azcompute246.png)
+* Lets create a public DNS Zone in Azure cloud for domain `azurebyexamplecloud.cloud`  
+![Preview](./Images/azcompute247.png)
+![Preview](./Images/azcompute248.png)
+![Preview](./Images/azcompute249.png)
+![Preview](./Images/azcompute250.png)
+![Preview](./Images/azcompute251.png)
+![Preview](./Images/azcompute255.png)
+* Now store the Nameservers's from azure dns zone  into the domain provider
+![Preview](./Images/azcompute252.png)
+![Preview](./Images/azcompute253.png)
+![Preview](./Images/azcompute254.png)
+* Now lets create the record set  in the DNS Zone
+![Preview](./Images/azcompute272.png)
+![Preview](./Images/azcompute273.png)
+![Preview](./Images/azcompute274.png)
+![Preview](./Images/azcompute275.png)
+![Preview](./Images/azcompute276.png)
+* Now access your application with domain name
+  * `www.azurebyexamplecloud.cloud/`
+  ![Preview](./Images/azcompute277.png)
+  * `www.azurebyexamplecloud.cloud/carvilla/`
+  ![Preview](./Images/azcompute278.png)  
+* **Note:** if it is not azure resource then Alias should select no and give directley ip address, but in our case it is azure resource so we have selected Alias yes and given name. 
+* An ALIAS record is a type of DNS record that points your domain name to a hostname instead of an IP address.
+---
+
+
+Azure Savings Plan vs Azure Reservations
+----------------------------------------
+* [Refer Here](https://learn.microsoft.com/en-us/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation)
+* Azure Savings plan means using all the azure services day to day activities
+* Azure Reservations means we fixing or reserving the particular service for, particular period or fixed period
+
+
+Azure Dedicated Hosts
+----------------------
+* Dedicated hosts means for an example we have 10 vm which needs to run on particular server, reason been dedicated hardware resource and we will have the control on that hardware resource.
+* [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/dedicated-hosts) for Azure Dedicated Hosts
+
+
+Azure App Services - Azure PaaS
+-------------------------------
+* Azure App Services is known as Azure Pass, because we directley deploy our application into it, we are not worried about anything about vm or applications installing it. 
+* [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/overview) for App Service overview
+* [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net70&pivots=development-environment-azure-portal) for a sample deployment app service\
+* Note: 
+  * why we have use app service because it easy way to deploy our app with code immediatley to azure and expore via domain
+  * incase of virutal machine then we needs to create vm or vmss and install required platform like dotnet and applications then create service file to start application then to accces the application with dns zone and domain
+### Experiment:1
+* In this Example we are building the code of dotnet in the visual code locally and running locally then we will publish to Azure App Services
+* **Steps:**
+* To Create App Services resources in Azure and publish your project
+![Preview](./Images/azcompute279.png)
+![Preview](./Images/azcompute280.png)
+![Preview](./Images/azcompute281.png)
+![Preview](./Images/azcompute282.png)
+![Preview](./Images/azcompute283.png)
+![Preview](./Images/azcompute284.png)
+![Preview](./Images/azcompute285.png)
+![Preview](./Images/azcompute286.png)
+![Preview](./Images/azcompute287.png)
+![Preview](./Images/azcompute288.png)
+* To Create an New Project ASP.NET web app in Visual Studio 
+   * [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net70&pivots=development-environment-vs#1-create-an-aspnet-web-app)
+   * Should download Visual Studio 2022 [Refer Here](https://visualstudio.microsoft.com/downloads/) and install 
+![Preview](./Images/azcompute289.png)
+![Preview](./Images/azcompute290.png)
+![Preview](./Images/azcompute291.png)
+![Preview](./Images/azcompute292.png)
+* From the Visual Studio menu, select Debug > Start Without Debugging to run the web app locally. If you see a message asking you to trust a self-signed certificate, select Yes.
+![Preview](./Images/azcompute293.png)
+![Preview](./Images/azcompute294.png)
+![Preview](./Images/azcompute295.png)
+![Preview](./Images/azcompute296.png)
+* Publish your web app Azure AppServices
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net70&pivots=development-environment-vs#2-publish-your-web-app)
+![Preview](./Images/azcompute297.png)
+![Preview](./Images/azcompute298.png)
+![Preview](./Images/azcompute299.png)
+![Preview](./Images/azcompute300.png)
+![Preview](./Images/azcompute301.png)
+![Preview](./Images/azcompute302.png)  
+![Preview](./Images/azcompute303.png)
+![Preview](./Images/azcompute304.png)
+![Preview](./Images/azcompute305.png)
+![Preview](./Images/azcompute306.png)
+![Preview](./Images/azcompute307.png)
+![Preview](./Images/azcompute309.png)
+* What ever we builds in our local visual studio we can deploy into azure app services and we can access with domain which is avaialbe in azure app service `myfirstwebappservices.azurewebsites.net`
+![Preview](./Images/azcompute308.png)
+![Preview](./Images/azcompute311.png)
+* Visual Studio builds, packages, and publishes the Web app to Azure, and then launches the app in the default browser.
+![Preview](./Images/azcompute310.png)
+* Update/change  the Web app and redeploy
+  * [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net70&pivots=development-environment-vs#3-update-the-app-and-redeploy) 
+  * In Solution Explorer, under your project, open Index.cshtml.
+  ![Preview](./Images/azcompute312.png)
+  * Added new paragraph and save changes 
+  ![Preview](./Images/azcompute313.png)
+  * Now we can run locally in visual studio then publish it or we can direcley publish it
+  * I ran locally first then i am publishing it
+  ![Preview](./Images/azcompute314.png)
+  ![Preview](./Images/azcompute316.png)
+  * In the Publish summary page, select Publish.
+  ![Preview](./Images/azcompute315.png)
+  * When publishing completes, Visual Studio launches a browser to the URL of the web app.
+  ![Preview](./Images/azcompute317.png)
+
+* **Note:**  
+   * Even we can buy custom domain in azure but only for app services not for others
+
+### Experiement:2
+* **Option:1**
+* In This Example developer will write the code for dotnet app and uploaded to github so we will configure the github app repo while creating Azure App Service, and then we will publish the web app.and then we will acces the azure app service domain url to check app status.
+* Set up GitHub Actions deployment when creating the azure app service it self
+* **Steps:**
+* Lets create Azure App Service 
+![Preview](./Images/azcompute318.png)
+![Preview](./Images/azcompute319.png)
+![PReview](./Images/azcompute320.png)
+![Preview](./Images/azcompute321.png)
+![Preview](./Images/azcompute322.png)
+![Preview](./Images/azcompute323.png)
+![Preview](./Images/azcompute324.png)
+![Preview](./Images/azcompute325.png)
+![PReview](./Images/azcompute326.png)
+![Preview](./Images/azcompute327.png)
+![Preview](./Images/azcompute328.png)
+![Preview](./Images/azcompute329.png)
+* Browse to the deployed application in your web browser at the URL `appgithubdemo.azurewebsites.net`
+![Preview](./Images/azcompute331.png)
+![Preview](./Images/azcompute330.png)
+
+* **Option:2** 
+  * In This Example developer will write the code for dotnet app and uploaded to github so we will configure the github app repo `After creating Azure App Service`, means we will configure github repo for our app in `Deployment Center` option, and then we will publish the web app.and then we will acces the azure app service domain url to check app status
+* Set up GitHub Actions deployment from the Deployment Center
+* **Steps:**
+* Lets create Azure App Service
+![Preview](./Images/azcompute332.png)
+![Preview](./Images/azcompute333.png)
+![Preview](./Images/azcompute334.png)
+![Preview](./Images/azcompute335.png)
+![Preview](./Images/azcompute336.png)
+![Preview](./Images/azcompute337.png)
+![Preview](./Images/azcompute338.png)
+* Configure the deployment Center source
+![Preview](./Images/azcompute339.png)
+![Preview](./Images/azcompute340.png)
+![Preview](./Images/azcompute341.png)
+![Preview](./Images/azcompute342.png)
+* Now access the applications with domain url `https://mydontnetappservice.azurewebsites.net/`
+![Preview](./Images/azcompute343.png)
+
+### Azure App Services - Azure PaaS 
+* Pricing Plans in Azure App Service [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) to know about which plan to select and what is features or hardware, this document is good
+* App service with datbase: 
+   * to configure database for ur application step by step procedure [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-dotnet-sqldatabase)
+   * For example to do experiement on web app with databse go thorough this above link and we can practice
+
+### Azure Key Vault Example
+* what ever sensative information like: 
+   * key
+   * secreat
+   * Certificate
+* Should store in azure key vault
+* Even when we create above app services can use the azure key for secrets so that our applications will contain only the code not the secrets
+* [Refer Here](https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references?tabs=azure-cli) 
+* [Refer Here](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts)
+
+* Authentication: means user login or logout
+     * From Azure AD
+     * or any external Identity provider
+* Database: Connection string configuration
+    * Environment variable
+    * settings file
+* Sensitive: Information
+    * Azure Key Vault
+
+### Azure Spring Apps
+* is know as same like App Services but difference is azure spring apps designed for java based or spring app or java spring frame work kind of applications
+* [Refer Here](https://azure.microsoft.com/en-in/products/spring-apps) for Pricing Plans 
+* [Refer Here](https://learn.microsoft.com/en-us/azure/spring-apps/enterprise/overview) for Azure Spring Apps
+* For Experiment Refer Below
+   * [Refer Here](https://github.com/spring-guides/gs-spring-boot-for-azure)
+
+
+Azure Functions
+---------------
+* azure functions means we dont have to run our applications or hardware all the time or pay the bill as soon as we created azure functions, only when user use the our applications then azure functions billing will start and we needs to pay
+* Azure Functions Pricing Plans[Refer Here](https://azure.microsoft.com/en-us/pricing/details/functions/)
+   * Consumption
+   * Premium
+   * App Service Plan
+
+* Azure Functions overview [Refer Here](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp)
+* Ensure the Azure Functions Extension is installed in vscode
+![Preview](./Images/azcompute344.png)
+
+* To create or work with Azure fucntions app we have two options
+  * Options:1 
+     * Directley create azure functions from azure portal 
+        * [Refer Here](https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-function-app-portal?pivots=programming-language-csharp)
+   * Options:2
+      * Create azure functions from others like visual code 
+         * [Refer Here](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-python)
+
+### Workshop Items
+![Preview](./Images/azcompute345.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
