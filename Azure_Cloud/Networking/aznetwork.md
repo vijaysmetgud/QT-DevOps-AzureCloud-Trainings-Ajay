@@ -389,7 +389,7 @@ NAT Gateway
 -----------
 * Network Address Translation is required to provide internet access to private networks
 * Nat will transfer our request from router with public ip and takes request from destination and again forward request to router with our home private ip
- 
+
 ![Preview](./Images/network11.png)
 
 DNS
@@ -718,15 +718,10 @@ Network Security Groups (NSG)
   ![Preview](./Images/network135.png)
   ![Preview](./Images/network136.png)
   ![Preview](./Images/network137.png)
-  * Create NAT Gateway and attach to app and db subnet or Configure virtual network subnet to use a NAT gateway
-  ![Preview](./Images/network138.png)
-  ![Preview](./Images/network139.png)
-  ![Preview](./Images/network140.png)
-  ![Preview](./Images/network141.png)
   * Create security group allow ping 
   ![Preview](./Images/network142.png)
   ![Preview](./Images/network143.png)
-  * Lets create vm in ntier vnet with web subnet and allow ssh port 22 to it.
+  * Lets create vm in ntier vnet with web subnet with public and allow ssh port 22 to it.
   ![Preview](./Images/network144.png)
   ![Preview](./Images/network145.png)
   ![Preview](./Images/network146.png)
@@ -739,8 +734,25 @@ Network Security Groups (NSG)
   ![Preview](./Images/network151.png)
   ![Preview](./Images/network152.png)
   ![Preview](./Images/network153.png)
-* when i tried to test it, appvm without public ip but we have attached nat gateway even though it is not getting the internet connection, also sir was very angry he dint tell about it.. so this is pending task....                                       
-
+  * Now login into webvm and check ping, it will work because, we have given public ip  
+  ![Preview](./Images/network312.png)
+  * Now ssh to appvm and check ping it will not work since we have not given public ip
+  ![Preview](./Images/network313.png)
+  * Now ssh to dbvm and check ping it will not work since we have not given public ip
+  ![Preview](./Images/network314.png)
+  * Create NAT Gateway and attach to app and db subnet or Configure virtual network subnet to use a NAT gateway
+  ![Preview](./Images/network138.png)
+  ![Preview](./Images/network139.png)
+  ![Preview](./Images/network140.png)
+  ![Preview](./Images/network141.png)
+  * After association of nat gateway to vnet and subnet with app and db, ssh to appvm and dbvm and check the public ip, which will show the nat gateway public ip, because we have associated nat gateway with appvm and dbvm subnet,  so nat gateway public ip will assigned to our private appvm and dbvm,  through this nat gateway public ip our private vm's will get internet connection.
+  ![Preview](./Images/network315.png)
+  ![Preview](./Images/network316.png)
+ * so nat gateway public ip will assigned to our private appvm and dbvm,  through this nat gateway public ip our private vm's will get internet connection.
+ ![Preview](./Images/network317.png)
+ ![Preview](./Images/network318.png)
+ ![Preview](./Images/network319.png)
+ * Hence we have proved that using nat gateway as per above screen shot we can get internet connect for our private vm's
 
 ### Vnet Peering:
 #### Azure Inter-Network private connectivity
