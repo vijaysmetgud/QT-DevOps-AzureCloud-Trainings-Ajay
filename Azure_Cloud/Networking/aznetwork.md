@@ -388,7 +388,8 @@ subnet  sm: 11111111.11111111.10000000.00000000
 NAT Gateway
 -----------
 * Network Address Translation is required to provide internet access to private networks
-* Nat will transfer our request from router with public ip and takes request from destination and again forward request to router with our home private ip 
+* Nat will transfer our request from router with public ip and takes request from destination and again forward request to router with our home private ip
+ 
 ![Preview](./Images/network11.png)
 
 DNS
@@ -739,6 +740,7 @@ Network Security Groups (NSG)
   ![Preview](./Images/network152.png)
   ![Preview](./Images/network153.png)
 * when i tried to test it, appvm without public ip but we have attached nat gateway even though it is not getting the internet connection, also sir was very angry he dint tell about it.. so this is pending task....                                       
+
 
 ### Vnet Peering:
 #### Azure Inter-Network private connectivity
