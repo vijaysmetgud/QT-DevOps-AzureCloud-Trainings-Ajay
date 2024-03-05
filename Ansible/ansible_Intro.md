@@ -103,6 +103,7 @@ bye
 
 ### Lab Setup:
  * Overview
+
  ![Preview](./Images/ansible4.png)
 * We will create a user called as `devops` on `ansible-controller` and `node-1`
 * Enable password based authentication since in 
@@ -206,6 +207,7 @@ ansible --version
 ```      
 ![Preview](./Images/ansible14.png)
 * Overview
+
 ![Preview](./Images/ansible15.png)
 
 ### Test ansible connectivity from ansible controller to node-1
@@ -409,7 +411,7 @@ ansible-playbook -i hosts --check redhatphp.yaml
 ansible-playbook -i hosts redhatphp.yaml
 ```
 ![Preview](./Images/ansible27.png)
-* In Redhat Linux Distribution after installing httpd we needs to start the service and enable it for next time restarting the service means by automatically service should start so we need to add one more line of yal for service to start
+* In Redhat Linux Distribution after installing httpd we needs to start the service and enable it for next time restarting the service means by automatically service should start so we need to add one more line of yaml for service to start
 ![Preview](./Images/ansible28.png)
 
 * [Refer Here](https://github.com/codesquareZone/AnsibleZone/commit/b935c11f6d7f0b37dc642c44e033650152036144) for service yaml file
@@ -675,7 +677,7 @@ ansible-playbook -i hosts tomcat.yaml
 * Observe below changed ownership for directory `/opt/tomcat`
 ![Preview](./Images/ansible57.png)
 
-* To Add execute permissions in `/opt/tomcat/latest/bin` directory for shell files:**
+* **To Add execute permissions in `/opt/tomcat/latest/bin` directory for shell files:**
 * In Ansible we have two modules such as `command` and `shell` which execute raw low level linux commands and these are not `idempotent`. It is our job to make them `idempotent` 
    * [Refer Here](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html) for command module official docs
    * [Refer Here](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html) for shell module official docs
@@ -691,6 +693,7 @@ ansible-playbook -i hosts tomcat.yaml
    * [Refer Here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#registering-variables) ansible register variables
 * Using register variables and debug modules printing the output of shell script files 
 * [Refer Here](https://github.com/codesquareZone/AnsibleZone/commit/76a9feafb670af4291a7b752ddfb2863a9770222) for register and debug module to print output yaml file
+
 ![Preview](./Images/ansible61.png)
 * **Loop with debug and msg:**
 * by using loop, debug and msg printing the each files 
@@ -825,6 +828,7 @@ WantedBy=multi-user.target
 * Using handlers and notify we will restart the tomcat at the last when only configuration changes
 * [Refer Here](https://github.com/codesquareZone/AnsibleZone/commit/d707dfa4ac28938faf6cbaa4e377f1a9bf2bc144) for hanlders and notify yaml file
 * Look at the below screen shot, changes has taken place so notify called handlers to take action, so it is restarted service 
+
 ![Preview](./Images/ansible74.png)
 
 * **Flush Handlers with Notify:**
@@ -832,6 +836,7 @@ WantedBy=multi-user.target
 * notify will call handlers and handlers usually execute at the last, scenario where we want to execute handlers at the beginning then we can use this `flush handler`
 * refer below example for `flush handlers` 
 * [Refer Here](https://github.com/codesquareZone/AnsibleZone/commit/2a792c199281343d7cc157cf0c221232b70b1891) for flush handlers yaml files
+
 ![Preview](./Images/ansible75.png)
 ![Preview](./Images/ansible76.png)
 
@@ -927,12 +932,12 @@ for calling tasks playbook yaml file
 * [Refer Here](https://github.com/codesquareZone/AnsibleZone/commit/c4ca5505c09db831d00311d3cac8d320b24e049e) for include tasks yaml file
 ![Preview](./Images/ansible85.png)
 #### Difference between include_ and import_ in ansible
-* **include:** is dynamic i.e. we have flexibility fo using include tasks conditionally
+* **include:** is dynamic i.e. we have flexibility for using include tasks conditionally
 * **import:** is static i.e. we need to execute this unconditionally
 
 Ansible Roles
 -------------
-* roles ia a modular way of writing playing book, means splitting playbooks into multiple files, to make playbook looks simple
+* roles is a modular way of writing playing book, means splitting playbooks into multiple files, to make playbook looks simple
 * Ansible role helps in creating reusability
 * [Refer Here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html) for ansible roles official docs
 * **Command to create roles:**
@@ -1031,7 +1036,7 @@ ansible-playbook -i hosts --check java.yaml
 
 ### Execution strategies In Ansible:
 * **serial:**
-  * Ansible playbooks will run parallel with all the host, so by setting te serial keyword, we can run the task host by host or percentage or batch wise.
+  * Ansible playbooks will run parallel with all the host, so by setting the serial keyword, we can run the task host by host or percentage or batch wise.
 * [Refer Here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_strategies.html) 
 
 * **throttle:**
