@@ -25,6 +25,7 @@ Git
    * Stash
 
 * Lets focus on 3 areas:
+
 ![Preview](./Images/git1.png)
 
 ### Note:
@@ -46,6 +47,7 @@ Git
 ![Preview](./Images/git4.png)
 
 * Three areas quick revision
+
 ![Preview](./Images/git5.png)
 
 * Lets add this change to the staging area
@@ -111,6 +113,7 @@ Git
   * untracked:
        * delete normally
        * git clean -fd .
+
        ![Preview](./Images/git21.png)
 
 
@@ -132,6 +135,7 @@ Branching:
 
 ### How Git Works:
 * Current repository changes
+
 ![Preview](./Images/git22.png)
 
 * To understand we will be using plumbing commands
@@ -217,6 +221,7 @@ Merge branch 'develop'
 
 * **scenario for master branch:**
   * i have created below folder and files in master branch
+
   ![Preview](./Images/git30.png)
   ![Preview](./Images/git31.png)
   * then used below command
@@ -254,6 +259,7 @@ Merge branch 'develop'
   ```
 
 * Consider the following:
+
 ![Preview](./Images/git34.png)
 * We need to have all the changes in `develop branch` into `master branch`
 ![Preview](./Images/git35.png)
@@ -268,6 +274,7 @@ Terms:
 Rebase:
 -------
 * The current state of repository
+
 ![Preview](./Images/git38.png)
 ![Preview](./Images/git39.png)
 * Now we need the change done on `master branch` in `develop branch`
@@ -275,6 +282,7 @@ Rebase:
 ![Preview](./Images/git40.png)
 ![Preview](./Images/git41.png)
 * Rebase in other scenario:
+
 ![Preview](./Images/git42.png)
 * git rebase is a way of moving the changes from one branch onto another branch
 * rebasing re-writes the project history by creating brand new commits for each commit in the original branch
@@ -286,6 +294,7 @@ Cherry-pick
 ------------
 * Cherry-picking is where you require one or sequence of commits from one branch to another
 * Consider the following graph
+
 ![Preview](./Images/git43.png)
 * In the master branch we need changes from develop branch commit id `9c3cc1b`
 ```
@@ -457,7 +466,7 @@ For installation [Refer Here](https://github.com/nvie/gitflow/wiki/Installation)
 #### Cheat Sheet of git-flow toolset
 [This](https://danielkummer.github.io/git-flow-cheatsheet/) cheatsheet seems to be very useful
 #### My take on this
-The git flow branching strategy is very effective branching strategy for the projects. If the project under development needs to support the older releases made then the git flow cab be extended with support branches For the support branches i have found useful resource over [Here](https://github.com/petervanderdoes/gitflow-avh/wiki/Reference:-git-flow-support)
+The git flow branching strategy is very effective branching strategy for the projects. If the project under development needs to support the older releases made then the git flow can be extended with support branches For the support branches i have found useful resource over [Here](https://github.com/petervanderdoes/gitflow-avh/wiki/Reference:-git-flow-support)
 
 #### Also refer the following branching strategy:
  * **Gitlab:**
@@ -478,7 +487,7 @@ GitHub Pull Request/Pull-request
 * The author/owner of original repo reviews the changes and merges the pull request if he wants or reject the pull request
 * [Refer Here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) for official docs pull request 
 ![Preview](./Images/git50.png)
-this above image scenario we want to do add some changes/features in the linux but we will not have access to linux os so what we will do is, we will fork the linux repo into our github and we will add the changes/features then we will do pull request to the owner of original linux repo in this case if he likes the changes/features add he will accept the pull request if not he will reject the pull request
+this above image scenario we want to do add some changes/features in the linux but we will not have access to linux  so what we will do is, we will fork the linux repo into our github and we will add the changes/features then we will do pull request to the owner of original linux repo in this case if he likes the changes/features he will accept the pull request if not he will reject the pull request
 
 #### Example of pull request:
 * **Steps:**

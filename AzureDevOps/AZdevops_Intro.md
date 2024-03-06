@@ -18,6 +18,7 @@
      * Version Control System
 
 * Azure DevOps Features Artitecture:
+
 ![Preview](./Images/azdevops1.png)
 
 ### Azure DevOps setup:
@@ -325,7 +326,7 @@ Enter work folder => enter for default folder called _work
    * Now here i am choosing full access
    * fill the details and click create
    ![Preview](./Images/azdevops31.png)
-   * once token is created copy some where, if not after closing the window it not be see.
+   * once token is created copy some where, if not after closing the window it not be seen.
    ![Preview](./Images/azdevops32.png)
    ![Preview](./Images/azdevops33.png)
 
@@ -420,6 +421,7 @@ Azure DevOps YAML Schema:
 * If we have only one stage then Azure Pipeline is collection of Jobs and 
   * if Azure pipeline has only one stage and one job then Azure pipeline can be considered as set of steps
 * Like below screen shot:
+
 ![Preview](./Images/azdevops53.png)
 * If we multiple stages then we needs to write jobs and steps multiple
 * if in case we dont have multiple stages, means only one stage then not required to write stage, job, directly we can write steps. and the actual work is done at the step level. means perform/implementation.
@@ -1105,7 +1107,7 @@ git push origin master
 
 ## Enable System Diagnostics:
 * Enable System Diagnostics for pipelines failing due to unknown reasons, what is the benefits of enabling it.? 
-* so when we enable system diagnostics we will get some extra information while running the build what will happen in the azure agent will show us ver detailed so that it will helpful in debugging or trouble shooting.
+* so when we enable system diagnostics we will get some extra information while running the build what will happen in the azure agent will show us very detailed so that it will helpful in debugging or trouble shooting.
 * Enabling system diagnostic, what azure devops will do is it will too much of information from the agent where build is running 
 * Enabling system diagnostic is waste of time because it will increase our build time  
 
@@ -1116,9 +1118,10 @@ git push origin master
 
 
 ## strategy: matrix, maxParallel:
-* Using of matrix while defining multiple jobs, we can even define execution order of jobs for an example: we have written 20 jobs but we want to execute only 2 jobs so this we can achieve by using matrix and maxprallel 
-* Using matrix job strategy we can build on multiple platforms 
-* [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/jobs-job-strategy?view=azure-pipelines) for official docs to understand completely strategy matrix
+* Using strategy: matrix and maxParallel  we can restrict some jobs refer below definition:
+    * Using strategy: maxParallel we can define execution order of jobs, for an example: we have written 20 jobs but we want to execute only 2 jobs so this we can achieve by using maxParallel
+    * Using matrix job strategy we can build on multiple platforms 
+    * [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/jobs-job-strategy?view=azure-pipelines) for official docs to understand completely strategy matrix
 
 ## Key concepts Azure DevOps:
 * [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/key-pipelines-concepts?view=azure-devops) for below
@@ -1468,7 +1471,7 @@ git push origin master
 * But environment support/allow us to add resources in the `kubernetes` or `virtual machine`.
 * for more brief about environment look definition above.
 
-* Now we are going to use Deployment and environment in our yal file to see the approval process.
+* Now we are going to use Deployment and environment in our yaml file to see the approval process.
 
 * in this example we are using strategy run once but for other strategy refer deployment yaml schema
 
@@ -1567,6 +1570,7 @@ git push origin master
   * Required template
 
 ### Deployment:
+* [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops)
 * A deployment job is a collection of steps to be run sequentially
 * A deployment job can be used to target an entire environment (group of resources)
 * we can record deployment history on a specific resource within the environment
@@ -2220,7 +2224,7 @@ git push origin master
 ![Preview](./Images/azdevops170.png)
 ![Preview](./Images/azdevops171.png)
 
-* add following yaml code in the `azure-pipelines.yaml` and will tamplate which is in the github repo
+* add following yaml code in the `azure-pipelines.yaml` and will call template which is in the github repo
 
 ```yaml
 ---
@@ -2497,7 +2501,7 @@ steps:
 
 * [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/publish-maven-artifacts?view=azure-devops) for Set up your project to publish to azure feed
 
-### maven project pbulish to azure artifact feed steps below:
+### maven project publish to azure artifact feed steps below:
 #### Steps:
 * create feed in azure artifact
 ![Preview](./Images/azdevops195.png)
