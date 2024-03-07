@@ -536,8 +536,15 @@ alias.pushmain=push origin HEAD:main
 alias.s=status
 alias.pr=pull
 ```
+### Command to list which type of commit
 
+       git cat-file -t <commit-id>
 
+### Command to list content of commit
+
+       git cat-file -p <commit-id>
+
+       
 
 
 

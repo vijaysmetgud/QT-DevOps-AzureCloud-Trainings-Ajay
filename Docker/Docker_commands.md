@@ -377,3 +377,36 @@ IN detached mode the container will be started in the background
 * Command to make full screen 
      
       alt enter
+
+## Docker Commands To Check Container Memory
+
+* Command to check container memory
+
+       docker stats
+
+## Docker Command to create container with memory and cpu
+
+     docker container run -d -P --name memcpu --cpus=0.5 --memory 256m jenkins/jenkins
+
+## Docker Swarm Commands:
+
+* Command to create service/nginx image
+
+    docker service create --replicas 2 --name nginx-test nginx
+
+* Command to list the service/image
+
+     docker service ls
+
+* Command to inspect service/image
+
+     docker service inspect nginx-test
+
+* Command to list the service/images running on which node
+
+     docker service ps nginx-test
+
+* Command to scale images 
+
+   docker service scale nginx-test=4
+

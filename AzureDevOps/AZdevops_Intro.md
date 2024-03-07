@@ -989,8 +989,48 @@ docker info
 * Lets create pipeline for jobs:
 
 ```yaml
+---
+trigger:
+  - master
 
-
+jobs:
+  - job: dotnetbuild
+    displayName: Build dotnet code
+    pool: default
+    steps:
+      - bash: "echo staging directory $(Build.ArtifactStagingDirectory) and number $(Build.BuildNumber)"
+      - bash: env
+      - task: DotNetCoreCLI@2
+        displayName: build the code
+        inputs:
+          command: build
+          projects: src/NopCommerce.sln
+          configuration: Release
+      - task: DotNetCoreCLI@2
+        displayName: publish the nopcommerce
+        inputs:
+          command: publish
+          projects: src/Presentation/Nop.Web/Nop.Web.csproj
+          zipAfterPublish: true
+          configuration: Release
+          arguments: "-o $(Build.ArtifactStagingDirectory)/Published"
+      - task: PublishBuildArtifacts@1
+        displayName: Make artifacts available
+        inputs:
+          PathtoPublish: $(Build.ArtifactStagingDirectory)/Published/Nop.Web.zip
+          ArtifactName: 'nop'
+          publishLocation: Container
+  - job: dockerbuild
+    displayName: docker image build
+    pool:
+      name: "Azure Pipelines"
+      vmImage: "ubuntu-22.04"
+    steps:
+      - task: Docker@2
+        inputs:
+          command: 'build'
+          Dockerfile: '**/Dockerfile'
+          tags: "ajaykumarramesh/nopfromazuredevops"
 ```
 
 ```bash
@@ -1016,8 +1056,55 @@ git push origin master
 * In these cases we use `dependsOn`     
 
 ```yaml
+---
+trigger:
+  - master
 
-
+jobs:
+  - job: sanity
+    displayName: dummy to understand dependency
+    pool: default
+    steps:
+      - bash: "sleep 2m"
+  - job: dotnetbuild
+    displayName: Build dotnet code
+    pool: default
+    dependsOn: sanity
+    steps:
+      - bash: "echo staging directory $(Build.ArtifactStagingDirectory) and number $(Build.BuildNumber)"
+      - bash: env
+      - task: DotNetCoreCLI@2
+        displayName: build the code
+        inputs:
+          command: build
+          projects: src/NopCommerce.sln
+          configuration: Release
+      - task: DotNetCoreCLI@2
+        displayName: publish the nopcommerce
+        inputs:
+          command: publish
+          projects: src/Presentation/Nop.Web/Nop.Web.csproj
+          zipAfterPublish: true
+          configuration: Release
+          arguments: "-o $(Build.ArtifactStagingDirectory)/Published"
+      - task: PublishBuildArtifacts@1
+        displayName: Make artifacts available
+        inputs:
+          PathtoPublish: $(Build.ArtifactStagingDirectory)/Published/Nop.Web.zip
+          ArtifactName: 'nop'
+          publishLocation: Container
+  - job: dockerbuild
+    displayName: docker image build
+    dependsOn: sanity
+    pool:
+      name: "Azure Pipelines"
+      vmImage: "ubuntu-22.04"
+    steps:
+      - task: Docker@2
+        inputs:
+          command: 'build'
+          Dockerfile: '**/Dockerfile'
+          tags: "ajaykumarramesh/nopfromazuredevops"
 ```
 
 ```bash
@@ -1425,7 +1512,56 @@ docker container run -d --name nop -P ajaykumarramesh/nopfromazuredevops
 #### YAML File Used:
 
 ```yaml
+---
+trigger:
+  - master
 
+parameters:
+  - name: containerRegistry
+    displayName: Service Connection For Docker Image
+    default: 'mydockerhub'
+  - name: vmImage
+    displayName: Microsoft Hosted Agent Name
+    default: 'ubuntu-22.04'
+    values:
+      - windows-2022
+      - windows-2019
+      - ubuntu-22.04
+      - ubuntu-20.04
+
+variables:
+  dockerfilelocation: '**/Dockerfile'
+
+stages:
+  - stage: buildstage
+    displayName: Build the application
+    jobs:
+      - job: dockerbuild
+        displayName: docker image build
+        pool:
+          name: "Azure Pipelines"
+          vmImage: "${{ parameters.vmImage }}"
+        steps:
+          - task: Docker@2
+            inputs:
+              containerRegistry: "${{ parameters.containerRegistry }}"
+              repository: ajaykumarramesh/nopcommerce
+              command: 'buildAndPush'
+              Dockerfile: "$(dockerfilelocation)"
+              tags: "$(Build.BuildId)"
+  - stage: deployStage
+    displayName: Deploy application
+    jobs:
+      - job: deployContainer
+        displayName: Run the nop commerce
+        pool: default
+        steps:
+          - bash: "docker container rm -f $(docker container ls -a -q)"
+            displayName: Remove All running containers
+          - bash: "docker image rm -f $(docker image ls -q)"
+            displayName: Remove all images
+          - bash: "docker container run -d --name nop -P ajaykumarramesh/nopcommerce:$(Build.BuildId)"
+            displayName: Run the application
 ```
 
 ```bash
