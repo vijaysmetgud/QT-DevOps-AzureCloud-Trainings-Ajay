@@ -11,13 +11,13 @@
 * docker --help
 ![Preview](./Images/docker19.png)
 * For new Docker Commands Follow Management Commands:
-* Example how to follow docker commands:
-    * docker container --help
-    * docker image --help
-    * docker network --help
-    * docker container run --help
-    * docker volume --help 
-    * sooo oooooonnnnn ...
+    * Example how to follow docker commands:
+      * docker container --help
+      * docker image --help
+      * docker network --help
+      * docker container run --help
+      * docker volume --help 
+      * sooo oooooonnnnn ...
 
 ### Daemon: 
   * service or system that runs background always 
@@ -35,20 +35,19 @@
 
        docker search <image_name>
 
-* command to give list of images id which is stopped
-   
-       docker images -q 
+* Command to create only container
 
-* Command to create image
+      docker container create --name mynginx nginx:latest
 
-      docker container create --name mynginx
 * Command to list image
 
       docker image ls
 
 * command to remove/delete image
 
-      docker image rm
+      docker image rm nginx 
+
+      docker image rm <image_name> or <image_id>
 
 * Command to remove/delete the image forcefully
 
@@ -56,11 +55,13 @@
       
       docker image rm -f <image_name> or <image_id>      
 
-* Command to get only image id's
+* Command to list only image id's
 
        docker image ls -q
 
-* Command to delete all the images 
+       docker images -q 
+
+* Command to delete all the stopped images 
 
           docker image rm -f $(docker image ls -q)
 
@@ -86,9 +87,9 @@
 
 * Command to pause container
 
- docker container pause mynginx
+       docker container pause mynginx
 
- docker container pause <container_name> or <container_id>
+       docker container pause <container_name> or <container_id>
 
 * Command to unpause container
 
@@ -168,22 +169,29 @@
 
       docker container commit java11 spc:manualwork
 
+      docker container commit nginx2 nginx:latest
+   
+      docker container commit <container_name> <image_name_want to create>
+
+
 ## Build Commands:
 
-* Command to build docker file
+* Command to build docker image
 
       docker image build -t spc:1.0 .
 
-       docker build -t localhost/spc:1.1 -f Dockerfile .
+      docker image build -t <ImageName:tag/version> . 
 
-      docker build -t <username/registory/repositry_name><image-name><:tag/version> -f  <dockerfile_name><dockerfile_path>
+* Command to build docker image with username
+
+       docker build -t localhost/nginx:latest -f Dockerfile .
+
+       docker build -t <username/registory/repository_name/image_name:tag/version> -f Dockerfile . 
 
 * Command to build multi stage dockerfile
+     * [Refer Here](https://docs.docker.com/build/building/multi-stage/#name-your-build-stages) Read this article to understand better 
 
       docker image build --target imagebuild -t nop:0.0 .
-
-      docker image build  -t nop:1.2 .
-
 
 ## Interactive(-it), Attached, Detached(-d) and EXEC Commands:
 
@@ -191,7 +199,7 @@
 
 `exec` => means execute some commands after the running container is created 
 
-`attach` => means execute some commands after the running container is created with out using `/ibn/bash`
+`attach` => means execute some commands after the running container is created with out using `/bin/bash`
 also if we dint give -it or -d while run the container means that by default it will go into attached mode.
 in attached mode the container will be started in foreground. and STDIN, STDOUT, STDERR of the container will be attached to your terminal. Your terminal becomes unusable.
 
@@ -205,42 +213,43 @@ IN detached mode the container will be started in the background
 
       docker container run -it --name myalpine alpine /bin/bash
 
+      docker container run -it --name <container_name><image_name_with_tag> /bin/sh
+
       docker container run -it spc:1.0 /bin/sh
 
       docker container run -it <image_name_with_tag> /bin/sh
 
-      docker container run -it --name <container_name><image_name_with_tag> /bin/sh
 
-* To execute some commands inside the running container after container created
+* To execute some commands inside the running container after container is created
 
        docker exec mynginx ls/pwd/whoami
 
-       docker container mynginx ls/pwd/whoami
+       docker exec <container_name> or <container_id> ls/pwd/whoami 
 
-       docker container mynginx ls /tmp
+       docker container exec mynginx pwd/ls
 
-       docker exec <container_name> or <container_id>
+       docker container exec <container_name> or <container_id> ls/pwd
 
-       docker container exec <container_name> or <container_id>
-
-* Command to login into container after running container created 
+* Command to login into container after running container is created 
 
        docker exec -it myalpine /bin/sh
 
+       docker exec -it <container_name> or <container_id> /bin/sh
+
        docker container exec -it mynginx  /bin/bash
 
-       docker exec -it <container_name> or <container_id> /bin/sh or /bin/bash
-
-        docker container exec -it <container_name> or <container_id> /bin/sh or /bin/bash
-
+       docker container exec -it <container_name> or <container_id>  /bin/bash
 
 * Command to run the container in attached mode
 
-      docker contianer run  --name myalpine alpine
+      docker contianer run  --name mynginx nginx
+
+      docker container run --name <container_name> <image_name:tag>
 
       docker run --name myhttpd httpd
 
-      docker run  --name <container_name> or <container_id> <imageName_tag/version>
+      docker run  --name <container_name> <imageName_tag>
+
 ![Preview](./Images/docker30.png)
 
 ## ARG Commands:
@@ -257,21 +266,13 @@ IN detached mode the container will be started in the background
 
 ## Tag Commands:
 
-* Command to add a tag to newly created image
+* Command to add or rename tag for newly created image or existing image
 
       docker tag nopcommerce:2.0  localhost/nopcommerce:2.0
 
       docker image tag nopcommerce:2.0  localhost/nopcommerce:2.0
 
       docker tag <created_image_name:tag> <local_registory/repository_name>/<image_name:tag>>
-
-* Command to rename registory/repository_image:tag_name
-
-      docker tag localhost/nopcommerce:2.0 ajaykumarramesh/ajaykumar:nopcommerce-2.0
-
-      docker image tag localhost/nopcommerce:2.0 ajaykumarramesh/ajaykumar:nopcommerce-2.0
-      
-      docker tag <local_registory/repository_name>/<image:tagname> <username>/<repository_name:tagname>
 
 ## Push Commads:
 
@@ -323,7 +324,7 @@ IN detached mode the container will be started in the background
 
 * Command to mount the volume with `os-host` and `container`      
 
-      docker container run -it --name mysql-test -v my-vol:/var/lib/mysql  mysql
+      docker container run -d --name mysql-test -v my-vol:/var/lib/mysql  mysql
 
 * command remove all unused docker volumes
 
