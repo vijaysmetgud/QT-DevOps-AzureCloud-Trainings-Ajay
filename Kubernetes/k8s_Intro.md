@@ -156,7 +156,7 @@ apiVersion: <version>
 ```
 
 ### To fill the rest lets use api reference
-* [Refer Here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels) for v1.28
+* [Refer Here](https://kubernetes.io/docs/reference/) for v1.28
 * in future any new version of k8s means just click above url and we will see `API Reference` there click on `One-page API Reference for Kubernetes:newer version ` then it will take new page if anything added newly refer that page only.
 * Refer below screen shot for future:
 ![Preview](./Images/k8s20.png)
@@ -213,11 +213,10 @@ apiVersion: <version>
 ![Preview](./Images/k8s24.png)
 ![Preview](./Images/k8s25.png)
 
-* see this above screen shot there is 3 pods running with `app=ngnix` labels.
-* but when query it using `env=dev` there is only one `env=dev` i have given this what use for label to query ot select the resource/object which we created 
+* see this above screen shot there is 3 pods running with `app=ngnix` labels.this is what we use the label to query or select the resource/object which we created 
 
 * This is name/value pair used to query resources in k8s. 
-* means what ever resource/object we are creating for that we adding the labels refer below examples and screen shot
+* means what ever resource/object we are creating for that we are adding the labels refer below examples and screen shot
 
 * Example: 1
 ```
@@ -260,9 +259,9 @@ spec:
 * so this is called key:value pair is `label` so keeping this we can query the resource/object in k8s.
 
 
-### Pod with container with additional commands `ARGS`
+### Pod with container with additional command `ARGS`
 
-* using `args` will override the `cmd` command in  k8s like a argument which we are using, how see in similar in docker.
+* using `args` will override the `cmd`. command in  k8s like a argument which we are using, see how it is similar to docker.
 * Arguments `args` will override the `cmd` in container of pod same like docker container like below example to override `cmd` in docker passing the arguments .
 
 `docker container run -d alpine sleep 1d`
@@ -272,7 +271,7 @@ spec:
 
 ![Preview](./Images/k8s27.png)
 
-* after executing below command we can see the `args` command has been overridden the `cmd` below screen shot and also alpine will not run since it has overriden `cmd` it is running.
+* after executing below command we can see the `args` command has been overridden the `cmd` below screen shot shows the prof. usually alpine image will not run because by default `cmd` will not be there, it is an empty image. but in the pod we have used `args` by giving `sleep 1d` this means the alpine image will run for 1 day, so this is proved that `args` has overridden `cmd` since alpine image is running.
 
 ```
 kubectl describe pod nginx-pod
@@ -281,9 +280,10 @@ kubectl describe pod nginx-pod
 
 ### Interacting with containers:
 * In k8s we have commands like below.
-`kubectl exec --help`
 
-* This below command is to Run in existing pod (1 container case)
+   `kubectl exec --help`
+
+* This below command is to Run in existing pod (single container case) Scenario Examples
 
 ```
 kubectl exec java-pod -- pwd
@@ -300,11 +300,11 @@ root@java-pod:/# whoami
 ```
 ![Preview](./Images/k8s31.png)
 
-* This above command doesn't not work in multi container below example for confusion, the above command is running on which container 
+* This above command doesn't not work in multi container. and  below example for confusion, and the above command is running on which container we cannot identify because in the pod yaml file we have mentioned metadata name is `nginx-pod` so when we want to login into container, it is default logging into metadata name `nginx-pod` with first container that is web server, so to over come this issue we have another command which is explained below.  
 ![Preview](./Images/k8s30.png)
 ![Preview](./Images/k8s32.png)
 
-* This below command is to Run in existing pod (multi-container case).
+* This below command is to Run in existing pod (multi-container case) Scenario Examples
 
 ```
 kubectl exec nginx-pod -c logagent -- ls
@@ -331,8 +331,8 @@ kubectl exec nginx-pod -c logagent -- whoami
 ![Preview](./Images/k8s35.png)
 * [Refer Here](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) official documents
 
-* Kuberentes restarts the containers always as the `restartPolicy` Default value is `Always`.
-* [Refer Here]() for chaning the restart policy default value `always` to `never` 
+* Kubernetes restarts the containers always as the `restartPolicy` Default value is `Always`.
+* [Refer Here](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) for changing the restart policy default value `always` to `never` 
 
 ![Preview](./Images/k8s36.png)
 
@@ -351,7 +351,7 @@ kubectl exec nginx-pod -c logagent -- whoami
  * This is where we run actual applications and they are expected to be living forever (continuously)
 
 #### Demonstration Init Containers:
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Pods/initcontainerdemo.yml) for initcontianers manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Pods/initcontainerdemo.yml) for init contianers manifest/yml files
 
 ![Preview](./Images/k8s37.png)
 
@@ -520,7 +520,7 @@ status:
 ## Autoscaling:
 * Scaling:
   * Scaling in k8s means increasing number of Pods not containers inside Pod.
-  * For Scaling pods we have learnt Replica set/Replication Controller etcs..
+  * For Scaling pods we have learnt Replica set/Replication Controller etc..
 * Here HPA and VPA work at a pod level or application level, where CA is work at the Infrastructure level.  
 
 ![Preview](./Images/k8s127.png)
@@ -555,7 +555,7 @@ status:
 
 **Examples for VPA:**
  * [Refer Here](https://learn.microsoft.com/en-us/azure/aks/vertical-pod-autoscaler) for Azure
- * [Refer](https://www.kubecost.com/kubernetes-autoscaling/kubernetes-vpa/) for others\
+ * [Refer](https://www.kubecost.com/kubernetes-autoscaling/kubernetes-vpa/) for others
  * [Refer Here](https://docs.aws.amazon.com/eks/latest/userguide/vertical-pod-autoscaler.html) for AWS  
 
 #### Cluster Autoscaler (CA):
@@ -576,7 +576,7 @@ status:
 
 * Kubernetes allows us to view all the resources using
 
-`kubectl api-server`
+`kubectl api-resources`
 
 ![Preview](./Images/k8s17.png)
 
@@ -665,8 +665,10 @@ spec:
 
 * Another demonstration below.
    * here we are creating two different pods.
-     * one is nginx-pod and another one is jenkins-rs pod but both label will same so what k8s will is already we create two nginx-pod which is running and again we creating the jenkins-rs pod with mention in the yml file `replicas=3` so k8s will check same label pod is already running two so only another one pod it will create because k8s doesn't worry about what is inside the pod or yml it is worry only about labels matching.
-     * so in this case two different pod but labels matching is same observe the below screen shot of demonstration.
+      * one is `nginx-pod` and another one is `jenkins-rs` pod but both pods labels are same. and already we have created the two `nginx-pod` and which is running. and again we are creating the `jenkins-rs` pod with mentioned in the yml file `replicas=3`, so in this case what k8s will do.? we will observe. 
+      * Note: so here already we said or created two `nginx-pod` with same label which is already running. so in this case k8s will check the two same label pod is already running hence k8s will create another only one pod, because in `jenkins-rs` yaml file we have mentioned `replicas=3`, so two with same label pod is already running, so that means k8s have to create another only one pod rite.? as per our `jenkins-rs` yaml file. so here as k8s promised it is maintaining the state. 
+      * k8s doesn't worry about what is there inside the pod or yml it worries only about labels matching.
+      * so in this case we have wrote yaml file for two different pod but labels matching is same observe the below screen shot of demonstration.
 
 ![Preview](./Images/k8s44.png)
 ![Preview](./Images/k8s45.png)
@@ -697,8 +699,8 @@ screen shot proves it.
 * Here we have two resources
     * Job
     * CronJob
-* to write run some cripts or write some commands if it is one time then `jobs`
-* to write run some scripts or write some commands if it is multiple time then `cronjobs`
+* to write run some scripts or write some commands if it is one time then `jobs`
+* to write run some scripts or write some commands if it is multiple time then `cronjobs` and also `CronJob` is meant for performing regular scheduled actions such as backups, report generation, and so on.
 
 * [Refer Here](https://kubernetes.io/docs/concepts/workloads/controllers/job/) for Offical jobs documentation
 * [Refer Here](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) for Official CronJob Documentation
@@ -746,15 +748,14 @@ screen shot proves it.
 * A Service that identifies a set of Pods by using label selectors. 
 * to over come Node port and load balancer issue in the service yml file we can use something called ingress without charging for Load balancer or without any issue of ip address and node port
 
-
    
 * Experiment:
 * Lets create a replicaset with 3 nginx pods with label `app:nginx`
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/service/Cluster-IP/nginx-rs.yml) for replicaset manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Service/Cluster-IP/nginx-rs.yml) for replicaset manifest/yml files
 
 * Here below example shown:
    * we can ping/communicate using pods ip with in the another pods inside the container but unable to ping using pods name.
-   * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/service/exp-ping.yml) for ping manifest/yml files
+   * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Service/exp-ping.yml) for ping manifest/yml files
 
    ![Preview](./Images/k8s59.png)
 
@@ -770,14 +771,13 @@ screen shot proves it.
    * This gives an ipaddress or name which can be accessed with in cluster
    * It is very important since if pod want to communicate each other then will use this service cluster ip address it is only for internal communication purpose.
    * ClusterIP Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster. This is the default ServiceType. 
-   * cluster ip is accessible only withing in the cluster.
-   * Refer Here for service manifest/yml file
+   * cluster ip is accessible only with in the cluster.
 
 ![Preview](./Images/k8s76.png)
 
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/service/Cluster-IP/nginx-rs.yml) for replicaset manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Service/Cluster-IP/nginx-rs.yml) for replicaset manifest/yml files
 
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/service/Cluster-IP/nginx-svc.yml) for nginx-svc manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Service/Cluster-IP/nginx-svc.yml) for nginx-svc manifest/yml files
 
 * Refer below screen shot after we created the `service` manifest then we are able to access our pods within the cluster, that is inside the node nor container with ip address as well as name
 
@@ -821,9 +821,9 @@ screen shot proves it.
 
 ![Preview](./Images/k8s73.png)
 
-* To access any pod when logging inside into pod.
+* To access any pod when logging into the pod.
 just give `curl nginx-svc.default` `curl <service_name.namespace` if we are on default namespace means even not requirement mention namespace.
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/service/Cluster-IP/experiment-alpine.yml) for experiment-alpine manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Service/Cluster-IP/experiment-alpine.yml) for experiment-alpine manifest/yml files
 
 ![Preview](./Images/k8s74.png)
 
@@ -840,11 +840,10 @@ just give `curl nginx-svc.default` `curl <service_name.namespace` if we are on d
 * **Example:**
 
    ``` 
-   So I have mentioned in the service yml file type as node port so when ever I want to access the pod which is running in my worker node or cluster  I need to hit that public ip address with node port number, but this is disadvantage since I cannot issue different public ip address to users to access the pod always since public ip address 
-	will be changing it frequently.
+   So I have mentioned in the service yml file type as node port so when ever I want to access the pod which is running in my worker node or cluster  I need to hit that public ip address with node port number, but this is disadvantage since I cannot issue different public ip address to users to access the pod always since public ip address will be changing it frequently.
   ```
 
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/service/Node-Port) for Replicaset nginx pods and nginx-svc manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Service/Node-Port) for Replicaset nginx pods and nginx-svc manifest/yml files
 
 * after using `Apply` command below screen shot:
 
@@ -877,7 +876,7 @@ just give `curl nginx-svc.default` `curl <service_name.namespace` if we are on d
 
 #### Lets create the nginx-rs and service and expose it using the LoadBalancer.
 
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/service/Loadbalancer) for manifest/yml file of loadbalancer
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Service/Loadbalancer) for manifest/yml file of loadbalancer
 
 ![Preview](./Images/k8s89.png)
 ![Preview](./Images/k8s90.png)
@@ -901,10 +900,12 @@ just give `curl nginx-svc.default` `curl <service_name.namespace` if we are on d
 * **This serves two purposes:**
   * It creates a single endpoint for all communications to that element/external service.
   * In case that element/external service needs to be replaced, it’s easier to switch by just modifying the ExternalName, in service manifest instead of changing all connections.
-
+* Refer Some Other Authors explaination about Service Type ExternalName or External Service
+   * [Refer Here](https://adil.medium.com/kubernetes-service-externalname-6b4cfb7640a2)
+   * [Refer Here](https://www.kubecost.com/kubernetes-best-practices/kubernetes-external-service/)  
 ### Lets create pod manifest and service manifest using service type as `ExternalName`
 
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/service/ExternalName) for external name service manifest/yml files 
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Service/ExternalName) for external name service manifest/yml files 
 
 ![Preview](./Images/k8s94.png)
 ![Preview](./Images/k8s95.png)
@@ -928,7 +929,8 @@ spec:
 ```
 
 * **None/HeadLess Service:** 
-* [Refer Here](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
+* [Refer Here](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services) official docs
+* [Refer here](https://kodekloud.com/blog/kubernetes-headless-service/) other author with scenario example
 * What is service type none, means it is nothing
 * Headless service is know as service type none, means in service meanifest file we will mention service type is cluster ip and cluster ip is none that means for this service there is no cluster ip address, this is know as headless service. 
 * headless service or service type none is useful in stateful set application to access by its naming.
@@ -938,7 +940,7 @@ spec:
   *  using headless service i can access the particular/individual  pods by its naming `<pod_name.<svc_name>` 
 
 #### Example of Headless Service/None:
-* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/service/Headless-None) for headless/none manifest/yml files
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Service/Headless-None) for headless/none manifest/yml files
 * Headless service will not have cluster ip:
 ![Preview](./Images/k8s199.png)
 * Headless service returns the ips of the pods returned by selector.
