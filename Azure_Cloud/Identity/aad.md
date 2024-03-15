@@ -493,6 +493,7 @@ Azure Management Groups/Azure Policy
 ![Preview](./Images/Azure132.png)
 * Now if i want to create any resources, as per policy assigned is `Require a tag and its value on resources` i should give tags value/details if not i cannot create any resource.
 * Example below screen shot, i am trying to create storage account with out giving tag details so it is not allowing me to create, observe below screenshot for error.
+
 ![Preview](./Images/Azure133.png)
 * So basically azure policy means what ever the terms/conditions apply on in built azure policy we have to meet that policy condition, then only we can create any resources or activities if not not allowed. 
 * incase we dont want to restrict means we delete the assignment policy then we can create any resources without any condition or restrict 
@@ -506,7 +507,6 @@ Azure Management Groups/Azure Policy
 * Even we can create our own custom policy also but generally it is not required since azure as lots of builtin policy which we can utilize it.
 
 ####  Apply policy of the initiative of Microsoft Cloud Security Benchmark
-![Preview](./Images/Azure136.png)
 * There are lots of policy under `Microsoft Cloud Security Benchmark`
 ![Preview](./Images/Azure137.png)
 ![Preview](./Images/Azure138.png)
@@ -553,9 +553,11 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
      * **Password Hash syncronization:**
        * means our on premise AD will be synchronized with Azure AD through user and password hashes sync
        * when ever users login to azure AD in any way it will authenticate with user password hashes sync by installation Azure AD Connect 
+
        ![Preview](./Images/Azure151.png)
     * **Pass through authentication:**
        * means our on premise AD will be synchronized with Azure AD, so when users login to azure AD in any way, then our on premise AD will authenticate the users
+       
        ![Preview](./Images/Azure152.png)
     * **Federated Authentication:**
        * means there will windows AD which will act as azure AD federations means by using web application proxy through windows AD, when ever users login into azure AD it will connect to windows AD and authenticate to our on premise AD for users. 
@@ -603,8 +605,10 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
   * Go to tools click ad users and computers
   ![Preview](./Images/Azure168.png)
   * create group Avengers
+
   ![Preview](./Images/Azure169.png)
     * create user called ironman and thor 
+
     ![Preview](./Images/Azure170.png)
     ![Preview](./Images/Azure171.png)
     ![Preview](./Images/Azure172.png)
@@ -624,6 +628,7 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
       * azure active directory will get    
          * AAD: thor@<primarydomainname>
     * click on group
+
     ![Preview](./Images/Azure176.png)
     ![Preview](./Images/Azure177.png)
     ![Preview](./Images/Azure178.png)
@@ -633,8 +638,10 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
     ![Preview](./Images/Azure182.png)
   
   * create group JusticeLeague
+
   ![Preview](./Images/Azure182.png) 
     * create user called batman and wonderwomen
+
     ![Preview](./Images/Azure182.png)
     ![Preview](./Images/Azure183.png)
     ![Preview](./Images/Azure184.png)
@@ -654,6 +661,7 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
       * azure active directory will get     
          * AAD: wonderwomen@<primarydomainname>        
     * click on group
+
     ![Preview](./Images/Azure189.png)
     ![Preview](./Images/Azure190.png)
     ![Preview](./Images/Azure191.png)
@@ -662,6 +670,7 @@ Azure Active Directory and Microsoft Active Directory Sync/Federation
 * Now finally we can login as created users
   * For example:
   * username `QTLT\ironman` and password `*****`
+  
   ![Preview](./Images/Azure194.png)
   * we can see the different user login to windows server
 

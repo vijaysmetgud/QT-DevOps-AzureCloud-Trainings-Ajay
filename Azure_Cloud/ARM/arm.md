@@ -22,6 +22,7 @@ Azure Resource Manager (ARM)
 * Azure provides capabilities by Resource Providers which are registered to subscription.
 * Resource Providers provide services and operations
 * refer the below image
+
 ![Preview](./Images/arm.png)
 * When we are using Azure either from portal/CLI/Powershell/SDK we interact with Resource providers
 * **Experiment:** Create a vm in Azure Portal.
@@ -33,7 +34,7 @@ Azure Resource Manager (ARM)
     ![Preview](./Images/arm3.png)
 * So when we create something from azure portal it is creating template.
 * Azure CLI/Powershell and SDK directly interact with Management API of Azure cloud to create resources where as portal tries to create a template. 
-* **Experiment:** Create a storageaccount in Azure ClI.  
+* **Experiment:** Create a storageaccount in Azure Cli.  
 ```
 az storage account create \
   --name experiemtntesting \
@@ -56,6 +57,7 @@ az storage account create \
 * ARM templates of syntax [Refer Here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax)
 
 * Workflow for creating infra as code:
+
 ![Preview](./Images/arm8.png)
 * We use IaC Whenever we need to work with creating/modifying infrastructure on various environments 
 
@@ -139,6 +141,7 @@ ARM Template – Ways of Working
 ### Architecture of the application
 * which will be creating through arm template
 * overview
+
 ![Preview](./Images/arm20.png)
 
 * Manual Steps:
@@ -261,6 +264,7 @@ Experiment
 
 ### change-6: Create a nic with public ip, 
 * Overview
+
 ![Preview](./Images/arm49.png)
 * [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/publicipaddresses?pivots=deployment-language-arm-template#resource-format-1) for public ip address
 * [Refer Here](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/networkinterfaces?pivots=deployment-language-arm-template) for network interface
