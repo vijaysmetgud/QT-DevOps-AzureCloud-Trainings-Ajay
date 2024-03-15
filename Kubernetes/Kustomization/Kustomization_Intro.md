@@ -40,12 +40,12 @@ by using kustomization we can deploy all the k8s resource in the cluster at same
 ```
 kustomize build Dashboard/base/
 
-or 
+       or 
 kubectl kustomize Dashboard/base/
 
 kubectl apply -k Dashboard/base/
 
-kustomize build      | kubectl apply -f - 
+kustomize build  | kubectl apply -f - 
 ```
 
 * Incase we want to deploy resource in multiple envirnoment in k8 cluster then we needs to create overlay, refer below the folder structure

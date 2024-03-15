@@ -40,7 +40,7 @@ Kubernetes Installation Options:
 `kubeadm join 192.168.0.13:6443 --token 5v9svf.ea66lodq5lvrb1ft \--discovery-token-ca-cert-hash sha256:b4be09c1eef1881e3961849a23362f8b4286d78a3dbdf45583190664acf559ad`
 
 
-### Installing K8s using Kube-adm Main:
+### Installing K8s using Kube-adm Main
 
 #### Kube-adm installation Lab setup:
 
@@ -52,7 +52,7 @@ Kubernetes Installation Options:
 * [Refer Here](https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/) for more info
 
 * Don't Panic: Kubernetes and Docker
-* This means in in-house installation you need install an extra called CRI like (cri-o) on every node.
+* This means in in-house installation you need install an extra called CRI ( Container Runtime Interface) like (cri-o) on every node.
 
 
 #### Solution or Explaination  for above question:
@@ -85,7 +85,7 @@ exit
 login
 ```
 
-* To install `CRI-dockerd` [Refer Here](https://directdevops.blog/2023/09/07/devops-classroomnotes-07-sep-2023/) and get the latest releases. 
+* To install `CRI-dockerd` [Refer Here](https://github.com/Mirantis/cri-dockerd/releases) and get the latest releases. 
 
 * any other latest release please refer above link 
 * Below steps are specific to ubuntu 22.04

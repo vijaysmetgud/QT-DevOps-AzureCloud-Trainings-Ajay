@@ -3,9 +3,9 @@ Kubernetes Microservices:
 ### What is Microservices:
   * breaks large/complex applications into piece of code/applications with its own database is called as microservices.
   * basic concept of microservice is a smallest component which run on individually 
-  * for each microservices we will be writing deployment, for database stateful set and one service, and this service will be internal, it will not be external, so all the yamls will be internal only one component will be external that is ingress controller, even ingress also will internal. 
+  * for each microservices we will be writing deployment, for database stateful set and one service, and this service will be internal, it will not be external, so all the yamls will be internal only one component will be external that is ingress controller, even ingress also will be internal. 
 * This below for (message broker) means in microservices updates between the application or communications 
-  * communication for data updates propagation across multiple services based on Integration Events and an Event Bus (a light message broker, to choose between RabbitMQ or Azure Service Bus, 
+  * communication for data updates propagation across multiple services based on Integration Events and an Event Bus (a light message broker, to choose between RabbitMQ or Azure Service Bus), 
   ```
   # this is for above scenario communication example:
   command area is called publisher or subscribe pattern like a queue, so when user orders some products, on overall catalog it will reduce one item or any of microservices wants to talk communicate each other, it will do it with common area subscriptions for examples rabit mq or azure service bus

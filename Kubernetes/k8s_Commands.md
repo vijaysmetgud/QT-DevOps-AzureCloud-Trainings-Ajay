@@ -41,7 +41,7 @@
 
 * Command to get pod with list its label
 
-     kubectl get pod --show-labels
+       kubectl get pod --show-labels
 
 * Command to get particular pod with its label
 
@@ -66,14 +66,16 @@
 * Command to list pods in current namespace
 
        kubectl get pods -n prod
+
 * Command to list resource cpu and memory used of pod
 
-    kubectl top pods 
+       kubectl top pods 
 
 * command to debug or get logs of pod
      
-     kubectl log nginx
-     kubectl logs <pod-name>
+       kubectl log nginx
+
+       kubectl logs <pod-name>
 
 * command to list the pods in all the namespaces
 
@@ -81,13 +83,13 @@
 
 * command to Get all running pods in the namespace
      
-     kubectl get pods --field-selector=status.phase=Running -n airflow
+       kubectl get pods --field-selector=status.phase=Running -n airflow
      
 ## Nodes Commands:
 
 *  Command to list nodes 
 
-      kubectl get nodes
+        kubectl get nodes
 
 * Command to list nodes and watch for state change 
 
@@ -105,17 +107,17 @@
 
 * Command to list resource cpu and memory used of nodes
 
-    kubectl top nodes 
+       kubectl top nodes 
 
 * [Refer Here](https://signoz.io/blog/kubectl-top/)  for more information on top command 
 
 * Command to list more details of nodes
 
-   kubectl get nodw -o wide
+      kubectl get nodw -o wide
 
 * Command to list nodes information output in yaml file
 
-    kubectl get nodes -o yaml
+      kubectl get nodes -o yaml
 
 
 ## Creating objects/Resource Commands:
@@ -208,7 +210,7 @@
 
          kubectl rollout undo deployment/deploy-nginx --to-revision=5
 
-* Command to to scale deployment replicas 
+* Command to scale deployment replicas 
 
          kubectl scale deployment/deploy-nginx --replicas=6
 
@@ -254,8 +256,8 @@
       kubectl delete pods nginx
 
       kubectl delete pods <pod_name>
-
-* if namespace is created then mention -n <namespace_name>      
+   
+      # if namespace is created then mention -n <namespace_name>      
 
 ## Namespace Commands:
 
@@ -287,13 +289,13 @@ Server Version: v1.28.1
 
       kubectl exec --help
 
-* To execute some commands on running pods (1 container case)
+* To execute some commands on running pods (single/1 container case)
 
        kubectl exec nginx-pod -- ls
        
        kubectl exec <pod_name> -- ls
 
-* To login and execute some commands inside the running pods (1 container case)
+* To login and execute some commands inside the running pods (single/1 container case)
 
        kubectl exec -it java-pod -- /bin/bash
 
@@ -360,9 +362,13 @@ Server Version: v1.28.1
 
 * Command to describe detailed of service (svc)
 
-      kubectl describe service nginx-svc
+      kubectl describe service/svc
+             
+             or 
 
-      kubectl describe service <service_name>
+      kubectl describe service/svc my-svc
+
+      kubectl describe service/svc <service_name>
 
 * Command to list only endpoints(here will get even k8s default endpoints also)
 
@@ -400,7 +406,7 @@ Server Version: v1.28.1
 
 * kubectl config get-contexts --help 
    
-   More details
+      More details
    
 * Command to display list of contexts
 
@@ -436,21 +442,21 @@ Server Version: v1.28.1
 
 * Command to display configmap output file yaml
 
-     kubectl get configmap env-cm -o yaml
+       kubectl get configmap env-cm -o yaml
 
-     kubectl get configmap <configmap_name> -o yaml
+       kubectl get configmap <configmap_name> -o yaml
 
 ## Secrets Commands:
 
 * Command to list secrets
 
-     kubectl get secrets
+      kubectl get secrets
 
 * Command to describe secrets
 
-     kubectl describe secrets sc-vol
+       kubectl describe secrets sc-vol
 
-     kubectl describe secrets <secrets_name>
+       kubectl describe secrets <secrets_name>
 
 * Command to get secrets in yaml output file
 
@@ -466,54 +472,54 @@ Server Version: v1.28.1
       
 * Command to list particular pv
 
-     kubectl get pv efs-pv
+      kubectl get pv efs-pv
       
-     kubectl get pv <pv_name>
+      kubectl get pv <pv_name>
 
 * Command to describe pv
 
-    kubectl describe pv efs-pv
+      kubectl describe pv efs-pv
     
-    kubectl describe pv <pv_name>
+      kubectl describe pv <pv_name>
 
 
 ## PersistentVolumeClaim(PVC) Commands:
 
 * Command to list pvc
 
-    kubectl get pvc
+      kubectl get pvc
 
-    kubectl get pvc 
+      kubectl get pvc 
 
 * Command to list particular pvc
 
-     kubectl get pvc efs-claim
+       kubectl get pvc efs-claim
 
-     kubectl get pvc <pvc_name>
+       kubectl get pvc <pvc_name>
 
 * Command to describe pvc
 
-    kubectl describe pvc azure-managed-disk
+      kubectl describe pvc azure-managed-disk
     
-    kubectl describe pvc <pvc_name>
+      kubectl describe pvc <pvc_name>
 
 ## StorageClass(SC) Commands:
 
 * Command to list sc
 
-    kubectl get sc
+      kubectl get sc
 
 * Command to list particular sc
 
-    kubectl get sc managed
+      kubectl get sc managed
     
-    kubectl get sc <sc_name>
+      kubectl get sc <sc_name>
 
 * Command to describe sc
 
-    kubectl describe sc azurefile
+      kubectl describe sc azurefile
 
-    kubectl describe sc <sc_name>
+      kubectl describe sc <sc_name>
 
 ## K8s PlayGround Commands:
 
@@ -533,11 +539,11 @@ Server Version: v1.28.1
 
 * Command to list the ds
 
-    kubectl get ds
+      kubectl get ds
 
 * Command to list more details of ds
 
-     kubectl get ds fluentd-elasticsearch -o wide
+       kubectl get ds fluentd-elasticsearch -o wide
 
 * Command to list ds information in yaml file     
 
@@ -545,7 +551,7 @@ Server Version: v1.28.1
 
 * Command to rollout/update image version
 
-     kubectl set image ds/fluentd-elasticsearch fluentd-elasticsearch=fluentd:v1.16.0-debian-1.0
+       kubectl set image ds/fluentd-elasticsearch fluentd-elasticsearch=fluentd:v1.16.0-debian-1.0
 
 * Command to get rollout history status
 
@@ -556,19 +562,19 @@ Server Version: v1.28.1
 
 * Command to list sts
   
-  kubectl get sts
+      kubectl get sts
 
 * Command to get sts in yaml output 
 
-    kubectl get sts exp-sts-nginx -o yaml
+      kubectl get sts exp-sts-nginx -o yaml
 
-    kubectl get sts <sts_name> -o yaml
+      kubectl get sts <sts_name> -o yaml
 
 * Command to describe sts
 
-    kubectl describe  sts exp-sts-nginx
+      kubectl describe  sts exp-sts-nginx
 
-    kubectl describe  sts <sts_name>
+      kubectl describe  sts <sts_name>
 
 ## Nginx-Controller Commands:
 
@@ -582,17 +588,17 @@ Server Version: v1.28.1
 
 * Command to list ingress class
 
-   kubectl get ingressclasses.networking.k8s.io
+      kubectl get ingressclasses.networking.k8s.io
 
 ## Ingress Commands:
 
 * Command to list ingress
  
-    kubectl get ing
+      kubectl get ing
 
 * Command to get ingress output in yaml file
 
-    kubectl get ing -o yaml
+      kubectl get ing -o yaml
 
 * Command to get more information about ingress
 

@@ -971,7 +971,7 @@ spec:
 ![Preview](./Images/k8s97.png)
 * Deployment is a workload which creates
   * Replica Sets: These create
-     * Pods: Which inturn creates
+     * Pods: Which in return creates
         * Containers: This is where the application runs
         ![Preview](./Images/k8s98.png)
 
@@ -1289,7 +1289,7 @@ metadata:
 * So i have not done the experiment to it. 
 ---
 
-## Health Checks/Probes for container in Kubernetes Pods:
+## Health Checks/Probes for container in Kubernetes Pods
 
 * [Refer Here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for official docs
 
@@ -1331,10 +1331,10 @@ metadata:
   * With this tcp configuration, the kubelet will attempt to open a socket to your container on the specified port. If it can establish a connection, the container is considered healthy, if it can't it is considered a failure.
   * this happens through sending tcp request 
 
-# Lets write Startup, liveness, readiness probes in the deployment spec:
+# Lets write Startup, liveness, readiness probes in the deployment spec
 * Probes are written as part of container spec in the deployment manifest file.
 
-* [REfer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Deployments/Rolling-Update/deploy-sample.yaml) for startup,liveness,readiness manifest/yml file 
+* [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Deployments/Rolling-Update/deploy-sample.yaml) for startup,liveness,readiness manifest/yml file 
 
 ![Preview](./Images/k8s125.png)
 ![Preview](./Images/k8s126.png)
@@ -1349,6 +1349,7 @@ metadata:
 * ConfigMaps allow you to decouple environment-specific configurations from containers to make applications portable
 * ConfigMaps are not encrypted in any way, and all data they contain is visible to anyone who can access the file.
 * ConfigMap are not suitable for confidential data storage.
+*  Pods can consume ConfigMaps as environment variables, command-line arguments, or as configuration files in a volume.
 
 * For Example:
    * we have some java applications so for that we have app.properties file so for this app.properties files we will keep configmaps
@@ -1444,11 +1445,11 @@ echo -n "cGFzc3dvcmQ" | base64 --decode
 * Base64 URL [Refer Here](https://www.base64decode.org/)
 
 * Secrets can specify the data and/or the stringData field. reason is:
-   * in the secret `Data` specifying should be encoded before specifying it.
+   * in the secret `Data` specifying should be encoded base 64 before specifying it.
    * in the `stingdData` not required to encode since by default it will encode for us, but problem is we have to specify the data as it is, even all the credentials so if someone looks our yml file they will come to know all credentials.
 
 #### Example Secrets:
-* Lets create configmap with pod:
+* Lets create secret with pod:
 * Example of Environmental Variable:
 
 * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Secrets) for pod and secrets manifest/yml file
@@ -1457,7 +1458,7 @@ echo -n "cGFzc3dvcmQ" | base64 --decode
 ![PReview](./Images/k8s142.png)
 ![Preview](./Images/k8s143.png)
 
-* Lets create configmap with pod:
+* Lets create secret with pod:
 * Example of Volume mounted to some folder:
 
 * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Secrets) for pod and secrets manifest/yml file
@@ -1551,7 +1552,7 @@ spec:
     * then we needs to create `PV` with `StorageClass`
     * then we needs to create `PCV` to claim that volume, with `pod spec`
     * so once that claim is done then we cannot create another `pvc` and `pod` to claim again since it is static what ever the volume amount has been used by other pod. or refer below
-    * Now if we tried to create another `PVC`, it would fail because we don’t have any more `PVs` left (a PV can be bound to a single PVC) that is where dynamic provisioning would come in handy.
+    * Now if we tried to create another `PVC`, it would fail because we don’t have any more `PVs` left **(a PV can be bound to a single PVC)** that is where dynamic provisioning would come in handy.
 * Refer below about static volumes above said are from there and also there is good example we can learn
   * [Refer Here](https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/)
 
@@ -1718,7 +1719,7 @@ select * From authors;
 ![Preview](./Images/k8s187.png)
 ![Preview](./Images/k8s188.png)
 
-* Even daemon set works for rollout/undo update th image version below screen shot:
+* Even daemon set works for rollout/undo update the image version below screen shot:
 ![Preview](./Images/k8s189.png)
 
 
@@ -1770,7 +1771,7 @@ select * From authors;
    * [Refer Here](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#deployment-and-scaling-guarantees)
 * Persistent Storage
    * each pod will create its own pv/volume
-   * [REfer Here](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-storage)
+   * [Refer Here](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-storage)
 * Ordered, automated rolling updates.
    * [Refer Here](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates)
 
@@ -1811,6 +1812,7 @@ spec:
 
 #### Stateful Set Demonstration:
 * Work Flow of Stateful Set
+
 ![Preview](./Images/k8s209.png)
 * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Stateful-Set) for stateful set manifest/yml file 
 * Refer below screen shot that stateful set has been created ordered pods names.
@@ -1846,18 +1848,18 @@ spec:
 * In order for the Ingress resource to work, the cluster must have an ingress controller running.
 * we must have an Ingress controller to satisfy an Ingress. Only creating an Ingress resource has no effect.
 * we will need to make sure your Ingress targets exactly one Ingress controller by specifying the ingress.class annotation,and that you have an ingress controller running in your cluster.
-* K8s does not have ingress controller for ingress. is designed, So This is where we can use external ingress controller implementations.
+* K8s does not have ingress controller for ingress is designed, So This is where we can use external ingress controller implementations.
 * Examples:
    * nginx
    * haproxy
    * traefik
-      * these above three works anywhere external loadbalancer
-      * For these external loadbalancer means there will be some re-write will happen and also k8s resource created like service,pods and deployments running 
+      * these above three ingress controller will works anywhere as external loadbalancer
+      * For these external loadbalancer there will be some kind of re-write direction will happen and also k8s resource like service,pods,replicaset and deployments will be created and will be running, for these ingress controller loadbalncer
    * azure application gateway(works only in aks soft loadbalancer)
-     * internally what happens is, there will be k8s resource created like service,pods and deployments running as actual loadbalancer, if it soft 
+     * internally what happens is, there will be k8s resource like service,pods,replicaset and deployments will be created and running as actual loadbalancer, if it soft 
    * elastic application load balancer(works only in eks soft loadbalancer)
-       * internally what happens is, there will be k8s resource created like service,pods and deployments running as actual loadbalancer, if it soft
-* The above examples of ingress controller mentioned is few there is lot more, to know that refer below official docs for ingress controller  
+       * internally what happens is, there will be k8s resource created like service,pods,replicaset and deployments will be created and  running as actual loadbalancer, if it soft
+* The above examples of ingress controller mentioned is only few. there is lot more, to know that refer below official docs for ingress controller  
 
 
 #### Request Flow Of Ingress:
@@ -1926,7 +1928,7 @@ helm upgrade --install ingress-nginx ingress-nginx \
 ![Preview](./Images/k8s216.png)
 ![Preview](./Images/k8s217.png)
 
-* To delete hel items execute below commands
+* To delete helm items execute below commands
 
 ```
 kubectl delete namespace ingress-nginx
@@ -1954,7 +1956,7 @@ helm repo remove nginx-stable
 ![Preview](./Images/k8s220.png)
 
 * Lets Deploy Applications refer below for manifest/yml files for deployment, and service
-  * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Ingress/dummy-microservices/Ingress-yaml)
+  * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/tree/master/Kubernetes/Examples_Yaml/Ingress/dummy-microservices/Resources-yaml)
 * We have created four deployments
 ![Preview](./Images/k8s221.png)
 * Deployment has created 12 pods in deployment 3 replicas
@@ -1995,12 +1997,12 @@ helm repo remove nginx-stable
 after creating nginx ingress controller it will give us external ip address
 if it on-premises we expose our service via nodeport, means ingress controller will give us external ip for nodeport
 if is is aks or eks ingress controller will give us loadbalancer url, so giving this loadbalancer url doesn't look good idea for users
-so we will have a dns for our applications and we will configure this loadbalancer in route 53 or in azure dns so that we will have one domain for all our applications when ever user hit the route 53 it will redirect to ingress controller and and forwards to ingress and service so on.... 
+so we will have a dns for our applications and we will configure this loadbalancer in route 53 or in azure dns or in external dns server so that we will have one domain for all our applications when ever user hit the domain it will redirect to ingress controller and and forwards to ingress and service and service forward request to access our applications so on.... 
 ```
 ```
 if the 
 pathtype: exact then we can mention 
-path: /identity like this, so that when ever user request for identity blendly forwared the request to /dentity 
+path: /identity like this, so that when ever user request for identity blindly forwared the request to /dentity 
 exact path actually should match if not validation will fail it
 ```
 ```
@@ -2018,20 +2020,6 @@ prefix means this is what it will start after that there will be many
 ```
 #### This example demonstrates how to use Rewrite annotations:
 * [Refer Here](https://github.com/kubernetes/ingress-nginx/blob/main/docs/examples/rewrite/README.md)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Assigning/Scheduling Pods to Nodes:
 * what this means creating or assigning pods to particular nodes.
@@ -2052,7 +2040,7 @@ prefix means this is what it will start after that there will be many
 
 #### Example of NodeSelector:
  * There are two ways to assign labels to nodes.
-   * One is writing labels for nodes in manifest/yml files.
+   * One is writing labels for nodes in manifest/yml files. while creating k8s cluster or we can select existing nodes label too. 
       * [Refer Here](https://github.com/AjayKumarRamesh/QT-DevOps-AzureCloud-Trainings-Ajay/blob/master/Kubernetes/Examples_Yaml/Assinging-Scheduling-pods-to-nodes/nodeselecting-labels/eks-cluster.yml)
       * refer below screen shot for proof for above manifest/yml files
       ![Preview](./Images/k8s191.png)
@@ -2207,6 +2195,7 @@ the Pod continues to run."
 
 #### Activity 1:
 * Create a Replica Set for nopCommerce `ajaykumarramesh/nocommerce:v1.0` and a service with cluster ip and some external accessibility like nodeport
+
 ![Preview](./Images/k8s244.png)
 * [Refer Here](https://github.com/codesquareZone/KubernetesZone/commit/6e70a71a0eaef4316b0bd1442a1e8ee5c8b51546) for nopcommerce yaml files
 * Now apply the changes by using following commands
@@ -2243,6 +2232,10 @@ kubectl get rs
 * In this scenario the below term came in to action.
 
 ### Pod Disruption Budget:
+* PDBs ensure that a minimum number of replicas are available at all times, which helps maintain the high availability of critical workloads during node maintenance or failures.
+* What this above lines says means when voluntry/involuntry disruption happen, means for an example cluster administrator deletes VM (instance) by mistake or a hardware failure of the physical machine backing the node or cloud provider or hypervisor failure makes VM disappear, in this all the cases PDB will maintain the desired state of replicase to workload the application, and ensure minimum availability for replicas in the case of disruptions
+* [Refer Here](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) for PDB official docs
+* [Refer Here](https://medium.com/geekculture/kubernetes-pod-disruption-budgets-pdb-b74f3dade6c1) for PDB other author
 
 * [Refer Here](https://github.com/codesquareZone/KubernetesZone/commit/6d26ddf06fa59ecd79ae592d1fe109c1a8b907ca?diff=split) to configure 80% minimum availability for replicas in the case of disruptions(PDB)
 ![PReview](./Images/k8s249.png)
@@ -2259,7 +2252,7 @@ kubectl get rs
 #### Apply all the manifests and check for status of quotas:
 ![Preview](./Images/k8s250.png)
 
-* In this the number of pods cannot exceed 10 due to quota and also service,nodeport and loadbalancer more then 1.
+* In this the number of pods cannot exceed 10 due to quota and also service,nodeport and loadbalancer not more then 1.
 ![Preview](./Images/k8251.png)
 ---
 

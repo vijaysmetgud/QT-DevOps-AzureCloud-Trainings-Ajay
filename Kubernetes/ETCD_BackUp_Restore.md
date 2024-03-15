@@ -35,8 +35,8 @@ spec:
 
 * check etcdctl version
 ```bash
-ectdctl --help
-ectdctl --version
+etcdctl --help
+etcdctl --version
 ```
 ![Preview](./Images/k8s236.png)
 
