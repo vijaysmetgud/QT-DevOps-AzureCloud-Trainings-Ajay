@@ -253,6 +253,7 @@ var file
 * **metadata** 
      * Metadata related commands
 *  **output** 
+     
      * Show output values from your root module
 * **providers** 
       * Show the providers required for this configuration
@@ -296,7 +297,7 @@ var file
 
 ## Depends_on :
    * it is a tag which allow us to use dependencies between one resource to another and module
-   * it is known as explicit dependency, which means  i will terraform please depends_on this item first before you create that item
+   * it is known as explicit dependency, which means  i will tell terraform please depends_on this item first before you create that item
    * [Refer Here](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on) depends_on documents
    * Technique to use one resource in other resource argument
    * sytanx:
