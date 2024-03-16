@@ -439,12 +439,12 @@ resource "azurerm_storage_account" "first" {
    * [Refer Here](https://developer.hashicorp.com/terraform/language/settings/backends/configuration#available-backends)
 
 # State Lock in Terraform
-  * out of many team members any one person does the terraform init with in the 1 miliseconds earlyer then other then that person use the terraform state file, the file will be lock until he does the work.
+  * out of many team members any one person does the terraform init with in the 1 milliseconds earlier then other then that person use the terraform state file, the file will be lock until he does the work.
   then later lock will be released.
   * If supported by your backend, Terraform will lock your state for all operations that could write state. 
   * This prevents others from acquiring the lock and potentially corrupting your state. 
   * State locking happens automatically on all operations that could write state.
-  *  in the s3 bucket block for state file storing in the common location we needs to add dynamodb table name is not locking features will not be avaiable 
+  *  in the s3 bucket lock for state file storing in the common location we needs to add dynamodb table name if not locking features will not be available 
 
 # Workspace in Terraform:
   * why is workspace required in terraform because above we spoke about lock rite.
@@ -1259,7 +1259,5 @@ if false means do that...
 * ### Terraform input variables:
     *  [Refer Here](https://developer.hashicorp.com/terraform/language/values/variables)
 
-
-
-### hi vijay how r you 
+ 
 
