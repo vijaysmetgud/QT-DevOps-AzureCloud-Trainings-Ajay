@@ -277,7 +277,7 @@ Rebase:
 
 ![Preview](./Images/git38.png)
 ![Preview](./Images/git39.png)
-* Now we need the change done on `master branch` in `develop branch`
+* Now we need the change done on `master branch` to `develop branch`
 * So checkout to `develop branch` and execute `git rebase master`
 ![Preview](./Images/git40.png)
 ![Preview](./Images/git41.png)
@@ -289,6 +289,12 @@ Rebase:
 * The major benefit of rebasing is that you get a much cleaner project history.
 * First, it eliminates the unnecessary merge commits required by git merge.
 * [Refer Here](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+
+#### Example image for rebase
+* before rebase
+![Preview](./Images/git71.png)
+* after rebase
+![Preview](./Images/git72.png)
 
 Cherry-pick
 ------------
