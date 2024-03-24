@@ -512,6 +512,21 @@ Azure Powershell
 * Azure Offers command line capabilities over powershell
 * Powershell will have cmdlets which will be in the form of `verb-noun` eg:- `New-Item` or `Get-Process`
 * [Refer Here](https://learn.microsoft.com/en-us/powershell/azure/install-azps-windows?view=azps-11.3.0&tabs=powershell&pivots=windows-psgallery) Install Azure PowerShell on Windows
+* Follow below steps to install Azure powershell in windows powershell terminal also above link as same procedure
+```
+# Use the Install-Module cmdlet to install the Az PowerShell module:
+Install-Module -Name Az -Repository PSGallery -Force
+# Use Update-Module to update to the latest version of the Az PowerShell module:
+Update-Module -Name Az -Force
+```
+* Then to Authenticate/login into Azure Cloud account from our powershell
+   
+   `Connect-AzAccount`
+
+![Preview](./Images/azcompute87.png)
+
+
+
 * [Refer Here](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-powershell) for powershell to create a linux vm
 
 * Basic Commands
@@ -532,13 +547,101 @@ Get-Help New-AzVM -online
 Get-Credentials
 Remove-AzResourceGroup -Name myvm
 ```
+#### Important things to know to work with azure powershell
+* Azure Powershell steps or docs to create resource in [Refer Here](https://learn.microsoft.com/en-us/powershell/module/az.compute/new-azvm?view=azps-11.3.0)
+* **Important commands to know so that we can continue working on azure powershell not required any document to refer to create any resources in azure cloud:**
+```
+Get-Command
+Get-Help <operation:resources_type>
+EX: get-help New-AzResourceGroup
+EX: Get-Help Remove-AzResourceGroup
+EX: Get-Help Get-AzResourceGroup
+EX: Get-Help Set-AzResourceGroup
+```
+* **These Below are very important while working with azure powershell:**
+```
+# To get all the Azure Resources commands execute below command.
+Get-Command
+# Then we can select any resources and also resources commands to work with it.
+```
 
-* To Authenticate azure cloud from local powershell
 ```
-Connect-AzAccount
+# To get particular resources commands to work or create in azure cloud.
+EX: Get-Help New-AzResourceGroup
+#Then we will get the resources commands or procedure what to do or how to create the resources with azure cloud.
+# These below commands are to know more information about how to use these commands also
+above which we got help by executing the command `Get-Help New-AzResourceGroup` how to implement it with detailed explanation will give when we type. 
+# below all three commands, based on that we can create the resource in azure cloud. 
+
+* To see the examples, type: "get-help New-AzResourceGroup -examples".
+    For more information, type: "get-help New-AzResourceGroup -detailed".
+    For technical information, type: "get-help New-AzResourceGroup -full".
+    For online help, type: "get-help New-AzResourceGroup -online"
 ```
-* Then authenticate login into your azure account
-![Preview](./Images/azcompute87.png)
+
+```
+# To remove/delete the resources which we created in azure cloud execute below command to get help or how to use these commands.
+EX: Get-Help Remove-AzResourceGroup
+# These below commands will give us examples and detailed procedure how to use these commands.
+
+* To see the examples, type: "get-help Remove-AzResourceGroup -examples".
+    For more information, type: "get-help Remove-AzResourceGroup -detailed".
+    For technical information, type: "get-help Remove-AzResourceGroup -full".
+    For online help, type: "get-help Remove-AzResourceGroup -online"
+
+# To remove/delete all the resources by deleting resource group in azure cloud.
+EX: Remove-AzResourceGroup -Name frompowershell
+
+
+# To remove/delete particular resource from azure cloud.
+Remove-AzResource -ResourceName -ResourceType -ResourceId 
+
+EX: Remove-AzResource  -ResourceId /subscriptions/5e29be3b-772d-4a03-9b7a-9990573f645e/resourceGroups/frompowershell/providers/Microsoft.Network/virtualNetworks/vmnet
+
+EX: Remove-AzVirtualNetwork -Name MyVirtualNetwork -ResourceGroupName TestResourceGroup
+```    
+
+```
+# To create any resources in azure cloud below is the command but resources will change it
+  New-AzResourceGroup
+EX: New-AzResourceGroup -Name frompowershell -Location eastus
+EX: New-AzVirtualNetwork -Name vmnet -ResourceGroupName frompowershell -Location eastus -AddressPrefix 10.10.0.0/16
+```
+
+```
+# To get/fetch/show the azure resource to our terminal and we will get help or procedure how to get resources to our local terminal from azure.
+EX: Get-Help Get-AzResourceGroup
+
+
+# This below optional commands will show the procedure with example and detailed informed how to get the resource to our local terminal.
+
+* REMARKS
+    To see the examples, type: "get-help Get-AzResourceGroup -examples".
+    For more information, type: "get-help Get-AzResourceGroup -detailed".
+    For technical information, type: "get-help Get-AzResourceGroup -full".
+    For online help, type: "get-help Get-AzResourceGroup -online"
+  
+
+# To get/fetch/show particular azure resource to our terminal.
+       EX: Get-AzResourceGroup -Name mykeypairs
+   
+# To get/fetch/show all the azure resources to our terminal.
+     
+       EX: Get-AzResourceGroup
+```
+
+```
+# To modify/update the resources,by executing below command we will get help or procedure how to modify/update the resources in azure.
+ 
+      EX: Get-Help Set-AzResource       
+```
+
+```
+# There are many more commands to use in azure powershell be executing below commands we will get the procedure to work on it.
+
+EX: get-help azure resources name
+EX: get-help new-azresourcesgroup
+```
 
 ### Activity:
 #### Lets create linux vm in azure powershell
