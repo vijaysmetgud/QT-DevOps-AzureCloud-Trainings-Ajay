@@ -185,7 +185,7 @@ helm upgrade --install ingress-nginx ingress-nginx \
 * refer below for ingress controller details:
 ![Preview](./Images/k8s28.png)
 
-* To delete hel items execute below commands
+* To delete helm items execute below commands
 
 ```
 kubectl delete namespace ingress-nginx

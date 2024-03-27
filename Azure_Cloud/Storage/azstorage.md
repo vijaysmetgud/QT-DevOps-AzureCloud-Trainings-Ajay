@@ -50,6 +50,7 @@ Some important storage concepts
    * Regions
    * Regions with zones
 * Edge or Point of Presence location
+
 ![Preview](./Images/azstorage1.png)
 * Explore Azure infra[Refer Here](https://datacenters.microsoft.com/globe/explore)
    * sky blue points are Regions

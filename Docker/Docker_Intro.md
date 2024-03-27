@@ -144,7 +144,8 @@ Docker Architecture:
    * containerd: manages the container lifecycle
    * runc: This creates container using libcontainer 
    * shim: once the contianer is created runc makes shim the parent of container, this helps docker containers to be in running state even if the docker components are upgrading.
-  * [Preview](./Images/docker14.png)
+
+   ![Preview](./Images/docker14.png)
 
 # Docker installation – Easy way on linux machines:
 * Create a linux vm (ubuntu 22.04)
@@ -159,13 +160,13 @@ sh install-docker.sh
 ```
 docker version
 ```
-* ![Preview](./Images/docker15.png)
+![Preview](./Images/docker15.png)
 * To solve this temporarily elevate the privileges use below command:
 ```
 sudo docker version
 ```
 
-* ![Preview](./Images/docker16.png)
+![Preview](./Images/docker16.png)
 * The reason is the user doesnot have permission to access unix socket
 * socket at `unix:///var/run/docker.sock`. The permission to this exists for all the members of docker group, so lets add the current user to docker group
 
@@ -214,6 +215,7 @@ docker container create --name mynginx nginx
 
 * To run this application we need java 11 and 8080 port to access the application
 * How this application is executed
+
 ![Preview](./Images/docker24.png)
 
 ### Manual steps: to this application:
@@ -665,7 +667,7 @@ or
 
 ```
 FROM mcr.microsoft.com/dotnet/sdk:7.0
-LABEL author=khaja
+LABEL author=kumar
 COPY nopCommerce /nopCommerce
 ENV ASPNETCORE_URLS="http://0.0.0.0:5000"
 EXPOSE 5000
@@ -709,7 +711,7 @@ From openjdk
 Run java --version
 
 From Nginx
-Run wegt
+Run wget
 ```
 
 * so above first two `From` will be part of our image build for supporting software purpose, the last `From` be our image will create 
@@ -964,13 +966,14 @@ docker pull practiceqt.jfrog.io/docker-docker/jfrog
 
 #### Scan Docker Image:
 
-* we can download `docker desktop` and `install extension marketplace` `Jfrog` through that we can scan all the docker image reer below screen shot
+* we can download `docker desktop` and `install extension marketplace` `Jfrog` through that we can scan all the docker image refer below screen shot
 
 ![Preview](./Images/docker55.png)
 
 ## Layers in Docker Image:
 
 * Docker image is collection of read only image layers and meta-data
+* Dcoker image is collections of layers, which means every instrctions in dockerfile is know as layer
 
 ### Experiments:
 
@@ -980,7 +983,8 @@ docker pull practiceqt.jfrog.io/docker-docker/jfrog
 docker image pull alpine:3.17
 docker image inspect alpine:3.17
 ```
-* below screen shots show of alpine image there is only one layers because the alpine image instruction return only 1 each instruction works in docker as layers:
+* below screen shots show of alpine image there is only one layer because the alpine image is return with only one instruction, so in docker image/world, each instruction is known as layer:
+
 ![Preview](./Images/docker56.png)
 
 * Pull the jenkins/jenkins image and inspect and focus on layers
@@ -1000,8 +1004,13 @@ FROM alpine:3.17
 
 docker image build -t exp:1.0 .
 ```
-* if directly we pull the image `alpine:3.17` from docker hub has same layer only `1`
-* same instruction we put in the dockerfile and build the image `exp:1.0` also as same layer only `1`, there is no difference because both image as only `1` same `instruction`
+* if we directly pull the image `alpine:3.17` from docker hub has same layer only `1`, as we already observed above example. 
+* same instruction of `alpine:3.17` when  we put in the dockerfile and build the image as `exp:1.0`, we have observed only `1` layer and  there is no difference because both image as only `1` same `instruction`
+* Refer below screen shot
+![Preview](./Images/docker128.png) 
+![Preview](./Images/docker129.png) 
+* Image size 
+![Preview](./Images/docker130.png)
 * below screen shot proves it.
 
 ![Preview](./Images/docker58.png)
@@ -1017,12 +1026,11 @@ ADD https://referenceapplicationskhaja.s3.us-west-2.amazonaws.com/gameoflife.war
  docker image build -t exp:1.1 .
  docker images
  ```
-
-* now observe the image size has been increased when we added above dockerfile one extra `instruction` 
-
+* now observe the image size from below screen shot, blue ink marked for `exp:1.0` image and orange ink marked for `exp"1.1` image, see the difference,when we added one extra instruction in docker file then one extra layer is added. which proves in the below layer screen shot.
+* So this means it proves that every instructions in docker is know as layer.  
 ![Preview](./Images/docker59.png)
 
-* Now observe `1` layers also increased 
+* Now observe  below screen shot `1` layer is increased 
 ![Preview](./Images/docker60.png)
 
 * Now as observed a new layer was created in `exp:1.1`
@@ -1051,7 +1059,7 @@ docker images
 ![Preview](./Images/docker63.png)
 ![Preview](./Images/docker64.png)
 
-* Now we have observed above drawing screen shot that Writing too many RUN instructions is not a good idea, it looks climbsy so instead of writing the `Run` command to many time we can combine all the `Run` command in `one` and adding the  `\` next each line it will increase Readability of instruction. like below dockerfile code.
+* Now we have observed above drawing screen shot that Writing too many RUN instructions is not a good idea, it looks climbsy so instead of writing the `Run` command to many times we can combine all the `Run` command in `one` and adding the  `\` next each line it will increase Readability of instruction. like below dockerfile code.
 
 ```
 FROM alpine:3.17
@@ -1063,6 +1071,7 @@ RUN mkdir test && \
 
 * Docker container when created will union all the image layers and one writable layer to create a logical disk. This is done by Storage Drivers. The most popular one is `overlay2`.
 * refer below screen shot:
+
 ![Preview](./Images/docker65.png)
 
 * [Refer Here](https://directdevops.blog/2019/09/27/impact-of-image-layers-on-docker-containers-storage-drivers/) for the article explaining layers and drivers.
@@ -1116,7 +1125,7 @@ docker container ls
 ```
 ![Preview](./Images/docker67.png)
 
-* as per above screesn shot the image ran with mentione `cmd as sleep 1d` so application should not start it should be in exited state, but if we see the screen shot it saying that up and running , this means that what ever we mention in the   `cmd` will work so for 1 day it be showig as running post 1 day it will exited.
+* as per above screesn shot the image ran with mention `cmd as sleep 1d` so application should not start and it should be in exited state, but if we see the screen shot it is saying that application is up and running , this means that what ever we mentioned in the `cmd` will work for 1 day so it will be showig our application as running  till 1 day and post 1 day it will be in exited state.
 
 
 ```
@@ -1128,9 +1137,8 @@ docker container run -d --name exp3 entrycmd:1.0  echo hello
 docker container ls -a
 ```
 
-* check this below screen shot same as ran as `exp` but `exp` we mention as `cmd sleep 1d` so it showing like running and after 1 day it will exit.
-where `exp1` and `exp2` samae `cmd sleep 1d` is written but even thosugh it is exited status application is not running.
-* reason being after runing the container and after the image name we have passed something so because of that is exited can see in above command code session 
+* check this below screen shot i have ran same application as above `exp` but `exp` we mention as `cmd sleep 1d` so it showing like running and after 1 day it will exit. where as `exp1` and `exp2` same `cmd sleep 1d` is written but even though it is exited status application is not running.
+* reason being after runing the container and after the image name we have passed some arguments commands so because of that is exited can see in above command code session 
 * refer below screen shot:
 
 ![Preview](./Images/docker68.png)
@@ -1255,15 +1263,14 @@ docker container run -it --name test -v yes-vol:/data  ubuntu
 
 ![Preview](./Images/docker76.png)
 
-* ** To Expirement take `mysql` image from docker hub it iin this image has deafult volume is in the docker file
-* so when  run that `mysql` image by default strange volume is created please refer all below steps and screen shots:
+* To Expirement take `mysql` image from docker hub this image has deafult volume in the docker file
+* so when we run that `mysql` image by default strange volume is created please refer all below steps and screen shots:
 
 ![Preview](./Images/docker78.png)
 
 * Now create the container some-mysql and look at volumes
 
 ```
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
 docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
 docker volume ls
  docker volume inspect c7cc2bb24fa4e540fbcf5453962bdc30aec06673bccb4cec66c57fee1419cb2f
@@ -1273,7 +1280,8 @@ docker volume ls
 ![Preview](./Images/docker79.png)
 ![Preview](./Images/docker80.png)
 
-* **Now create a volume and mount it it mysql with same `specific-mysql`:**
+* **Now create a new volume called `my-vol` and mount that newly created volume to default volume location for the above created mysql image:** 
+   * Now we will run same image which is already ran above that is `mysql` because already there is default volume created and data is stored in that image `mysql`. only we will change the container name to `specific-mysql` so that already existed data for above image `mysql` will be mount to newly created volume called `my-vol` so we can find the old data of `mysql`
 
 * refer below screen shot all commands and steps are there.
 
@@ -1291,7 +1299,7 @@ docker volume ls
 ### Docker Native Network Drivers
 
 * **Host**
-   * here what host gets the ip address same ip addresss will get the even container but the problem is can cannot run multiple container since same ip address we cannot share to multiple containers
+   * here what host gets the ip address same ip addresss will get the even container but the problem is cannot run multiple container since same ip address we cannot share to multiple containers
 ![Preview](./Images/docker92.png)   
 
 * **Bridge**
@@ -1368,7 +1376,7 @@ docker network ls
 
 * **Please Note:**
 
-* when install docker and any contianer both will have `network interface` these `network interface` will connect with the help of `bridge network` which will get by default. that is wer we can do `port forwarding` and we able to access our applications.
+* when we install docker and any contianer both will have `network interface` these `network interface` will connect with the help of `bridge network` which will get by default. that is wer we can do `port forwarding` and we able to access our applications.
 
 * sample creation of network:
 ```
@@ -1463,6 +1471,7 @@ docker container exec L1 ping -c4 L2
    `docker volume create nop-db`
 
  * Create a network `nopnet`
+
  `docker network create -d bridge --subnet '10.100.100.0/24' nopnet`
 
 * Create a mysql container with username nop, volume, password nop123 in the nopnet with name `nopdb`
@@ -1477,12 +1486,40 @@ docker container run -d --name nopdb \
     -v nop-db:/var/lib/mysql \
     mysql:8
 ```
+![Preview](./Images/docker103.png)
+![Preview](./Images/docker136.png)
+
+* build docker image for nop
+```Dockerfile
+FROM alpine:3 AS downloader
+ARG DOWNLOAD_LOCATION="https://github.com/nopSolutions/nopCommerce/releases/download/release-4.60.4/nopCommerce_4.60.4_NoSource_linux_x64.zip"
+ADD ${DOWNLOAD_LOCATION} /nopCommerce/nopCommerce_4.60.4_NoSource_linux_x64.zip
+RUN apk update && \
+    apk add unzip && \
+    cd /nopCommerce && \
+    unzip nopCommerce_4.60.4_NoSource_linux_x64.zip && mkdir bin logs \
+    && rm nopCommerce_4.60.4_NoSource_linux_x64.zip
+
+FROM mcr.microsoft.com/dotnet/runtime:7.0
+LABEL author="ajay"
+EXPOSE 5000
+COPY --from=downloader /nopCommerce /nopCommerce
+ENV ASPNETCORE_URLS="http://0.0.0.0:5000"
+EXPOSE 5000
+WORKDIR /nopCommerce
+CMD ["dotnet", "Nop.Web.dll"]
+```
+* Execute below command to build docker image for above dockerfile
+```
+vi Dockerfile and save the above content in the Dockerfile
+docker image build -t nop .
+```
+* Refer below screen shot for docker image build 
+![Preview](./Images/docker135.png)
 
 * Create the nop container on nopnet
 
 `docker container run -d --name nop --network nopnet -P nop`
-
-![Preview](./Images/docker103.png)
 ![Preview](./Images/docker104.png)
 
 * Inspect network
@@ -1490,8 +1527,20 @@ docker container run -d --name nopdb \
 `docker network inspect nopnet`
 
 ![Preview](./Images/docker105.png)
-
-* Now watch the classroom video to bring up the this above application
+* Now access the nop application `http://locahost-ip:nop-port` 
+![Preview](./Images/docker137.png)
+* Now ConfigureStore information and  Database information for nop application
+![PReview](./Images/docker138.png)
+![Preview](./Images/docker139.png)
+![Preview](./Images/docker140.png)
+* Now start the container because after we did above configuration, applications will go into restart stage so it will be in stopped state, this is due to application issue, not from our end.
+* Check this screen shot first command `docker container ls`, it show there is no nop application itself because after configuration application has in stoped state so we needs enter command called `docker container ls -a` to see stopped application/image
+![Preview](./Images/docker141.png)
+* After we started the nop application 
+* then access the applications  with new nop port `http://locahost-ip:nop-port` 
+![Preview](./Images/docker142.png)
+![Preview](./Images/docker143.png)
+![Preview](./Images/docker144.png)
 
 
 ## Docker Swarm:
@@ -1556,7 +1605,7 @@ docker container run -d --name nopdb \
 * The packet arrives at the eth0 interface of host-B and is decapsulated by the overlay network driver. The original L2 frame from c1 is passed to c2's eth0 interface and up to the listening application.
 ```
 
-* When you create overlay network as mentioned in the swarm series, two network drivers are create
+* When you create overlay network as mentioned in the swarm series, two network drivers are created
    * Overlay: This points to the overlay network
    * docker_gwbridge: The egress bridge is for traffic leaving the cluster. only one docker_gwbride exists per host. This bridge is used for ingress/egress communications not for container to container communications with in overlay.
 
@@ -1664,7 +1713,7 @@ Commands:
 Run 'docker swarm COMMAND --help' for more information on a command.
 ```
 
-* After initialling check using this command `docker network ls` we will a new tow network has created below screen shot:
+* After initialling check using this command `docker network ls` we will see new two network has created below screen shot:
 
 ![Preview](./Images/docker111.png)
 
@@ -1703,33 +1752,30 @@ $ docker service inspect nginx-test
             "TaskTemplate": {
                 "ContainerSpec": {
                     "Image": "nginx:latest@sha256:a0e1a5e765dea699ce6706e4d1943632140a5b0bc8970df3ceee63ea2c0badb2",
+
 ```
 
 * Execute docker service ps nginx-test` command to findout on which node the tasks are executed.                            
 
 ![Preview](./Images/docker114.png)
 
-* Lets scale the number of containers running nginx by using the following command `docker service scale nginx-test=4` and the output would be
+* Lets scale the number of containers running nginx by using the following command `docker service scale nginx-test=5` and the output would be
+![Preview](./Images/docker131.png)
+* Check the service is running as per scale `5` by using the following command ` docker service ls`
+![Preview](./Images/docker132.png)
+* Check how many nginx image is running as per scale it should be ruuning `5` by using following command `docker container ls`
+    * Observe below screen shot, in manager two nginx image is running, `node1` is known as manager.
+    ![Preview](./Images/docker133.png)
+    * Observe below screen shot, in worker three nginx image is running `node2` is known as worker
+    ![Preview](./Images/docker134.png)
 
-```
-$ docker service scale nginx-test=4
-nginx-test scaled to 4
-overall progress: 4 out of 4 tasks
-1/4: running   [==================================================>]
-2/4: running   [==================================================>]
-3/4: running   [==================================================>]
-4/4: running   [==================================================>]
-verify: Service converged
-```
-
-* Now i am going to delete 2 containers from worker but even i delete it maintain the state, you observe below screen shot proof:
+* Now i am going to delete 3 containers from `worker` but even if i delete,  it will maintain the desired state, you observe below screen shot for proof
 
 ![Preview](./Images/docker115.png)
 ![Preview](./Images/docker116.png)
-
-* Now see the observation i have deleted two contianer and updated the above screen shot, using `docker container ls` command and put below screen shot for proof.
-
-![Preview](./Images/docker117.png)
+* Now let us check the deleted container status in `worker` 
+![Preview](./Images/docker115.png)
+* Even we deleted the 3 contianer in worker, docker swarm is maintained desired state 3 becasue we have mentioned replicas=5 so it have to maintain its state, decision making by swarm so 2 nginx container in manager and 3 in worker.
 
 #### Rolling updates to docker swarm:
 
@@ -1737,9 +1783,7 @@ verify: Service converged
 
 `docker service create --name jenkins --replicas 2 --update-delay 10s --publish published=8081,target=8080 jenkins:1.609.1`
 
-* Now navigate to ipaddress of any node and
-
-`http://ip address:8081`
+* Now navigate to ipaddress of any node and `http://ip address:8081`
 
 ![Preview](./Images/docker118.png)
 

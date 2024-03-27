@@ -100,7 +100,7 @@ docker network inspect spring_spc-net
 ![Preview](./Images/docker108.png)
 ![Preview](./Images/docker109.png)
 
-### Type:1
+### Type:2
 
 #### Steps:
 

@@ -81,6 +81,7 @@
 
 ### Building Blocks:
 * Three building blocks of k8s RBAC:
+
 ![Preview](./Images/rbac2.png)
 
 * **Subject:** 
@@ -138,7 +139,7 @@ cd cert
 `openssl x509 -req -in muthu.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out muthu.crt -days 180`
 ![Preview](./Images/rbac6.png)
 
-* As a cluster admin, create a user in k8s by setting user entry kubeconfig for muthu and point to the cr and key file.
+* As a cluster admin, create a user in k8s by setting user entry kubeconfig for muthu and point to the crt and key file.
 
 `kubectl config set-credentials muthu --client-certificate=muthu.crt --client-key=muthu.key`
 ![Preview](./Images/rbac7.png)
@@ -254,7 +255,7 @@ kubectl get rolebinding
 
 
 ### Now Lets do the experiment on above user muthu with cluster role and bond with rolebinding:
-* we can use clusterrole with rolebinding bond because instead of created reach role for different user, in this experiement we are going to create only one cluster role for two users that is muthu and bala.
+* we can use clusterrole with rolebinding bond because instead of creating each role for different user, in this experiement we are going to create only one cluster role for two users that is muthu and bala.
 * with these two users we adopt the clusterrole bond with rolebinding
 * we have created tow users.
   * muthu
@@ -294,7 +295,7 @@ rules:
 
 ```
 # i am applying all the roles from my admin kubernetes
-# while applying clusterrole we can default admin namespace because its cluster scope no issues
+# while applying clusterrole we can do in default admin namespace because its cluster scope no issues
 vi clusterrole-users.yaml
 kubectl apply -f clusterrole-users.yaml
 kubectl get clusterrole
@@ -474,7 +475,8 @@ kubectl get clusterrolebinding muthu-ClusterRoleBinding
 * kubernetes cluster comes with a service account called as `default` which lives in `default` name space.
 * Any pod which we create where we don’t explicitly assign a service account to created pod, it uses the default service account.
 * A service account is a type of non-human account 
-* When you create a cluster, Kubernetes automatically creates a ServiceAccount object named `default` for every namespace in your cluster. The `default` service accounts in each namespace get no permissions by default other than the `default API discovery permissions` 
+* When we create a k8s cluster, Kubernetes will automatically creates a ServiceAccount called object named `default`
+for every namespace which we create in k8s cluster. The `default` service account gets created but it will not get any permission by default. other then the `default API discovery permissions`
 * If you delete the `default` ServiceAccount object in a namespace, the `control plane` replaces it with a `new one`.
 * If you deploy a Pod in a namespace, and you don't `manually assign a ServiceAccount to the Pod`, Kubernetes assigns the `default` ServiceAccount for that namespace to the Pod
 * **Please Note Below Important:**
@@ -489,7 +491,7 @@ self with kube api server, in case if we dont explicitly assign a custom service
 
 ![Preview](./Images/rbac48.png)
 
-* For every pod create in `/var/run/secrets/kubernetes.io/serviceaccount` a certificate and token are mounted to access to API Server
+* For every pod which we create in k8s cluster. By default in this location `/var/run/secrets/kubernetes.io/serviceaccount` a certificate and token are mounted to pod to  access to API Server
 
 #### Example:1
 * Lets create nginx pod and see pod uses default service account:
@@ -820,7 +822,8 @@ aggregationRule:
         rbac-delete-service: "true"
 rules: []
 ```
-* Observe this above aggregated cluster role will inherit the aboves said cluster role rules, since in aggregate cluster role i have ot mentioned any rules.
+* Observe this above aggregated cluster role will inherit the aboves said cluster role rules, since in aggregate cluster role i have not mentioned any rules.
+
 ![Preview](./Images/rbac42.png)
 ![Preview](./Images/rbac43.png)
 ![Preview](./Images/rbac44.png)

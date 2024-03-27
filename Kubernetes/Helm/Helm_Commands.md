@@ -98,7 +98,7 @@
         
         helm repo add <repo_name><url>
 
-* Command to convert charts into package
+* Command to convert charts into package, means archive file ex:`my-charts-0.1.0.tgz`
 
        helm package nginx
        helm package <chart_name>

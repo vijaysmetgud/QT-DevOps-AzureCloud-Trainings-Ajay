@@ -28,13 +28,13 @@
             app: nginx 
 ```
 
-* `Label:` This is name/value pair used to query resources/object in k8s. used in `services`, `replicasets`, `replicas controller` and `deployments` etc.
+* `Label:` This is name/value pair used to query resources/object in k8s. used in `services`, `replicasets`, `replicas controller` `stateful set` `daemon set` and `deployments` etc.
 * means using this `label` only all other resources mentioned will be identify the pod which is belongs to which group.
 ![Preview](./Images/k8s7.png)
 
 * **RC-Disadvantages**
    *  we cannot enhance or upgrade the application version and also we can mention only one `label` not more that.
-   * that to only quality label means `app=nginx`
+   * that to only equality label means `app=nginx`
 ---
 
 ###  ReplicaSet:

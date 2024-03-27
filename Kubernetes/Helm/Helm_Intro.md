@@ -93,6 +93,7 @@ helm template [NAME] [CHART] [flags]
 
 * Now after changning some values in the value.yml file run the same below command so that we can see the observation of values change in the normal manifest files 
 * before change 
+
 ![Preview](./Images/helm6.png)
 * after execute command and change it values
 
@@ -158,7 +159,7 @@ myhelloworld-release    default         1               2023-10-11 00:44:22.8316
 `kubectl get service/svc`
 * Access the applications
 
-  `http://ip-address:portno`
+`http://ip-address:portno`
 
 * If we do any changes to our helm chart means if changes the values.yml or any files templates resources file then we needs to run upgrade command
 * before changes screenshot
@@ -228,7 +229,7 @@ helm list
 ```
 * Output Below screen shot:
 ![Preview](./Images/helm18.png)
-! [Preview](./Images/helm19.png)
+![Preview](./Images/helm19.png)
 
 * To uninstall the release/chart which we deployed
 

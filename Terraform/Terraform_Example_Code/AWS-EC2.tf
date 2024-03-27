@@ -14,8 +14,8 @@ provider "aws" {
 
  // passing access_key and secret_key directly in the code example below:
  /*
-  access_key = "AKIA5VIYY73GM2GDQHEX"
-  secret_key = "34LcG72KNm32hE7v3EZM05BLrZcawcWkSGPzrmsE"
+  access_key = "XXXXXXXXXXXXXXXx"
+  secret_key = "XXXXXXXXXXXXXXXXXXXXXXXxxx"
  */ 
 } 
 

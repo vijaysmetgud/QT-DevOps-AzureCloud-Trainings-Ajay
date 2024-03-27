@@ -21,7 +21,7 @@ is known as continues integration
 * where ever developer will commit the code to any remote/centralize repository it will start testing with lower environment is known as continues delivery   
 
 ### Continuous Deployment:
-* where ever developer will commit the code to any remote/centralize repository it will start testing with lower environment and deploy to production 
+* when ever developer will commit the code to any remote/centralize repository it will start testing with lower environment and deploy to production 
 * the moment developer submit the code and we will build the package and do some unittesting, security testing and performance testing, and deploy to the up to prod/live environment is known as continues deployment
 * chain => VCS submit the code => build package => ST env => PT env => UAT env => prod/Live environment
 
@@ -89,9 +89,9 @@ is known as continues integration
 
 ### Jar contain byte code, it executes by its own
 
-### War contain byte code, and it required some webserver or application server to work 
+### War contain byte code, and it required some web server or application server to work 
 
-### .net contain dll/exe means interpretor 
+### .net contain dll/exe means interpreter  
 
 
 ### Dependencies
@@ -254,7 +254,7 @@ mvn --version
 * **Node:**
    * This represents the machine on which build can be executed.
    * Each Node can be configured to handle multiple builds by executors.
-     * On Jenkins UI as per below screen shot we can see how many executors are there. based on that so many executors can execute the project on jenkins, so we have two executors so that we can build two different projects, not same two project, if same tow project builds is called concurrent builds.
+     * On Jenkins UI as per below screen shot we can see how many executors are there. based on that so many executors can execute the project on jenkins, so we have two executors so that we can build two different projects, not same two project, if same two project builds is called concurrent builds.
      * Eventually we can change the executors also if required.
      ![Preview](./Images/jenkins14.png)
 
@@ -431,8 +431,7 @@ sudo apt install maven -y
 * **Required Software:** 
   * on the jenkins node-2 we required ` Java JDK-17` to jenkins master connect the node-2 and execute our application
   * install `dotnet 7 sdk` for running nop comerce
-     * To install dotnet 7 sdk [Refer Here](https://learn.microsoft.com/en-us/dotnet/core/install/
-     linux-ubuntu-2204)
+     * To install dotnet 7 sdk [Refer Here](https://learn.microsoft.com/en-us/dotnet/core/install/) linux-ubuntu-2204
     ```
     sudo apt-get update && \
     sudo apt-get install -y dotnet-sdk-7.0
@@ -469,8 +468,10 @@ Upstream and Downstream projects
 * If the project A triggers the Project B then
    * Project B is downstream of Project A
    * Project A is upstream of Project B
+
     ![Preview](./Images/jenkins85.png)
 * Lets create New View `Experimental` and also create `Project A,B and C` 
+
 ![Preview](./Images/jenkins86.png)
 ![Preview](./Images/jenkins87.png)
 ![Preview](./Images/jenkins88.png)
@@ -532,7 +533,7 @@ Jenkins Environmental variables
 ![Preview](./Images/jenkins124.png)
 * Now build the printenv project
 ![Preview](./Images/jenkins125.png)
-* observe here when used same command which is used on node-2 in jenkins UI to execute `printenv` we can see some more other environmental variables which was not there in the node-2, so this means jenkins has some kind of environmental variables
+* observe here when we use `printenv` command on node-2 server, we got some environment variables, and we used same command `printenv` in jenkins UI to see environment variables but the result is we can see some more environmental variables, which was not there/shown in the node-2 server, so this means jenkins has some kind of environmental variables, got proved. 
 ![Preview](./Images/jenkins126.png)
 * To view environmental variables Naviage to build steps => execute shell => click on ` the list of available environment variables`
 ![Preview](./Images/jenkins127.png)
@@ -579,7 +580,7 @@ Which plugin should be installed to monitor jenkins
    * Market place
      * searching plugins in available plugin
    * Uploading the plugin
-      * Under => `Manage Jenkins` `Plugins` => `Advanced Settings` 
+      * Under => `Manage Jenkins` => `Plugins` => `Advanced Settings` 
       * we can browse and upload the plugin
       ![Preview](./Images/jenkins149.png)
 ### Jenkins plugin has two extensions while uploading
@@ -674,6 +675,7 @@ node('JDK_8') {
 ### Scripted Pipelines
  * Generally we create a file called as `Jenkinsfile`
  * Basic structure: [Refer Here](https://www.jenkins.io/doc/book/pipeline/syntax/#scripted-pipeline) for Scripted Pipeline information
+
 ![Preview](./Images/jenkins170.png)
 * [Refer Here](https://www.jenkins.io/doc/pipeline/steps/#pipeline-steps-reference) for all Pipeline Steps Reference  
 * In scripted and declartive pipelines when we install plugins we get extra steps.
@@ -852,6 +854,8 @@ User Administration in Jenkins
 -------------------------------
 * In User administration in jenkins there are two types
 ### Authentication:
+
+![Preview](./Images/jenkins325.png)
 * **Jenkins own user database**
     * get user information or details from jenkins database 
        * means all the user information will be stored in var/lib/jenkins location
@@ -877,6 +881,7 @@ User Administration in Jenkins
 * Now Add the User
 ![Preview](./Images/jenkins213.png)
 ![Preview](./Images/jenkins214.png)
+* Now give the permission for user `dummy` 
 ![Preview](./Images/jenkins215.png)
 * Now Login as user `dummy` and check the access to jenkins UI
 ![Preview](./Images/jenkins216.png)
@@ -893,11 +898,12 @@ User Administration in Jenkins
 ![Preview](./Images/jenkins219.png)
 * Under `manage jenkins` Navigate to `Manage and Assing Roles`
 ![Preivew](./Images/jenkins220.png)
-* Now Add the Role/Group and give the permissions
+* Now create/Add the Role/Group and give the permissions, i have created Roles and giving the permissions for that Roles.
 ![Preivew](./Images/jenkins222.png)
-* Now Assign Roles to the users which we have created earlier above
+* Now Add the users which we created earlier above to assign the Roles
 ![Preview](./Images/jenkins223.png)
 ![Preview](./Images/jenkins224.png)
+* Now Assign Roles to the users which we have created earlier above
 ![Preview](./Images/jenkins225.png)
 * Now Login in the private window and check the access for user `suresh`
 ![Preview](./Images/jenkins226.png)
@@ -905,7 +911,7 @@ User Administration in Jenkins
 * User suresh has assign the role to `developer` so he can `build` and `view` and cannot `delete the project` also cannot see `manage jenkins` and `some more options`
 * Now Login in the private window and check the access for user `harish`
 ![Preview](./Images/jenkins228.png)
-* User `Harish` is assing to `devops engineer` with `admin access` so he as the all the rights including `manage jenkins` and `deleting the project` 
+* User `Harish` is assign to `devops engineer` with `admin access` so he as the all the rights including `manage jenkins` and `deleting the project` 
 ![Preview](./Images/jenkins229.png)
 ![Preview](./Images/jenkins230.png)
 * Now Login in the private window and check the access for user `chitra`
@@ -927,16 +933,16 @@ User Administration in Jenkins
 ![Preview](./Images/jenkins239.png)
 ![Preview](./Images/jenkins240.png)
 * Navigate => `Manage Jenkins`=>`Manage and Assign Roles`=> `Manage Roles`
-* create Roles and pattern for project to access
+* create Roles and pattern and give the permission to access the project
 ![Preview](./Images/jenkins241.png)
 ![Preview](./Images/jenkins242.png)
 ![Preview](./Images/jenkins243.png)
-* Now add users to permision of Roles
+* Now add users and give permissions for Roles
 ![Preview](./Images/jenkins248.png)
 ![Preview](./Images/jenkins249.png)
 ![Preview](./Images/jenkins250.png)
 ![Preview](./Images/jenkins251.png)
-* Now Assign Roles for users which is created for projects
+* Now add users and Assign Roles for users on project based 
 * Navigate => `Manage Jenkins`=> `Manage and Assign Roles`=>`Assign Roles`
 ![Preview](./Images/jenkins244.png)
 ![Preview](./Images/jenkins245.png)
@@ -991,7 +997,6 @@ Artifact Repository
 ![Preview](./Images/jenkins268.png)
 
 
-
 Artifactory Jenkins integration with Jfrog
 -------------------------------------------
 #### For configuring jenkins with artifactory [Refer Here](https://directdevops.blog/2019/10/17/artifactory-configuration/)
@@ -1006,7 +1011,8 @@ Artifactory Jenkins integration with Jfrog
 ![Preview](./Images/jenkins272.png)
 ![Preview](./Images/jenkins273.png)
 ![Preview](./Images/jenkins274.png)
-* copy the token and paste into notpad
+* copy the token and paste into notepad
+
 ![Preview](./Images/jenkins275.png)
 * Now Login into Jenkins
    * Install artifactory plugin in jenkins
@@ -1117,7 +1123,7 @@ pipeline{
 
 Static code Analysis
 --------------------
-#### Sonar Qube: means we will install sonar qube on our local system like ubuntu/linx and start using it
+#### Sonar Qube: means we will install sonar qube on our local system like ubuntu/linux and start using it
 * for in this scenario we will use For static code analysis lets use sonar cloud.
 * [Refer Here](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/jenkins-extension-for-sonarcloud/#:~:text=Configure%20SonarCloud%3A,created%20as%20a%20) for sonar cloud configuration docs
 * [Refer Here](https://www.sonarsource.com/products/sonarcloud/signup/) to create sonar cloud free account
@@ -1141,7 +1147,7 @@ Static code Analysis
 ![Preview](./Images/jenkins305.png)
 ![Preview](./Images/jenkins306.png)
 ![Preview](./Images/jenkins307.png)
-* Make sure you the token copy it now, you won't be able to see it again!
+* Make sure you copied token now it self, otherwise you won't be able to see it again!
 * **Login into jenkins and configure sonar cloud token for credentials:**
 * Navigate => `Manage Jenkins`=> `Credentials`
 ![Preview](./Images/jenkins308.png)
@@ -1150,7 +1156,7 @@ Static code Analysis
 * Login into jenkins and go to `Manage Jenkins`=> `Plugins` install `SonarQube Scanner`
 ![Preview](./Images/jenkins311.png)
 ![Preview](./Images/jenkins312.png)
-* **Log into Jenkins and configure SonarQube Scanner:**
+* Now configure SonarQube Scanner:**
 * Navigate to `Manage Jenkins` => `Configure System`
 ![Preview](./Images/jenkins313.png)
 
@@ -1208,7 +1214,7 @@ pipeline{
 ```
 
 ### Note:
-* for different ecosystem means for different projects to do practice we can refer this link for azure devops projects 
+* for different ecosystem means for different projects to do practice we can refer this link. but this link is for azure devops project but not an issue we can take same project and practice in jenkins by changing the pipelines code thats it, only pipeline code is difference nothing else.
 * [Refer Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/ecosystems?view=azure-devops)
 
 Git Hooks

@@ -17,4 +17,5 @@ Devops LifeCycle
 * Deploy 
 * Operate
 * Monitor 
+![Preview](./Images/jenkins326.png)
 

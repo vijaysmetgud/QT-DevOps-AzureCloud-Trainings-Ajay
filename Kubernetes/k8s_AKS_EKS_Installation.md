@@ -11,9 +11,11 @@ Managed Kubernetes or Kubernetes as a Service:
 * Apart from normal kubernetes components in master node one extra component is added that is called `cloud-controller-manager` this component to speak with cloud providers means control plane behalf of k8s.
 
 * Typical k8s cluster:
+
 ![Preview](./Images/k8s79.png)
 
 * K8s as a Service(Cloud):
+
 ![Preview](./Images/k8s80.png)
 
 * Advantages k8s as service:
@@ -405,7 +407,7 @@ eksctl version
 * Follow this below link official documents:
   * [Refer Here](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)
   * [Refere Here](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
-  * [Refer Here](https://eksctl.io/introduction/) this is very important official docs
+  * [Refer Here](https://eksctl.io) this is very important official docs
   * following above documents we can create `EKS Cluster` with default network resources and default values
   * nor we can create `EKS Cluster` with our own customized network resources and with our own customized values
 * **Examples of network resources:**
@@ -427,7 +429,7 @@ eksctl version
 
 ### We Can install `EKS` through `eksctl` in `manifest/yml` file for `windows`:
 * **Follow this below link official documents:**
-  * [Refer Here](https://eksctl.io/introduction/) official docs
+  * [Refer Here](https://eksctl.io) official docs
   * following above documents we can create `EKS Cluster` with default network resources and default values
   * nor we can create `EKS Cluster` with our own customized network resources and with our own customized values
 * **Examples of network resources:**

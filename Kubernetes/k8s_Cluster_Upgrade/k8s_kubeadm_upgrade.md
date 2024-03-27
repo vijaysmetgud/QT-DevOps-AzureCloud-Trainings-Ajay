@@ -21,6 +21,7 @@ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 * verify the existing version of k8s cluster master and nodes
 
    `kubectl get nodes`
+   
 ![PReview](./Images/k8s1.png)
 
 * verify existing kubectl client and server version

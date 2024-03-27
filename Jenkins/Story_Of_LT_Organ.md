@@ -8,6 +8,7 @@
    * AIG
 
 * Architecture of their application
+
 ![Preview](./Images/jenkins8.png)
 
 * To develop this application we have one team per service

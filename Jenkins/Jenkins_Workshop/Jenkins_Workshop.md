@@ -35,7 +35,8 @@ Actual Workshop Steps:
 ### Virtual Machine or Cloud Based Deployment
  * We will be building a CI/CD Pipeline of a .net platform based application
 
-### Steps:
+### Virtual Machine Based Deployment:
+#### Steps:
    1. Jenkins Master and Node setup with OS Ubuntu
       * Jenkins Master
          * software requirements:
@@ -214,7 +215,7 @@ pipeline {
 
 `http://20.253.20.251:3000`
 
-`http://external ip:svc-portn-o`
+`http://external ip:svc-port-no`
 
 ---
 
@@ -310,6 +311,7 @@ pipeline {
 
 ### Scripted Pipeline in Jenkinsfile:
 
+```Jenkinsfile
 node('JDK_8') {
     
    
@@ -334,7 +336,7 @@ node('JDK_8') {
        junit '**/surefire-reports/TEST-*.xml'
    }
 } 
-
+```
 -------------------------------------------------------
 
 Flow of CI/CD Pipeline Brief Descriptions
@@ -402,6 +404,7 @@ Flow of CI/CD Pipeline Brief Descriptions
 * `CVE` abbreviation is `Common Vulnerability and Exposure` 
 
 ### OWASP:
+* [Refer Here](https://priyank-it.medium.com/owasp-zap-automated-pen-test-with-jenkins-e4f155a33f6f) for OWASP ZAP Integrating with jenkins
 * OWASP is a community which speaks top 10 risk in applications
 * For example in 2023 these are the top risk in applications [Refer Here](https://owasp.org/www-project-api-security/) For OWASP
 * So ensure that your applications doesn't have these risks.
@@ -540,9 +543,8 @@ pipeline {
     }
 
 }
-Share this:
 ```
----
+
 
 
 
